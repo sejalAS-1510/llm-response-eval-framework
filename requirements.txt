@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+datasets
+langchain
+langchain-text-splitters
+sentence-transformers
+chromadb
