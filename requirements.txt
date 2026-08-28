@@ -1,9 +1,7 @@
-fastapi
-uvicorn[standard]
-pydantic
-sqlalchemy
-datasets
-langchain
-langchain-text-splitters
-sentence-transformers
-chromadb
+fastapi==0.115.0
+uvicorn==0.30.6
+pydantic==2.9.2
+datasets==2.21.0
+langchain==0.3.1
+sentence-transformers==3.1.1
+chromadb==0.5.5
