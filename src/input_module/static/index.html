@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LLM Response Evaluation Dashboard</title>
+    <style>
+      :root {
+        --ink: #1c2530;
+        --muted: #5f6b76;
+        --line: #d8dcdf;
+        --bg: #f7f7f5;
+        --panel: #ffffff;
+        --accent: #0f6e56;
+        --accent-dark: #085041;
+        --error: #b3261e;
+        --warn: #b25e00;
+        --success: #137333;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+      }
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 40px 20px 80px;
+      }
+      header {
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 20px;
+      }
+      header .eyebrow {
+        color: var(--accent-dark);
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      h1 {
+        font-size: 26px;
+        margin: 0 0 6px;
+        letter-spacing: -0.01em;
+      }
+      header p {
+        color: var(--muted);
+        margin: 0;
+        font-size: 14px;
+      }
+      .samples-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+      .samples-bar span {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .sample-btn {
+        background: #eef2f5;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .sample-btn:hover {
+        background: #dde4e9;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background: var(--panel);
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+      .field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .field .hint {
+        display: block;
+        font-weight: 400;
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-family: inherit;
+        background: #fafafa;
+        color: var(--ink);
+        resize: vertical;
+      }
+      textarea:focus {
+        outline: 2px solid var(--accent);
+        background: #fff;
+      }
+      .optional-tag {
+        color: var(--muted);
+        font-weight: 400;
+      }
+      button.submit-btn {
+        align-self: flex-start;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 12px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.submit-btn:hover {
+        background: var(--accent-dark);
+      }
+      button:disabled {
+        background: #a9b1b6;
+        cursor: not-allowed;
+      }
+
+      #result {
+        margin-top: 28px;
+        display: none;
+      }
+      #result.show {
+        display: block;
+      }
+
+      .eval-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .card-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+      }
+      .badge {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 12px;
+        text-transform: uppercase;
+      }
+      .badge.success {
+        background: #e6f4ea;
+        color: var(--success);
+      }
+      .badge.warning {
+        background: #fef7e0;
+        color: var(--warn);
+      }
+      .badge.danger {
+        background: #fce8e6;
+        color: var(--error);
+      }
+
+      .score-display {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .score-display small {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      .reasoning-box {
+        background: #f8f9fa;
+        border-left: 3px solid var(--accent);
+        padding: 10px 14px;
+        font-size: 13px;
+        margin-top: 10px;
+        border-radius: 0 4px 4px 0;
+      }
+
+      .evidence-tag {
+        font-size: 12px;
+        background: #eef2f5;
+        padding: 6px 10px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-top: 6px;
+        font-style: italic;
+      }
+
+      .claim-item {
+        background: #fff5f5;
+        border: 1px solid #fed7d7;
+        border-radius: 6px;
+        padding: 10px 12px;
+        margin-top: 8px;
+        font-size: 13px;
+      }
+      .claim-status {
+        font-weight: 700;
+        color: var(--error);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="eyebrow">Milestone 2 Evaluation Dashboard</div>
+        <h1>LLM Judge Agents Evaluation</h1>
+        <p>
+          Evaluate an AI response across <strong>Relevance (M2.1)</strong>, <strong>Accuracy (M2.2)</strong>, and <strong>Hallucination Detection (M2.3)</strong>.
+        </p>
+      </header>
+
+      <div class="samples-bar">
+        <span>Quick Samples:</span>
+        <button type="button" class="sample-btn" onclick="loadSample('correct')">1. Fully Correct</button>
+        <button type="button" class="sample-btn" onclick="loadSample('hallucinated')">2. Hallucination</button>
+        <button type="button" class="sample-btn" onclick="loadSample('contradictory')">3. Contradiction</button>
+        <button type="button" class="sample-btn" onclick="loadSample('offtopic')">4. Off-Topic</button>
+      </div>
+
+      <form id="eval-form">
+        <div class="field">
+          <label for="question">Question</label>
+          <textarea id="question" rows="2" required placeholder="Enter question asked..."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="ai_response">AI Response to Evaluate</label>
+          <textarea id="ai_response" rows="3" required placeholder="Enter AI response to evaluate..."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="reference_answer">
+            Reference Answer <span class="optional-tag">(Optional)</span>
+            <span class="hint">If left empty, the RAG pipeline automatically retrieves relevant chunks from ChromaDB.</span>
+          </label>
+          <textarea id="reference_answer" rows="2" placeholder="Ground truth answer (optional)..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">Run Milestone 2 Evaluation</button>
+      </form>
+
+      <div id="result">
+        <div id="cards-container"></div>
+      </div>
+    </div>
+
+    <script>
+      const samples = {
+        correct: {
+          q: "What is the capital of France?",
+          a: "Paris is the capital of France.",
+          ref: "Paris is the capital of France."
+        },
+        hallucinated: {
+          q: "When was the Apollo 11 moon landing and who commanded it?",
+          a: "Apollo 11 landed on the Moon on July 20, 1969, commanded by Neil Armstrong alongside flight engineer Dr. Arthur Pendelton who joined from the European Space Agency.",
+          ref: "Apollo 11 landed on the Moon on July 20, 1969, and was commanded by Neil Armstrong."
+        },
+        contradictory: {
+          q: "Does lightning never strike the same place twice?",
+          a: "Yes, it is a scientific law that lightning never strikes the exact same place twice because the electrical ionization is permanently neutralized.",
+          ref: "No, lightning frequently strikes the same location repeatedly, especially tall buildings like the Empire State Building."
+        },
+        offtopic: {
+          q: "What causes earthquakes along tectonic plate boundaries?",
+          a: "Photosynthesis is the biological process by which green plants convert sunlight and carbon dioxide into chemical energy in the form of glucose.",
+          ref: "Earthquakes are caused by the sudden release of stress and friction accumulated along faults at tectonic plate boundaries."
+        }
+      };
+
+      function loadSample(key) {
+        const s = samples[key];
+        document.getElementById("question").value = s.q;
+        document.getElementById("ai_response").value = s.a;
+        document.getElementById("reference_answer").value = s.ref;
+      }
+
+      const form = document.getElementById("eval-form");
+      const submitBtn = document.getElementById("submit-btn");
+      const resultBox = document.getElementById("result");
+      const cardsContainer = document.getElementById("cards-container");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Running Judge Agents…";
+
+        const payload = {
+          question: document.getElementById("question").value,
+          ai_response: document.getElementById("ai_response").value,
+          reference_answer: document.getElementById("reference_answer").value || null,
+        };
+
+        try {
+          const res = await fetch("/api/v1/evaluate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+
+          if (res.ok) {
+            renderResults(data);
+            resultBox.classList.add("show");
+            resultBox.scrollIntoView({ behavior: "smooth" });
+          } else {
+            cardsContainer.innerHTML = `<div class="eval-card" style="border-color:var(--error);color:var(--error);"><strong>Evaluation failed:</strong> ${data.detail || data.error || "Server error"}</div>`;
+            resultBox.classList.add("show");
+          }
+        } catch (err) {
+          cardsContainer.innerHTML = `<div class="eval-card" style="border-color:var(--error);color:var(--error);"><strong>Network error:</strong> Could not connect to the backend server.</div>`;
+          resultBox.classList.add("show");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Run Milestone 2 Evaluation";
+        }
+      });
+
+      function renderResults(data) {
+        const rel = data.relevance;
+        const acc = data.accuracy;
+        const hal = data.hallucination;
+
+        const relBadge = rel.score >= 0.8 ? "success" : rel.score >= 0.4 ? "warning" : "danger";
+        const accBadge = acc.score >= 0.8 ? "success" : acc.score >= 0.4 ? "warning" : "danger";
+        const halBadge = hal.is_hallucinated ? "danger" : "success";
+
+        let flaggedHtml = "";
+        if (hal.flagged_claims && hal.flagged_claims.length > 0) {
+          flaggedHtml = `
+            <div style="margin-top:12px;">
+              <strong style="font-size:13px;">Flagged Unsupported / Contradicted Claims:</strong>
+              ${hal.flagged_claims.map(c => `
+                <div class="claim-item">
+                  <span class="claim-status">[${c.status.toUpperCase()}]</span> ${c.claim}
+                  <div style="font-size:12px;color:var(--muted);margin-top:4px;"><strong>Reason:</strong> ${c.explanation}</div>
+                </div>
+              `).join("")}
+            </div>
+          `;
+        }
+
+        let evidenceHtml = "";
+        if (acc.supporting_evidence && acc.supporting_evidence.length > 0) {
+          evidenceHtml = `
+            <div style="margin-top:8px;">
+              <span style="font-size:12px;color:var(--muted);font-weight:600;">Supporting Evidence Quoted:</span><br/>
+              ${acc.supporting_evidence.map(e => `<div class="evidence-tag">"${e}"</div>`).join("")}
+            </div>
+          `;
+        }
+
+        cardsContainer.innerHTML = `
+          <!-- M2.1 Relevance Card -->
+          <div class="eval-card">
+            <div class="card-header">
+              <h3 class="card-title">M2.1 Relevance Judge</h3>
+              <span class="badge ${relBadge}">${rel.classification.replace('_', ' ')}</span>
+            </div>
+            <div class="score-display">${(rel.score * 100).toFixed(0)}% <small>(${rel.score.toFixed(2)} / 1.0)</small></div>
+            <div class="reasoning-box"><strong>Judge Reasoning:</strong> ${rel.reasoning}</div>
+          </div>
+
+          <!-- M2.2 Accuracy Card -->
+          <div class="eval-card">
+            <div class="card-header">
+              <h3 class="card-title">M2.2 Accuracy Judge</h3>
+              <span class="badge ${accBadge}">${acc.classification.replace('_', ' ')}</span>
+            </div>
+            <div class="score-display">${(acc.score * 100).toFixed(0)}% <small>(${acc.score.toFixed(2)} / 1.0)</small></div>
+            ${evidenceHtml}
+            <div class="reasoning-box"><strong>Judge Reasoning:</strong> ${acc.reasoning}</div>
+          </div>
+
+          <!-- M2.3 Hallucination Detection Card -->
+          <div class="eval-card">
+            <div class="card-header">
+              <h3 class="card-title">M2.3 Hallucination Detection Agent</h3>
+              <span class="badge ${halBadge}">${hal.is_hallucinated ? "Hallucination Detected" : "Fully Grounded"}</span>
+            </div>
+            <div class="score-display">${(hal.hallucination_score * 100).toFixed(0)}% <small>hallucinated</small></div>
+            ${flaggedHtml}
+            <div class="reasoning-box"><strong>Judge Reasoning:</strong> ${hal.reasoning}</div>
+          </div>
+        `;
+      }
+    </script>
+  </body>
+</html>

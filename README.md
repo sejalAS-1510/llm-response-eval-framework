@@ -47,26 +47,27 @@ data/                  # sqlite db + chroma index get created here at runtime
 ```bash
 pip install -r requirements.txt
 
-# 1. build the reference knowledge base (ingest + chunk + embed + index)
+# 1. Build the reference knowledge base (ingest + chunk + embed + index)
 python -m src.knowledge_base.build_index
 
-# 2. sanity-check retrieval quality
+# 2. Sanity-check retrieval quality
 python -m tests.test_retrieval
 
-# 3. run the submission API
+# 3. Configure Gemini API key
+cp .env.example .env
+# Edit .env and set your GEMINI_API_KEY
+
+# 4. Run Milestone 2 validation suite (Relevance, Accuracy, Hallucination)
+python -m tests.test_milestone2
+
+# 5. Run the API with evaluation endpoints
 uvicorn src.input_module.main:app --reload
 ```
 
-Then submit an evaluation:
+Submit and evaluate directly via API:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/evaluations \
+curl -X POST http://localhost:8000/api/v1/evaluate \
   -H "Content-Type: application/json" \
   -d '{"question": "What is the capital of France?", "ai_response": "Paris is the capital of France."}'
 ```
-
-## What's next (Milestone 2)
-
-- Wire up the Claude API for the four judge agents + verdict agent
-- Connect the orchestrator to pull retrieved context from the knowledge base for a submitted question
-- Structured JSON results + a results dashboard

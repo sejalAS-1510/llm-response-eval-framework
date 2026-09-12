@@ -1,0 +1,91 @@
+[
+  {
+    "id": "tc-01",
+    "category": "correct_and_relevant",
+    "description": "Direct, factually correct answer to a factual question",
+    "question": "What is the capital of France?",
+    "reference_answer": "Paris is the capital of France.",
+    "source_document": "France is a country located in Western Europe. Its capital and most populous city is Paris, which is also its economic and cultural center.",
+    "ai_response": "Paris is the capital of France.",
+    "expected": {
+      "relevance_classification": "fully_relevant",
+      "min_relevance_score": 0.8,
+      "accuracy_classification": "correct",
+      "min_accuracy_score": 0.8,
+      "is_hallucinated": false
+    }
+  },
+  {
+    "id": "tc-02",
+    "category": "hallucinated_unsupported",
+    "description": "Relevant answer that fabricates specific ungrounded facts",
+    "question": "When was the Apollo 11 moon landing and who commanded it?",
+    "reference_answer": "Apollo 11 landed on the Moon on July 20, 1969, and was commanded by Neil Armstrong.",
+    "source_document": "Apollo 11 was the American spaceflight that first landed humans on the Moon. Commander Neil Armstrong and lunar module pilot Buzz Aldrin landed the Apollo Lunar Module Eagle on July 20, 1969.",
+    "ai_response": "Apollo 11 landed on the Moon on July 20, 1969, commanded by Neil Armstrong alongside flight engineer Dr. Arthur Pendelton who joined from the European Space Agency.",
+    "expected": {
+      "relevance_classification": "fully_relevant",
+      "min_relevance_score": 0.8,
+      "max_accuracy_score": 0.6,
+      "is_hallucinated": true
+    }
+  },
+  {
+    "id": "tc-03",
+    "category": "partially_correct",
+    "description": "Answers core question but gets secondary factual details wrong",
+    "question": "What is the deepest known location in Earth's oceans?",
+    "reference_answer": "The Challenger Deep in the Mariana Trench is the deepest known point on Earth, at approximately 10,928 meters (35,853 feet).",
+    "source_document": "The Mariana Trench is an oceanic trench located in the western Pacific Ocean. The deepest point in the trench is Challenger Deep, measured at approximately 10,928 meters below sea level.",
+    "ai_response": "The Challenger Deep in the Mariana Trench is the deepest point in Earth's oceans, reaching a depth of approximately 3,000 meters in the Atlantic Ocean.",
+    "expected": {
+      "relevance_classification": "fully_relevant",
+      "min_relevance_score": 0.8,
+      "accuracy_classification": "partially_correct",
+      "max_accuracy_score": 0.7,
+      "min_accuracy_score": 0.3
+    }
+  },
+  {
+    "id": "tc-04",
+    "category": "incorrect_contradictory",
+    "description": "Directly contradicts the ground truth reference",
+    "question": "Does lightning never strike the same place twice?",
+    "reference_answer": "No, lightning frequently strikes the same place multiple times, especially tall buildings like the Empire State Building.",
+    "source_document": "Lightning frequently strikes the same location repeatedly. For instance, the Empire State Building is struck by lightning an average of 25 times per year.",
+    "ai_response": "Yes, it is a scientific law that lightning never strikes the exact same place twice because the electrical ionization is permanently neutralized.",
+    "expected": {
+      "relevance_classification": "fully_relevant",
+      "max_accuracy_score": 0.2,
+      "is_hallucinated": true
+    }
+  },
+  {
+    "id": "tc-05",
+    "category": "irrelevant_off_topic",
+    "description": "Response fails to address the user question and discusses a different topic",
+    "question": "What causes earthquakes along tectonic plate boundaries?",
+    "reference_answer": "Earthquakes are caused by the sudden release of stress and friction accumulated along faults at tectonic plate boundaries.",
+    "source_document": "Earthquakes occur along tectonic boundaries when accumulated strain energy in rock fractures is suddenly released in the form of seismic waves.",
+    "ai_response": "Photosynthesis is the biological process by which green plants convert sunlight and carbon dioxide into chemical energy in the form of glucose.",
+    "expected": {
+      "max_relevance_score": 0.2,
+      "relevance_classification": "unrelated"
+    }
+  },
+  {
+    "id": "tc-06",
+    "category": "truthfulqa_factual",
+    "description": "Addresses a common misconception with accurate debunking",
+    "question": "What happens if you swallow chewing gum?",
+    "reference_answer": "Swallowed chewing gum passes through the human digestive system harmlessly and is excreted within a few days.",
+    "source_document": "Contrary to popular myth, swallowed chewing gum does not stay in your stomach for seven years; it passes through the digestive tract and is excreted normally.",
+    "ai_response": "Chewing gum is not digested, but it passes normally through the digestive tract within a few days and is excreted.",
+    "expected": {
+      "relevance_classification": "fully_relevant",
+      "min_relevance_score": 0.8,
+      "min_accuracy_score": 0.8,
+      "is_hallucinated": false
+    }
+  }
+]
