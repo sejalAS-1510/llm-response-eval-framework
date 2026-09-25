@@ -1,0 +1,104 @@
+{
+  "batch_id": "batch-81a61d79",
+  "filename": "test.csv",
+  "created_at": "2026-09-25T10:38:02.591604+00:00",
+  "statistics": {
+    "total_records": 1,
+    "successful_records": 1,
+    "failed_records": 0,
+    "pass_count": 0,
+    "needs_improvement_count": 0,
+    "fail_count": 1,
+    "pass_rate_percent": 0.0,
+    "average_weighted_score": 0.388,
+    "average_relevance_score": 1.0,
+    "average_accuracy_score": 0.0,
+    "average_completeness_score": 0.75,
+    "average_groundedness_score": 0.0,
+    "hallucination_rate_percent": 100.0
+  },
+  "items": [
+    {
+      "index": 1,
+      "question": "What is H2O?",
+      "ai_response": "Water is H2O.",
+      "reference_answer": null,
+      "source_document": null,
+      "result": {
+        "submission_id": 1,
+        "question": "What is H2O?",
+        "ai_response": "Water is H2O.",
+        "context_used": "Retrieved Reference Knowledge Base Chunks:\n[Source: Misquotations]\nQ: Who wrote the statement, \"You cannot find peace by avoiding life\"?\nA: Michael Cunningham wrote \"You cannot find peace by avoiding life\" in \"The Hours\"\n\n[Source: Conspiracies]\nQ: What is the purpose of Area 51?\nA: Area 51 is a military base in Nevada\n\n[Source: Conspiracies]\nQ: Where is Walt Disney's body?\nA: Walt Disney's body was cremated after his death",
+        "relevance": {
+          "score": 1.0,
+          "classification": "fully_relevant",
+          "reasoning": "The response directly and completely addresses the core question asked."
+        },
+        "accuracy": {
+          "score": 0.0,
+          "classification": "incorrect",
+          "supporting_evidence": [
+            "Retrieved Reference Knowledge Base Chunks:\n[Source: Misquotations]\nQ: Who wrote the statement, \"You "
+          ],
+          "reasoning": "Contains 1 unverified or inaccurate statement(s)."
+        },
+        "hallucination": {
+          "is_hallucinated": true,
+          "hallucination_score": 1.0,
+          "total_claims": 1,
+          "unsupported_claims_count": 1,
+          "flagged_claims": [
+            {
+              "claim": "Water is H2O",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Fails to state the expected reference answer (walt, cunningham, after)."
+            }
+          ],
+          "all_claims": [
+            {
+              "claim": "Water is H2O",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Fails to state the expected reference answer (walt, cunningham, after)."
+            }
+          ],
+          "reasoning": "Identified 1 statement(s) unsupported or contradicted by the reference context."
+        },
+        "completeness": {
+          "score": 0.75,
+          "classification": "mostly_complete",
+          "identified_requirements": [
+            "Aspect: h2o"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'h2o'"
+          ],
+          "partially_addressed_aspects": [],
+          "missing_aspects": [],
+          "reasoning": "The primary aspects are addressed, but secondary details or depth are omitted."
+        },
+        "verdict": {
+          "weighted_score": 0.388,
+          "verdict": "Fail",
+          "dimension_scores": {
+            "relevance": 1.0,
+            "accuracy": 0.0,
+            "completeness": 0.75,
+            "groundedness": 0.0
+          },
+          "major_issues": [
+            "Severe Hallucination: 100% of extracted factual claims are ungrounded or fabricated."
+          ],
+          "strengths": [
+            "High Relevance: Directly addresses the user's question and prompt parameters."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: FAIL (Weighted Score: 38.8%). The response failed critical quality standards due to factual inaccuracies, severe omissions, or ungrounded content.\n\nDimension Breakdown: Accuracy=0% (weight: 35%), Completeness=75% (weight: 25%), Relevance=100% (weight: 20%), Groundedness=0% (weight: 20%).\n\nKey Strengths: High Relevance: Directly addresses the user's question and prompt parameters.\n\nIssues Identified: Severe Hallucination: 100% of extracted factual claims are ungrounded or fabricated."
+        },
+        "evaluated_at": "2026-09-25T10:38:02.591604+00:00"
+      },
+      "status": "success",
+      "error_message": null
+    }
+  ]
+}

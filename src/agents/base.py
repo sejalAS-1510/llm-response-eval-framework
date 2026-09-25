@@ -8,8 +8,11 @@ import re
 import json
 import asyncio
 import logging
+import warnings
 from typing import Type, TypeVar
 from pydantic import BaseModel
+
+warnings.filterwarnings("ignore", category=FutureWarning, module="google.generativeai")
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +77,7 @@ class GeminiClient:
                 },
             )
         except Exception as schema_err:
-            logger.warning(f"Native protobuf schema failed ({schema_err}), falling back to JSON schema prompt injection.")
+            logger.debug(f"Native protobuf schema failed ({schema_err}), falling back to JSON schema prompt injection.")
             schema_json = json.dumps(response_schema.model_json_schema())
             augmented_system = (
                 f"{system_instruction}\n\n"
@@ -140,9 +143,9 @@ class GeminiClient:
         schema_name = schema_cls.__name__
 
         # Extract question, context, response from prompt
-        q_match = re.search(r'User Question:\s*"""(.*?)"""', prompt, re.DOTALL)
+        q_match = re.search(r'(?:User Question / Requirements|User Question):\s*"""(.*?)"""', prompt, re.DOTALL)
         ctx_match = re.search(
-            r'(?:Reference / Ground Truth Context|Retrieved Source Context):\s*"""(.*?)"""',
+            r'(?:Reference / Ground Truth Context|Reference Context / Benchmark|Retrieved Source Context):\s*"""(.*?)"""',
             prompt,
             re.DOTALL,
         )
@@ -151,6 +154,7 @@ class GeminiClient:
             prompt,
             re.DOTALL,
         )
+
 
         question = q_match.group(1).strip() if q_match else ""
         context = ctx_match.group(1).strip() if ctx_match else ""
@@ -162,7 +166,9 @@ class GeminiClient:
             "are", "was", "were", "been", "being", "have", "has", "had", "which", "this", "that",
             "known", "called", "named", "means", "refers", "also", "such", "than", "more", "most",
             "can", "could", "would", "should", "will", "shall", "may", "might", "must", "direct",
-            "reference", "answer", "about", "into", "with", "well"
+            "reference", "answer", "about", "into", "with", "well", "happens", "happen", "happened",
+            "you", "your", "yours", "they", "them", "their", "theirs", "our", "ours", "she", "her", "him", "his",
+            "compare", "comparison", "terms", "number", "numbers", "name", "list", "describe", "explain", "tell", "give", "state"
         }
 
         q_words = set(re.findall(r'\b[a-zA-Z0-9]{3,}\b', question.lower())) - stop_words
@@ -172,9 +178,13 @@ class GeminiClient:
         # Valid grounding premises come from both reference context AND the question asked
         known_words = c_words | q_words
 
-        # Check relevance
-        overlap_qr = len(q_words & r_words)
-        is_relevant = (overlap_qr > 0) or (len(q_words) == 0)
+        # Check relevance (including 3-char prefix stem overlap and context alignment)
+        q_stems = {w[:3] for w in q_words if len(w) >= 3}
+        r_stems = {w[:3] for w in r_words if len(w) >= 3}
+        overlap_stems = len(q_stems & r_stems)
+        overlap_qr = max(len(q_words & r_words), overlap_stems)
+        c_overlap_count = len(r_words & c_words) if c_words else 0
+        is_relevant = (overlap_qr > 0) or (len(q_words) == 0) or (c_overlap_count >= 2)
 
         # Split response into sentences
         sentences = [s.strip() for s in re.split(r'[.!?\n]+', response) if len(s.strip()) > 3]
@@ -195,32 +205,44 @@ class GeminiClient:
                 missing = s_words - known_words
                 has_context_key = bool(s_words & c_words)
 
+                proper_nouns = {w.lower() for w in re.findall(r'\b[A-Z][a-zA-Z0-9]+\b', s)[1:]}
+                fabricated_entities = proper_nouns & missing
+
                 # 1. Check for numerical contradictions
                 s_nums = set(re.findall(r'\b\d+(?:[.,]\d+)?\b', s.replace(',', '')))
                 c_nums = set(re.findall(r'\b\d+(?:[.,]\d+)?\b', context.replace(',', '')))
                 c_num_bases = {n.split('.')[0] for n in c_nums} | c_nums
                 s_num_bases = {n.split('.')[0] for n in s_nums} | s_nums
 
-                # 2. Check for antonym conflicts
+                # 2. Check for antonym conflicts (only when one term is in response and its antonym is in context, but not both in context)
                 antonym_pairs = [
-                    ("highest", "shortest"), ("tallest", "shortest"), ("largest", "smallest"),
+                    ("yes", "no"), ("never", "always"), ("never", "often"), ("never", "frequently"),
+                    ("highest", "lowest"), ("tallest", "shortest"), ("largest", "smallest"),
                     ("longest", "shortest"), ("deepest", "shallowest"), ("fastest", "slowest"),
-                    ("first", "last"), ("true", "false"), ("hot", "cold"), ("more", "less")
+                    ("first", "last"), ("true", "false"), ("hot", "cold"), ("more", "less"),
+                    ("increase", "decrease"), ("rise", "fall")
                 ]
                 s_lower = s.lower()
                 c_lower = context.lower()
                 antonym_conflict = None
                 for w1, w2 in antonym_pairs:
-                    if w1 in s_lower and w2 in c_lower:
+                    has_w1_s = bool(re.search(r'\b' + re.escape(w1) + r'\b', s_lower))
+                    has_w2_c = bool(re.search(r'\b' + re.escape(w2) + r'\b', c_lower))
+                    has_w1_c = bool(re.search(r'\b' + re.escape(w1) + r'\b', c_lower))
+                    has_w2_s = bool(re.search(r'\b' + re.escape(w2) + r'\b', s_lower))
+                    if has_w1_s and has_w2_c and not has_w1_c and not has_w2_s:
                         antonym_conflict = (w1, w2)
                         break
-                    elif w2 in s_lower and w1 in c_lower:
+                    if has_w2_s and has_w1_c and not has_w2_c and not has_w1_s:
                         antonym_conflict = (w2, w1)
                         break
 
                 negations = {"not", "never", "no", "false", "neither", "none"}
                 s_has_neg = bool(set(re.findall(r'\b\w+\b', s.lower())) & negations)
                 c_has_neg = bool(set(re.findall(r'\b\w+\b', context.lower())) & negations)
+                starts_neg = bool(re.match(r'^(no|neither|none|never)\b', s.strip().lower()))
+                has_direct_neg = bool(re.search(r'\b(contains no|contains not|has no|have no|is not|are not|cannot|does not|did not|never strikes)\b', s.lower()))
+                full_positive_overlap = (len(s_words & c_words) >= max(3, int(len(c_words) * 0.75)))
 
                 if c_num_bases and s_num_bases and (s_num_bases - c_num_bases):
                     diff_val = list(s_num_bases - c_num_bases)[0]
@@ -231,6 +253,13 @@ class GeminiClient:
                         "evidence": f"Reference context states {ref_val}.",
                         "explanation": f"Numerical value mismatch: asserts {diff_val} instead of expected {ref_val}."
                     })
+                    if len(s_words & c_words) >= 2:
+                        supported_claims.append({
+                            "claim": s,
+                            "status": "supported",
+                            "evidence": context[:120],
+                            "explanation": "Core subject and entity match ground truth context despite numerical mismatch."
+                        })
                 elif antonym_conflict:
                     w_resp, w_ref = antonym_conflict
                     contradicted_claims.append({
@@ -239,7 +268,7 @@ class GeminiClient:
                         "evidence": context[:120],
                         "explanation": f"Direct contradiction: asserts '{w_resp}', contradicting reference '{w_ref}'."
                     })
-                elif (s_has_neg != c_has_neg) and (s_words & c_words):
+                elif (s_has_neg != c_has_neg) and (s_words & c_words) and (starts_neg or has_direct_neg) and not full_positive_overlap:
                     contradicted_claims.append({
                         "claim": s,
                         "status": "contradicted",
@@ -253,8 +282,22 @@ class GeminiClient:
                         "evidence": None,
                         "explanation": f"Fails to state the expected reference answer ({', '.join(list(c_words)[:3])})."
                     })
-                elif missing and len(missing) >= 1 and (len(missing) / len(s_words) > 0.25):
-                    missing_str = ", ".join(list(missing)[:3])
+                elif fabricated_entities and len(s_words & c_words) >= 2:
+                    missing_str = ", ".join(list(fabricated_entities)[:3])
+                    unsupported_claims.append({
+                        "claim": f"{s[:90]}... [fabricated entity: {missing_str}]",
+                        "status": "unsupported",
+                        "evidence": None,
+                        "explanation": f"Introduces ungrounded assertion ({missing_str}) not mentioned in the reference context."
+                    })
+                    supported_claims.append({
+                        "claim": f"{s[:90]}... [grounded core]",
+                        "status": "supported",
+                        "evidence": context[:120],
+                        "explanation": f"Core factual proposition ({', '.join(list(s_words & c_words)[:3])}) is grounded in reference context."
+                    })
+                elif fabricated_entities or (missing and len(missing) >= 1 and (len(missing) / len(s_words) > 0.40) and len(s_words & c_words) < 2):
+                    missing_str = ", ".join(list(fabricated_entities or missing)[:3])
                     unsupported_claims.append({
                         "claim": s,
                         "status": "unsupported",
@@ -269,7 +312,7 @@ class GeminiClient:
                         "explanation": "Supported by the provided context and question premise."
                     })
 
-        total_claims = max(1, len(sentences))
+        total_claims = max(1, len(supported_claims) + len(unsupported_claims) + len(contradicted_claims))
         bad_claims = unsupported_claims + contradicted_claims
 
         if schema_name == "RelevanceResult":
@@ -302,18 +345,32 @@ class GeminiClient:
                     supporting_evidence=[context[:100]] if context else [],
                     reasoning="Response does not address the question or ground truth context.",
                 )
-            if contradicted_claims:
+            if contradicted_claims and not supported_claims:
                 return schema_cls(
                     score=0.0,
                     classification="contradictory",
                     supporting_evidence=[c["evidence"] for c in contradicted_claims if c.get("evidence")],
                     reasoning="Directly contradicts the provided ground truth context.",
                 )
-            elif unsupported_claims:
-                acc_score = max(0.0, round(1.0 - (len(unsupported_claims) / total_claims), 2))
+            elif contradicted_claims and supported_claims:
+                return schema_cls(
+                    score=0.5,
+                    classification="partially_correct",
+                    supporting_evidence=[c["evidence"] for c in contradicted_claims if c.get("evidence")],
+                    reasoning="Partially correct; addresses the core topic but contains contradictory or inaccurate details.",
+                )
+            elif unsupported_claims and supported_claims:
+                acc_score = max(0.2, round(len(supported_claims) / total_claims, 2))
                 return schema_cls(
                     score=acc_score,
-                    classification="partially_correct" if acc_score > 0 else "incorrect",
+                    classification="partially_correct",
+                    supporting_evidence=[context[:120]] if context else [],
+                    reasoning=f"Partially correct; aligns with reference context on core topic but contains {len(unsupported_claims)} unverified or ungrounded statement(s).",
+                )
+            elif unsupported_claims:
+                return schema_cls(
+                    score=0.0,
+                    classification="incorrect",
                     supporting_evidence=[context[:100]] if context else [],
                     reasoning=f"Contains {len(unsupported_claims)} unverified or inaccurate statement(s).",
                 )
@@ -353,5 +410,101 @@ class GeminiClient:
                     all_claims=[claim],
                     reasoning="All statements appear grounded in the reference context.",
                 )
+        elif schema_name == "CompletenessResult":
+            if not is_relevant or not response:
+                return schema_cls(
+                    score=0.0,
+                    classification="incomplete",
+                    identified_requirements=[question] if question else ["General response request"],
+                    addressed_aspects=[],
+                    partially_addressed_aspects=[],
+                    missing_aspects=[question] if question else ["Substantive response"],
+                    reasoning="The response fails to address the user question and provides no relevant information.",
+                )
+
+            # If accuracy is completely contradictory, the response fails to provide valid information
+            if contradicted_claims and not supported_claims:
+                return schema_cls(
+                    score=0.20,
+                    classification="incomplete",
+                    identified_requirements=[f"Aspect: {r}" for r in [w for w in q_words if len(w) > 3][:5]] or ["Direct answer"],
+                    addressed_aspects=[],
+                    partially_addressed_aspects=[],
+                    missing_aspects=[f"Valid factual answer regarding '{w}'" for w in list(q_words)[:2]] or ["Factually accurate answer"],
+                    reasoning="The response directly contradicts the ground truth facts, failing to satisfy the required answer.",
+                )
+
+            # Identify key expected aspects from question and context
+            req_list = [w for w in q_words if len(w) > 3]
+            if not req_list:
+                req_list = list(q_words) or ["Direct answer to question"]
+
+            addressed = []
+            missing = []
+
+            for req in req_list:
+                req_stem = req[:4] if len(req) >= 4 else req
+                if req in response.lower() or (len(req_stem) >= 4 and req_stem in response.lower()):
+                    addressed.append(f"Coverage of '{req}'")
+                else:
+                    missing.append(f"Details regarding '{req}'")
+
+            # Check coverage ratio
+            coverage_ratio = len(addressed) / max(1, len(req_list))
+
+            # Factor in context alignment if reference context is present
+            if c_words:
+                c_overlap = len(r_words & c_words) / max(1, min(len(c_words), 10))
+                coverage_ratio = (coverage_ratio * 0.6) + (min(1.0, c_overlap) * 0.4)
+
+            # Check for high-value missing sub-questions (e.g. functions, why, causes, differences)
+            high_value_reqs = {"function", "functions", "respective", "why", "cause", "causes", "reason", "reasons", "process", "difference"}
+            missing_high_value = set(q_words - r_words) & high_value_reqs
+            if missing_high_value and len(missing) >= 1:
+                coverage_ratio = min(coverage_ratio, 0.45)
+
+            coverage_ratio = round(max(0.0, min(1.0, coverage_ratio)), 2)
+
+            if coverage_ratio >= 0.80:
+                return schema_cls(
+                    score=1.0,
+                    classification="fully_complete",
+                    identified_requirements=[f"Aspect: {r}" for r in req_list[:5]],
+                    addressed_aspects=addressed or ["Core question completely answered"],
+                    partially_addressed_aspects=[],
+                    missing_aspects=[],
+                    reasoning="All core aspects and expected requirements are thoroughly addressed.",
+                )
+            elif coverage_ratio >= 0.50:
+                return schema_cls(
+                    score=0.75,
+                    classification="mostly_complete",
+                    identified_requirements=[f"Aspect: {r}" for r in req_list[:5]],
+                    addressed_aspects=addressed,
+                    partially_addressed_aspects=[missing[0]] if missing else [],
+                    missing_aspects=missing[1:] if len(missing) > 1 else ([] if not missing else [missing[0]]),
+                    reasoning="The primary aspects are addressed, but secondary details or depth are omitted.",
+                )
+            elif coverage_ratio >= 0.25:
+                return schema_cls(
+                    score=0.50,
+                    classification="partially_complete",
+                    identified_requirements=[f"Aspect: {r}" for r in req_list[:5]],
+                    addressed_aspects=addressed or ["Partial high-level mention"],
+                    partially_addressed_aspects=missing[:1],
+                    missing_aspects=missing[1:] if len(missing) > 1 else missing,
+                    reasoning="The response only partially answers the prompt; key sub-questions are omitted.",
+                )
+            else:
+                return schema_cls(
+                    score=0.20,
+                    classification="incomplete",
+                    identified_requirements=[f"Aspect: {r}" for r in req_list[:5]],
+                    addressed_aspects=addressed,
+                    partially_addressed_aspects=[],
+                    missing_aspects=missing or ["Primary answer to the user prompt"],
+                    reasoning="Substantially incomplete response; major required information is omitted.",
+                )
         else:
             raise ValueError(f"No mock implementation for schema {schema_name}")
+

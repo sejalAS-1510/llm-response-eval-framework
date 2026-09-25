@@ -3,300 +3,1555 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LLM Response Evaluation Dashboard</title>
+    <title>LLM Response Evaluation Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
       :root {
-        --ink: #1c2530;
-        --muted: #5f6b76;
-        --line: #d8dcdf;
-        --bg: #f7f7f5;
-        --panel: #ffffff;
-        --accent: #0f6e56;
-        --accent-dark: #085041;
-        --error: #b3261e;
-        --warn: #b25e00;
-        --success: #137333;
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-300: #cbd5e1;
+        --slate-400: #94a3b8;
+        --slate-500: #64748b;
+        --slate-600: #475569;
+        --slate-700: #334155;
+        --slate-800: #1e293b;
+        --slate-900: #0f172a;
+
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+        --primary-light: #eff6ff;
+        --primary-border: #bfdbfe;
+
+        --success: #059669;
+        --success-hover: #047857;
+        --success-light: #ecfdf5;
+        --success-border: #a7f3d0;
+
+        --warning: #d97706;
+        --warning-hover: #b45309;
+        --warning-light: #fffbeb;
+        --warning-border: #fde68a;
+
+        --danger: #dc2626;
+        --danger-hover: #b91c1c;
+        --danger-light: #fef2f2;
+        --danger-border: #fecaca;
+
+        --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+        --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.09), 0 2px 4px -2px rgb(0 0 0 / 0.05);
       }
+
       * {
         box-sizing: border-box;
       }
+
       body {
         margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--slate-50);
+        color: var(--slate-900);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
+
       .wrap {
-        max-width: 720px;
+        max-width: 1220px;
         margin: 0 auto;
-        padding: 40px 20px 80px;
+        padding: 24px 20px 80px;
       }
+
+      /* Top Enterprise Bar */
+      .top-status-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--slate-200);
+        font-size: 12px;
+      }
+      .system-status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+        color: var(--slate-600);
+      }
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+      }
+      .agent-badges-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+      .agent-tag {
+        background: var(--slate-100);
+        color: var(--slate-600);
+        border: 1px solid var(--slate-200);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      /* Header */
       header {
         margin-bottom: 24px;
-        border-bottom: 1px solid var(--line);
-        padding-bottom: 20px;
       }
-      header .eyebrow {
-        color: var(--accent-dark);
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 4px;
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--primary);
+        font-size: 11.5px;
+        font-weight: 700;
+        margin-bottom: 6px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+      }
+      .eyebrow-badge {
+        background: var(--primary-light);
+        border: 1px solid var(--primary-border);
+        padding: 2px 8px;
+        border-radius: 4px;
       }
       h1 {
         font-size: 26px;
         margin: 0 0 6px;
-        letter-spacing: -0.01em;
+        letter-spacing: -0.02em;
+        font-weight: 800;
+        color: var(--slate-900);
       }
       header p {
-        color: var(--muted);
+        color: var(--slate-600);
         margin: 0;
-        font-size: 14px;
+        font-size: 13.5px;
+        max-width: 860px;
       }
-      .samples-bar {
+
+      /* Tab Navigation */
+      .nav-tabs {
+        display: flex;
+        gap: 8px;
+        border-bottom: 1px solid var(--slate-200);
+        margin-bottom: 22px;
+      }
+      .tab-btn {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        padding: 10px 18px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--slate-500);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.15s ease;
+      }
+      .tab-btn:hover {
+        color: var(--slate-800);
+      }
+      .tab-btn.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+      }
+      .tab-counter {
+        background: var(--slate-100);
+        color: var(--slate-600);
+        padding: 2px 7px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .tab-btn.active .tab-counter {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Presets bar */
+      .presets-bar {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
         align-items: center;
       }
-      .samples-bar span {
+      .presets-bar span {
         font-size: 12px;
         font-weight: 600;
-        color: var(--muted);
+        color: var(--slate-500);
       }
-      .sample-btn {
-        background: #eef2f5;
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        padding: 4px 12px;
+      .preset-chip {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 6px;
+        padding: 5px 12px;
         font-size: 12px;
         cursor: pointer;
         font-weight: 500;
-        color: var(--ink);
+        color: var(--slate-700);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s ease;
       }
-      .sample-btn:hover {
-        background: #dde4e9;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        background: var(--panel);
-        padding: 24px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-      }
-      .field label {
-        display: block;
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 4px;
-      }
-      .field .hint {
-        display: block;
-        font-weight: 400;
-        color: var(--muted);
-        font-size: 12px;
-        margin-top: 2px;
-      }
-      textarea {
-        width: 100%;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        padding: 10px 12px;
-        font-size: 14px;
-        font-family: inherit;
-        background: #fafafa;
-        color: var(--ink);
-        resize: vertical;
-      }
-      textarea:focus {
-        outline: 2px solid var(--accent);
-        background: #fff;
-      }
-      .optional-tag {
-        color: var(--muted);
-        font-weight: 400;
-      }
-      button.submit-btn {
-        align-self: flex-start;
-        background: var(--accent);
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        padding: 12px 24px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      button.submit-btn:hover {
-        background: var(--accent-dark);
-      }
-      button:disabled {
-        background: #a9b1b6;
-        cursor: not-allowed;
+      .preset-chip:hover {
+        background: var(--slate-100);
+        border-color: var(--slate-300);
+        color: var(--slate-900);
       }
 
-      #result {
-        margin-top: 28px;
-        display: none;
-      }
-      #result.show {
-        display: block;
-      }
-
-      .eval-card {
-        background: var(--panel);
-        border: 1px solid var(--line);
+      /* Panels */
+      .panel-card {
+        background: #ffffff;
+        padding: 22px;
+        border: 1px solid var(--slate-200);
         border-radius: 8px;
-        padding: 20px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 22px;
+      }
+      .field {
         margin-bottom: 16px;
       }
-      .card-header {
+      .field-label-row {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
+        justify-content: space-between;
+        margin-bottom: 6px;
+      }
+      .field label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--slate-800);
+      }
+      .field .hint {
+        font-weight: 400;
+        color: var(--slate-500);
+        font-size: 11.5px;
+      }
+      .field-counter {
+        font-size: 11px;
+        color: var(--slate-400);
+        font-family: 'JetBrains Mono', monospace;
+      }
+      textarea, input[type="text"] {
+        width: 100%;
+        border: 1px solid var(--slate-300);
+        border-radius: 6px;
+        padding: 9px 12px;
+        font-size: 13px;
+        font-family: inherit;
+        background: #ffffff;
+        color: var(--slate-900);
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      textarea:focus, input[type="text"]:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      }
+      .optional-pill {
+        font-weight: 500;
+        color: var(--slate-500);
+        font-size: 11px;
+        background: var(--slate-100);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        padding: 8px 15px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        line-height: 1.4;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+      }
+      .btn-primary:hover {
+        background: var(--primary-hover);
+      }
+      .btn-primary:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+      .btn-secondary {
+        background: #ffffff;
+        border-color: var(--slate-300);
+        color: var(--slate-700);
+      }
+      .btn-secondary:hover {
+        background: var(--slate-100);
+        color: var(--slate-900);
+        border-color: var(--slate-400);
+      }
+      .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+
+      /* Verdict Executive Banner */
+      .verdict-banner {
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 22px;
+        border: 1px solid var(--slate-200);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        box-shadow: var(--card-shadow);
+      }
+      .verdict-banner.Pass {
+        background: var(--success-light);
+        border-color: var(--success-border);
+      }
+      .verdict-banner.Needs-Improvement {
+        background: var(--warning-light);
+        border-color: var(--warning-border);
+      }
+      .verdict-banner.Fail {
+        background: var(--danger-light);
+        border-color: var(--danger-border);
+      }
+      .verdict-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .verdict-badge {
+        font-size: 12.5px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 5px 12px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .verdict-badge.Pass {
+        background: var(--success);
+        color: #ffffff;
+      }
+      .verdict-badge.Needs-Improvement {
+        background: var(--warning);
+        color: #ffffff;
+      }
+      .verdict-badge.Fail {
+        background: var(--danger);
+        color: #ffffff;
+      }
+      .verdict-score {
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        color: var(--slate-900);
+      }
+      .verdict-score small {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--slate-500);
+      }
+      .pills-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .pill-strength {
+        background: #ffffff;
+        color: var(--success);
+        border: 1px solid var(--success-border);
+      }
+      .pill-issue {
+        background: #ffffff;
+        color: var(--danger);
+        border: 1px solid var(--danger-border);
+      }
+
+      /* 4 Dimension Scoring Cards Grid */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+      .eval-card {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
       }
       .card-title {
-        font-size: 16px;
+        font-size: 13.5px;
         font-weight: 700;
         margin: 0;
+        color: var(--slate-800);
       }
       .badge {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 12px;
+        padding: 3px 7px;
+        border-radius: 4px;
         text-transform: uppercase;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
       }
       .badge.success {
-        background: #e6f4ea;
+        background: var(--success-light);
         color: var(--success);
+        border: 1px solid var(--success-border);
       }
       .badge.warning {
-        background: #fef7e0;
-        color: var(--warn);
+        background: var(--warning-light);
+        color: var(--warning);
+        border: 1px solid var(--warning-border);
       }
       .badge.danger {
-        background: #fce8e6;
-        color: var(--error);
+        background: var(--danger-light);
+        color: var(--danger);
+        border: 1px solid var(--danger-border);
       }
 
-      .score-display {
-        font-size: 28px;
+      .score-bar-wrap {
+        margin-bottom: 12px;
+      }
+      .score-num {
+        font-size: 22px;
         font-weight: 800;
-        margin-bottom: 8px;
+        color: var(--slate-900);
+        margin-bottom: 4px;
       }
-      .score-display small {
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--muted);
+      .progress-bg {
+        height: 6px;
+        background: var(--slate-100);
+        border-radius: 3px;
+        overflow: hidden;
       }
+      .progress-fill {
+        height: 100%;
+        background: var(--primary);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+      }
+      .progress-fill.danger { background: var(--danger); }
+      .progress-fill.warning { background: var(--warning); }
+      .progress-fill.success { background: var(--success); }
 
       .reasoning-box {
-        background: #f8f9fa;
-        border-left: 3px solid var(--accent);
-        padding: 10px 14px;
-        font-size: 13px;
+        font-size: 12.5px;
+        color: var(--slate-600);
+        background: var(--slate-50);
+        border-radius: 6px;
+        padding: 10px 12px;
+        line-height: 1.5;
         margin-top: 10px;
-        border-radius: 0 4px 4px 0;
-      }
-
-      .evidence-tag {
-        font-size: 12px;
-        background: #eef2f5;
-        padding: 6px 10px;
-        border-radius: 4px;
-        display: inline-block;
-        margin-top: 6px;
-        font-style: italic;
+        border-left: 3px solid var(--slate-300);
       }
 
       .claim-item {
-        background: #fff5f5;
-        border: 1px solid #fed7d7;
-        border-radius: 6px;
-        padding: 10px 12px;
-        margin-top: 8px;
-        font-size: 13px;
+        font-size: 12px;
+        background: #ffffff;
+        border: 1px solid var(--danger-border);
+        border-radius: 4px;
+        padding: 8px 10px;
+        margin-top: 6px;
       }
       .claim-status {
         font-weight: 700;
-        color: var(--error);
+      }
+      .evidence-tag {
+        font-size: 11.5px;
+        font-style: normal;
+        background: var(--slate-100);
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-top: 4px;
+        color: var(--slate-700);
+        border-left: 2px solid var(--slate-400);
+      }
+      .aspect-tag {
+        font-size: 11.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 7px;
+        border-radius: 4px;
+        margin: 2px;
+      }
+      .aspect-addressed {
+        background: var(--success-light);
+        color: var(--success);
+        border: 1px solid var(--success-border);
+      }
+      .aspect-missing {
+        background: var(--warning-light);
+        color: var(--warning);
+        border: 1px solid var(--warning-border);
+        font-weight: 600;
+      }
+
+      /* Batch Upload Dropzone */
+      .dropzone {
+        border: 2px dashed var(--slate-300);
+        border-radius: 8px;
+        padding: 28px 20px;
+        text-align: center;
+        background: var(--slate-50);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .dropzone:hover, .dropzone.dragover {
+        border-color: var(--primary);
+        background: var(--primary-light);
+      }
+      .dropzone-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+
+      /* CSV Instant Preview Card */
+      .csv-preview-card {
+        display: none;
+        margin-top: 16px;
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 14px 16px;
+        box-shadow: var(--card-shadow);
+      }
+      .csv-preview-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .csv-badge-col {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+      .col-valid {
+        background: var(--success-light);
+        color: var(--success);
+        border: 1px solid var(--success-border);
+      }
+      .col-missing {
+        background: var(--danger-light);
+        color: var(--danger);
+        border: 1px solid var(--danger-border);
+      }
+
+      /* Interactive Stat Cards Grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+        margin: 20px 0 16px;
+      }
+      .stat-card {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 12px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        position: relative;
+        box-shadow: var(--card-shadow);
+      }
+      .stat-card:hover {
+        border-color: var(--slate-400);
+        box-shadow: var(--card-shadow-hover);
+        transform: translateY(-1px);
+      }
+      .stat-card.active-filter {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+        background: var(--primary-light);
+      }
+      .stat-card .num {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--slate-900);
+        line-height: 1.1;
+      }
+      .stat-card .label {
+        font-size: 10.5px;
+        font-weight: 600;
+        color: var(--slate-500);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-top: 4px;
+      }
+      .stat-card .subtext {
+        font-size: 10px;
+        color: var(--slate-400);
+        margin-top: 2px;
+      }
+
+      /* Distribution Progress Bar */
+      .dist-bar-wrap {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 16px;
+        box-shadow: var(--card-shadow);
+      }
+      .dist-bar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--slate-700);
+        margin-bottom: 8px;
+      }
+      .dist-segmented-bar {
+        height: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        background: var(--slate-100);
+      }
+      .dist-seg {
+        height: 100%;
+        transition: width 0.3s ease;
+      }
+      .dist-seg-pass { background: var(--success); }
+      .dist-seg-needs { background: var(--warning); }
+      .dist-seg-fail { background: var(--danger); }
+      .dist-bar-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 8px;
+        font-size: 11.5px;
+        color: var(--slate-600);
+      }
+      .dist-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .dist-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      /* Dimension Averages Bar */
+      .dim-meters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .dim-meter-card {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 12px 14px;
+        box-shadow: var(--card-shadow);
+      }
+      .dim-meter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--slate-700);
+        margin-bottom: 6px;
+      }
+      .dim-bench-pill {
+        font-size: 10px;
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-weight: 600;
+      }
+
+      /* Table Container */
+      .table-container {
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        background: #ffffff;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        margin-top: 14px;
+      }
+      .table-wrap {
+        overflow-x: hidden;
+        max-height: 590px;
+        overflow-y: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        text-align: left;
+        background: #ffffff;
+        table-layout: fixed;
+      }
+      /* Density variants */
+      table.density-compact th, table.density-compact td {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+      table.density-comfortable th, table.density-comfortable td {
+        padding: 11px 14px;
+        font-size: 13px;
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--slate-100);
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--slate-600);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-bottom: 1px solid var(--slate-200);
+        user-select: none;
+      }
+      th.sortable {
+        cursor: pointer;
+      }
+      th.sortable:hover {
+        background: var(--slate-200);
+        color: var(--slate-900);
+      }
+      .th-content {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      td {
+        border-bottom: 1px solid var(--slate-100);
+        vertical-align: middle;
+        color: var(--slate-800);
+      }
+      tr.main-row {
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      tr.main-row:hover td {
+        background: var(--slate-100);
+      }
+      tr.main-row.active-row td {
+        background: #eff6ff;
+      }
+      tr.row-failed td {
+        background: #fff8f8;
+      }
+      tr.row-failed:hover td {
+        background: #fee2e2;
+      }
+
+      .cell-truncate {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 1.4;
+      }
+
+      /* Compact Stacked Scores Mini-Bar */
+      .score-stacked-bar {
+        display: inline-flex;
+        width: 70px;
+        height: 10px;
+        border-radius: 3px;
+        overflow: hidden;
+        background: var(--slate-200);
+        gap: 1px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+        cursor: help;
+        vertical-align: middle;
+      }
+      .score-segment {
+        flex: 1 1 0;
+        height: 100%;
+      }
+      .score-seg-success {
+        background: var(--success);
+      }
+      .score-seg-warning {
+        background: var(--warning);
+      }
+      .score-seg-danger {
+        background: var(--danger);
+      }
+      .score-seg-empty {
+        background: var(--slate-300);
+      }
+
+      /* Slide-over Right Drawer */
+      .drawer-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+        backdrop-filter: blur(2px);
+        z-index: 998;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+      }
+      .drawer-backdrop.show {
+        display: block;
+        opacity: 1;
+      }
+      .slide-over-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 480px;
+        max-width: 92vw;
+        height: 100vh;
+        background: #ffffff;
+        z-index: 999;
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+        transform: translateX(100%);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+      }
+      .slide-over-drawer.show {
+        transform: translateX(0);
+      }
+      .drawer-header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--slate-200);
+        background: var(--slate-50);
+        flex-shrink: 0;
+      }
+      .drawer-close-btn {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 6px;
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--slate-600);
+        font-size: 13px;
+        transition: all 0.15s ease;
+      }
+      .drawer-close-btn:hover {
+        background: var(--slate-100);
+        color: var(--slate-900);
+        border-color: var(--slate-300);
+      }
+      .drawer-scroll-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .slide-over-drawer .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-bottom: 10px;
+      }
+      .slide-over-drawer .verdict-banner {
+        margin-bottom: 0;
+      }
+
+      mark.highlight {
+        background-color: #fef08a;
+        color: #854d0e;
+        padding: 0 2px;
+        border-radius: 2px;
+      }
+
+      .copy-btn {
+        background: none;
+        border: 1px solid var(--slate-200);
+        border-radius: 4px;
+        padding: 2px 7px;
+        font-size: 11px;
+        cursor: pointer;
+        color: var(--slate-600);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.15s ease;
+      }
+      .copy-btn:hover {
+        background: var(--slate-100);
+        color: var(--slate-900);
+      }
+
+      /* Filter chip buttons */
+      .filter-chip {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 6px;
+        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--slate-700);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s ease;
+      }
+      .filter-chip:hover {
+        background: var(--slate-100);
+        color: var(--slate-900);
+      }
+      .filter-chip.filter-active {
+        background: var(--primary) !important;
+        color: #ffffff !important;
+        border-color: var(--primary) !important;
+        font-weight: 600;
+      }
+      .filter-chip.filter-active .chip-count {
+        background: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+      }
+      .chip-count {
+        background: var(--slate-100);
+        color: var(--slate-600);
+        font-size: 10.5px;
+        padding: 1px 6px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      /* Pagination controls */
+      .page-btn {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 6px;
+        padding: 5px 11px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--slate-700);
+        transition: all 0.15s ease;
+      }
+      .page-btn:hover:not(:disabled) {
+        background: var(--slate-100);
+        color: var(--slate-900);
+        border-color: var(--slate-300);
+      }
+      .page-btn.active {
+        background: var(--primary);
+        color: #ffffff;
+        border-color: var(--primary);
+        font-weight: 700;
+      }
+      .page-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* Modal Backdrop & Window */
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(2px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .modal-backdrop.show {
+        display: flex;
+      }
+      .modal-box {
+        background: #ffffff;
+        max-width: 840px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 8px;
+        padding: 24px;
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.15), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        position: relative;
+        border: 1px solid var(--slate-200);
+      }
+      .modal-header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--slate-200);
+        padding-bottom: 12px;
+      }
+      .modal-close-btn {
+        background: var(--slate-100);
+        border: 1px solid var(--slate-200);
+        border-radius: 6px;
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--slate-600);
+        transition: all 0.15s ease;
+      }
+      .modal-close-btn:hover {
+        background: var(--slate-200);
+        color: var(--slate-900);
+      }
+
+      /* Alert Box */
+      .alert-box {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 14px;
+      }
+      .alert-box.danger {
+        background: var(--danger-light);
+        border: 1px solid var(--danger-border);
+        color: #991b1b;
+      }
+      .alert-box.info {
+        background: var(--primary-light);
+        border: 1px solid var(--primary-border);
+        color: #1e40af;
       }
     </style>
   </head>
   <body>
     <div class="wrap">
+      <!-- Enterprise Status Bar -->
+      <div class="top-status-bar">
+        <div class="system-status-indicator">
+          <span class="status-dot"></span>
+          <span>Evaluation Engine Active</span>
+          <span style="color:var(--slate-400);">•</span>
+          <span style="color:var(--slate-500);">Concurrency Limit: 5</span>
+        </div>
+        <div class="agent-badges-list">
+          <span class="agent-tag">Relevance</span>
+          <span class="agent-tag">Factual Accuracy</span>
+          <span class="agent-tag">Hallucination Grounding</span>
+          <span class="agent-tag">Completeness</span>
+          <span class="agent-tag">Verdict Synthesis</span>
+        </div>
+      </div>
+
+      <!-- Header -->
       <header>
-        <div class="eyebrow">Milestone 2 Evaluation Dashboard</div>
-        <h1>LLM Judge Agents Evaluation</h1>
+        <div class="eyebrow">
+          <span class="eyebrow-badge">Benchmark Quality Framework</span>
+          <span>Multi-Agent LLM Response Evaluation</span>
+        </div>
+        <h1>LLM Response Evaluation Platform</h1>
         <p>
-          Evaluate an AI response across <strong>Relevance (M2.1)</strong>, <strong>Accuracy (M2.2)</strong>, and <strong>Hallucination Detection (M2.3)</strong>.
+          Automated multidimensional evaluation of AI responses across Relevance, Factual Accuracy, Hallucination Detection, and Completeness with synthesized verdict scoring.
         </p>
       </header>
 
-      <div class="samples-bar">
-        <span>Quick Samples:</span>
-        <button type="button" class="sample-btn" onclick="loadSample('correct')">1. Fully Correct</button>
-        <button type="button" class="sample-btn" onclick="loadSample('hallucinated')">2. Hallucination</button>
-        <button type="button" class="sample-btn" onclick="loadSample('contradictory')">3. Contradiction</button>
-        <button type="button" class="sample-btn" onclick="loadSample('offtopic')">4. Off-Topic</button>
+      <!-- Navigation Tabs -->
+      <div class="nav-tabs">
+        <button class="tab-btn active" id="tab-nav-single" onclick="switchTab('single')">
+          <span>Single Response Evaluation</span>
+        </button>
+        <button class="tab-btn" id="tab-nav-batch" onclick="switchTab('batch')">
+          <span>Batch Evaluation (100+ CSV Upload)</span>
+          <span class="tab-counter" id="batch-tab-badge">Bulk</span>
+        </button>
       </div>
 
-      <form id="eval-form">
-        <div class="field">
-          <label for="question">Question</label>
-          <textarea id="question" rows="2" required placeholder="Enter question asked..."></textarea>
+      <!-- TAB 1: SINGLE EVALUATION -->
+      <div id="tab-single" class="tab-content active">
+        <div class="presets-bar">
+          <span>Benchmark Presets:</span>
+          <button class="preset-chip" onclick="loadSample('pass')">
+            <span class="dist-dot" style="background:var(--success);"></span>
+            <span>Quality Grounded (Pass)</span>
+          </button>
+          <button class="preset-chip" onclick="loadSample('incomplete')">
+            <span class="dist-dot" style="background:var(--warning);"></span>
+            <span>Missing Requirements (Needs Imp)</span>
+          </button>
+          <button class="preset-chip" onclick="loadSample('hallucinated')">
+            <span class="dist-dot" style="background:var(--danger);"></span>
+            <span>Hallucinated Facts (Fail / Needs Imp)</span>
+          </button>
+          <button class="preset-chip" onclick="loadSample('contradicted')">
+            <span class="dist-dot" style="background:var(--danger);"></span>
+            <span>Contradicted Fact (Fail)</span>
+          </button>
         </div>
 
-        <div class="field">
-          <label for="ai_response">AI Response to Evaluate</label>
-          <textarea id="ai_response" rows="3" required placeholder="Enter AI response to evaluate..."></textarea>
+        <form id="eval-form" class="panel-card">
+          <div class="field">
+            <div class="field-label-row">
+              <label for="question">Question or Prompt</label>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <span class="hint">Core query or prompt instructions</span>
+                <span id="question-counter" class="field-counter">0 words</span>
+              </div>
+            </div>
+            <textarea id="question" rows="2" placeholder="e.g. What are the key stages of cellular mitosis, and why is interphase important?" oninput="updateCounters()" required></textarea>
+          </div>
+
+          <div class="field">
+            <div class="field-label-row">
+              <label for="ai_response">AI Response to Evaluate</label>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <span class="hint">The model generation to evaluate</span>
+                <span id="response-counter" class="field-counter">0 words</span>
+              </div>
+            </div>
+            <textarea id="ai_response" rows="4" placeholder="Enter the AI response here..." oninput="updateCounters()" required></textarea>
+          </div>
+
+          <div class="field">
+            <div class="field-label-row">
+              <label for="reference_answer">Reference / Ground Truth Answer</label>
+              <span class="optional-pill">Optional — Falls back to Knowledge Base (RAG)</span>
+            </div>
+            <textarea id="reference_answer" rows="2" placeholder="Leave empty to use automatic ChromaDB RAG retrieval..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="clearSingleForm()">Clear Fields</button>
+            <button type="submit" id="submit-btn" class="btn btn-primary" style="min-width: 240px;">
+              <span>Run Multi-Agent Evaluation</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Evaluation Results Container -->
+        <div id="result-container" style="display: none;">
+          <!-- Executive Verdict Banner -->
+          <div id="verdict-banner-box"></div>
+
+          <!-- 4 Dimension Scoring Cards Grid -->
+          <div id="cards-grid-box" class="cards-grid"></div>
+        </div>
+      </div>
+
+      <!-- TAB 2: BATCH EVALUATION -->
+      <div id="tab-batch" class="tab-content">
+        <div class="panel-card">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700;">Bulk Evaluation Ingestion</h3>
+              <p style="margin: 4px 0 0; font-size: 13px; color: var(--slate-500);">
+                Upload a CSV containing 100+ questions & AI responses. Required columns: <code>questions</code> and <code>ai_responses</code>.
+              </p>
+            </div>
+            <a href="/api/v1/batch/sample/template.csv" class="btn btn-secondary btn-sm" style="text-decoration: none;">
+              <!-- Standard SVG Download Icon -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Download Benchmark Template (100+ records)</span>
+            </a>
+          </div>
+
+          <!-- Upload Dropzone (Clean SVG, no emojis) -->
+          <div id="dropzone" class="dropzone" onclick="document.getElementById('csv-file-input').click()">
+            <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="handleFileSelected(this.files[0])" />
+            <div class="dropzone-icon">
+              <!-- Standard SVG File Upload Icon -->
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="12" y1="18" x2="12" y2="12"/>
+                <polyline points="9 15 12 12 15 15"/>
+              </svg>
+            </div>
+            <div style="font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--slate-800);">
+              Choose CSV file or drag and drop here
+            </div>
+            <div style="font-size: 12px; color: var(--slate-500);">
+              Optimized for 100+ records. Empty questions allowed. Validates required columns.
+            </div>
+          </div>
+
+          <!-- Instant CSV Pre-flight Validation Card -->
+          <div id="csv-preview-card" class="csv-preview-card">
+            <div class="csv-preview-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--slate-500);">
+                  <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                  <polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+                <div>
+                  <span id="preview-filename" style="font-weight:700; font-size:13.5px; color:var(--slate-900);"></span>
+                  <span id="preview-filesize" style="font-size:11.5px; color:var(--slate-500); margin-left:6px;"></span>
+                </div>
+              </div>
+              <div id="preview-row-badge" style="font-size:12px; font-weight:600; color:var(--slate-700); background:var(--slate-100); padding:3px 8px; border-radius:4px;"></div>
+            </div>
+
+            <div style="margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid var(--slate-100); padding-top: 10px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px;">
+                <span style="color:var(--slate-500); font-weight:500;">Columns:</span>
+                <span id="preview-col-questions" class="csv-badge-col">questions</span>
+                <span id="preview-col-responses" class="csv-badge-col">ai_responses</span>
+                <span id="preview-col-reference" class="csv-badge-col">reference_answer (optional)</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="clearSelectedFile()">Cancel</button>
+                <button id="start-batch-btn" class="btn btn-primary btn-sm" onclick="startBatchUpload()">Start Batch Evaluation</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Validation Error Box (Clean SVG, no emojis) -->
+          <div id="batch-error-box" class="alert-box danger" style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div style="flex-grow: 1;">
+              <strong style="font-size: 13px;">CSV Validation Error</strong>
+              <div id="batch-error-msg" style="margin-top: 2px;"></div>
+            </div>
+            <button type="button" onclick="document.getElementById('batch-error-box').style.display='none'" style="background:none; border:none; color:inherit; font-size:16px; cursor:pointer; line-height:1;">✕</button>
+          </div>
+
+          <!-- Evaluation Progress Bar -->
+          <div id="batch-progress-box" style="display: none; margin-top: 20px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--slate-700);">
+              <span id="batch-progress-status">Evaluating records through multi-agent pipeline…</span>
+              <span id="batch-progress-pct">0%</span>
+            </div>
+            <div class="progress-bg" style="height: 8px;">
+              <div id="batch-progress-bar" class="progress-fill" style="width: 25%;"></div>
+            </div>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="reference_answer">
-            Reference Answer <span class="optional-tag">(Optional)</span>
-            <span class="hint">If left empty, the RAG pipeline automatically retrieves relevant chunks from ChromaDB.</span>
-          </label>
-          <textarea id="reference_answer" rows="2" placeholder="Ground truth answer (optional)..."></textarea>
+        <!-- Batch Results Dashboard Section -->
+        <div id="batch-results-section" style="display: none;">
+          <!-- 1. Interactive Stat Cards Grid (Clickable Filters) -->
+          <div class="stats-grid" id="batch-stats-grid"></div>
+
+          <!-- 2. Horizontal Verdict Distribution Bar -->
+          <div class="dist-bar-wrap" id="batch-dist-wrap">
+            <div class="dist-bar-header">
+              <span>Overall Verdict Distribution</span>
+              <span id="dist-bar-summary-text" style="color:var(--slate-500); font-weight:500;"></span>
+            </div>
+            <div class="dist-segmented-bar" id="dist-segmented-bar">
+              <div id="seg-pass" class="dist-seg dist-seg-pass" style="width: 0%;" title="Pass"></div>
+              <div id="seg-needs" class="dist-seg dist-seg-needs" style="width: 0%;" title="Needs Improvement"></div>
+              <div id="seg-fail" class="dist-seg dist-seg-fail" style="width: 0%;" title="Fail"></div>
+            </div>
+            <div class="dist-bar-legend">
+              <div class="dist-legend-item">
+                <span class="dist-dot" style="background:var(--success);"></span>
+                <span id="legend-pass">Pass: 0%</span>
+              </div>
+              <div class="dist-legend-item">
+                <span class="dist-dot" style="background:var(--warning);"></span>
+                <span id="legend-needs">Needs Improvement: 0%</span>
+              </div>
+              <div class="dist-legend-item">
+                <span class="dist-dot" style="background:var(--danger);"></span>
+                <span id="legend-fail">Fail: 0%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Dimension Quality Averages -->
+          <div class="dim-meters-grid" id="batch-dim-meters"></div>
+
+          <!-- 4. Overall Evaluation Summary Box -->
+          <div class="panel-card" style="margin-bottom: 16px; padding: 14px 18px; background: #ffffff;">
+            <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 4px; color: var(--slate-900);">
+              Executive Evaluation Summary
+            </div>
+            <div id="batch-summary-text" style="font-size: 13px; color: var(--slate-600); line-height: 1.55;"></div>
+          </div>
+
+          <!-- 5. Controls, Filter Chips, Density and Search Bar -->
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 18px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;" id="batch-filter-buttons">
+              <button class="filter-chip filter-active" id="btn-filter-ALL" onclick="filterBatch('ALL')">
+                <span>All</span>
+                <span class="chip-count" id="count-filter-ALL">0</span>
+              </button>
+              <button class="filter-chip" id="btn-filter-Pass" onclick="filterBatch('Pass')">
+                <span>Pass</span>
+                <span class="chip-count" id="count-filter-Pass">0</span>
+              </button>
+              <button class="filter-chip" id="btn-filter-Needs-Improvement" onclick="filterBatch('Needs Improvement')">
+                <span>Needs Improvement</span>
+                <span class="chip-count" id="count-filter-Needs-Improvement">0</span>
+              </button>
+              <button class="filter-chip" id="btn-filter-Fail" onclick="filterBatch('Fail')">
+                <span>Fail</span>
+                <span class="chip-count" id="count-filter-Fail">0</span>
+              </button>
+              <button class="filter-chip" id="btn-filter-SKIPPED" onclick="filterBatch('SKIPPED')">
+                <span>Skipped / Errors</span>
+                <span class="chip-count" id="count-filter-SKIPPED">0</span>
+              </button>
+              <button class="filter-chip" id="btn-filter-HAL" onclick="filterBatch('HAL')" title="Show rows where hallucination was flagged">
+                <span>Flagged Hallucinations</span>
+                <span class="chip-count" id="count-filter-HAL">0</span>
+              </button>
+              <button class="filter-chip" id="btn-filter-EMPTY" onclick="filterBatch('EMPTY')" title="Show rows with empty questions">
+                <span>Empty Questions</span>
+                <span class="chip-count" id="count-filter-EMPTY">0</span>
+              </button>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+              <!-- Table Density Toggle -->
+              <button class="btn btn-secondary btn-sm" id="density-btn" onclick="toggleDensity()" title="Toggle compact / comfortable table rows">
+                <span id="density-label">Compact Rows</span>
+              </button>
+
+              <select id="batch-page-size" onchange="changePageSize(this.value)" style="font-size: 12px; padding: 6px 10px; border: 1px solid var(--slate-300); border-radius: 6px; background: #fff; color:var(--slate-700);">
+                <option value="10">10 rows / page</option>
+                <option value="25" selected>25 rows / page</option>
+                <option value="50">50 rows / page</option>
+                <option value="100">100 rows / page</option>
+                <option value="all">Show All Rows</option>
+              </select>
+
+              <div style="position: relative;">
+                <input type="text" id="table-search" placeholder="Search rows..." style="width: 190px; font-size: 12px; padding: 6px 28px 6px 10px;" oninput="searchBatch(this.value)" />
+                <button type="button" onclick="clearSearch()" id="clear-search-btn" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 12px; color: var(--slate-400); cursor: pointer; display: none;">✕</button>
+              </div>
+
+              <!-- Export Full CSV -->
+              <button id="export-csv-btn" class="btn btn-secondary btn-sm" onclick="exportBatchCsv()" title="Download complete batch evaluation as CSV">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span>Export Full CSV</span>
+              </button>
+
+              <!-- Export Filtered Rows -->
+              <button class="btn btn-secondary btn-sm" onclick="exportFilteredCsv()" title="Export only the currently filtered rows">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                <span>Export Filtered</span>
+              </button>
+
+              <button class="btn btn-secondary btn-sm" onclick="clearBatchResults()">
+                <span>Upload New Batch</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. Results Table -->
+          <div class="table-container">
+            <div class="table-wrap">
+              <table id="batch-main-table" class="density-comfortable">
+                <thead>
+                  <tr>
+                    <th style="width: 50px; text-align: center;" class="sortable" onclick="sortTable('index')">
+                      <div class="th-content" style="justify-content:center;">
+                        <span>#</span>
+                        <span id="sort-icon-index">↕</span>
+                      </div>
+                    </th>
+                    <th>Question</th>
+                    <th>AI Response</th>
+                    <th style="width: 85px; text-align: center;" title="Scores: Relevance, Accuracy, Groundedness, Completeness">
+                      Scores
+                    </th>
+                    <th style="width: 115px; text-align: center;" class="sortable" onclick="sortTable('verdict')" title="Final verdict category and composite quality score">
+                      <div class="th-content" style="justify-content:center;">
+                        <span>Verdict</span>
+                        <span id="sort-icon-verdict">↕</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="batch-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 7. Pagination Bar -->
+          <div id="batch-pagination" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--slate-500);">
+            <div id="pagination-info">Showing 0 rows</div>
+            <div style="display: flex; gap: 4px; align-items: center;" id="pagination-buttons"></div>
+          </div>
         </div>
-
-        <button type="submit" class="submit-btn" id="submit-btn">Run Milestone 2 Evaluation</button>
-      </form>
-
-      <div id="result">
-        <div id="cards-container"></div>
       </div>
     </div>
 
+    <!-- Slide-over Drawer for Inspecting Detailed Record Results -->
+    <div id="drawer-backdrop" class="drawer-backdrop" onclick="closeRecordDrawer()"></div>
+    <aside id="record-drawer" class="slide-over-drawer" aria-label="Record Evaluation Drawer">
+      <div class="drawer-header-bar">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <h2 style="font-size: 15px; font-weight: 700; margin: 0; color: var(--slate-900);">Evaluation Breakdown</h2>
+          <span id="drawer-record-badge" style="font-size: 11.5px; font-weight: 600; color: var(--slate-600); background: var(--slate-200); padding: 2px 7px; border-radius: 4px;"></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button class="btn btn-secondary btn-sm" id="drawer-prev-btn" onclick="navigateDrawer(-1)" title="Previous Record (Left Arrow)">« Prev</button>
+          <button class="btn btn-secondary btn-sm" id="drawer-next-btn" onclick="navigateDrawer(1)" title="Next Record (Right Arrow)">Next »</button>
+          <button class="drawer-close-btn" onclick="closeRecordDrawer()" title="Close Drawer (Esc)">✕</button>
+        </div>
+      </div>
+      <div id="drawer-content" class="drawer-scroll-body"></div>
+    </aside>
+
     <script>
+      // -------------------------------------------------------------
+      // Tab Navigation
+      // -------------------------------------------------------------
+      function switchTab(tab) {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+        if (tab === "single") {
+          document.getElementById("tab-nav-single").classList.add("active");
+          document.getElementById("tab-single").classList.add("active");
+          try { localStorage.setItem("active_eval_tab", "single"); } catch (e) {}
+        } else {
+          document.getElementById("tab-nav-batch").classList.add("active");
+          document.getElementById("tab-batch").classList.add("active");
+          try { localStorage.setItem("active_eval_tab", "batch"); } catch (e) {}
+        }
+      }
+
+      // -------------------------------------------------------------
+      // Helper text formatters (de-duplicates redundant text & chips)
+      // -------------------------------------------------------------
+      function formatPillText(text) {
+        const str = String(text || "").trim();
+        const colonIdx = str.indexOf(":");
+        if (colonIdx > 0 && colonIdx < 30) {
+          const title = str.slice(0, colonIdx).trim();
+          const desc = str.slice(colonIdx + 1).trim();
+          return `<strong>${escapeHtml(title)}</strong>: ${escapeHtml(desc)}`;
+        }
+        return escapeHtml(str);
+      }
+
+      function cleanAspect(text) {
+        let s = String(text || "").trim();
+        s = s.replace(/^Coverage of ['"]?([^'"]+)['"]?/i, "$1");
+        s = s.replace(/^Details regarding ['"]?([^'"]+)['"]?/i, "$1");
+        s = s.replace(/^Aspect:\s*/i, "");
+        return s;
+      }
+
+      // -------------------------------------------------------------
+      // Single Evaluation Presets & Counters
+      // -------------------------------------------------------------
       const samples = {
-        correct: {
-          q: "What is the capital of France?",
-          a: "Paris is the capital of France.",
-          ref: "Paris is the capital of France."
+        pass: {
+          q: "What is the capital of France, and what is its official language?",
+          a: "The capital of France is Paris, which is also its largest cultural and economic center. The official language of France is French.",
+          ref: "Paris is the capital of France. The official language is French.",
+        },
+        incomplete: {
+          q: "What are the three branches of the US government, and what are their respective functions?",
+          a: "The three branches of the US government are the Legislative, Executive, and Judicial branches.",
+          ref: "The US government has three branches: Legislative (makes laws), Executive (enforces laws), and Judicial (interprets laws).",
         },
         hallucinated: {
-          q: "When was the Apollo 11 moon landing and who commanded it?",
-          a: "Apollo 11 landed on the Moon on July 20, 1969, commanded by Neil Armstrong alongside flight engineer Dr. Arthur Pendelton who joined from the European Space Agency.",
-          ref: "Apollo 11 landed on the Moon on July 20, 1969, and was commanded by Neil Armstrong."
+          q: "When was Apple founded, and who were the co-founders?",
+          a: "Apple was founded on April 1, 1976 by Steve Jobs, Steve Wozniak, and Elon Musk in Silicon Valley.",
+          ref: "Apple was founded on April 1, 1976 by Steve Jobs, Steve Wozniak, and Ronald Wayne.",
         },
-        contradictory: {
-          q: "Does lightning never strike the same place twice?",
-          a: "Yes, it is a scientific law that lightning never strikes the exact same place twice because the electrical ionization is permanently neutralized.",
-          ref: "No, lightning frequently strikes the same location repeatedly, especially tall buildings like the Empire State Building."
+        contradicted: {
+          q: "Is water composed of hydrogen and oxygen?",
+          a: "No, water is entirely composed of nitrogen and helium molecules and contains no hydrogen.",
+          ref: "Water (H2O) is a chemical compound consisting of two hydrogen atoms and one oxygen atom.",
         },
-        offtopic: {
-          q: "What causes earthquakes along tectonic plate boundaries?",
-          a: "Photosynthesis is the biological process by which green plants convert sunlight and carbon dioxide into chemical energy in the form of glucose.",
-          ref: "Earthquakes are caused by the sudden release of stress and friction accumulated along faults at tectonic plate boundaries."
-        }
       };
 
       function loadSample(key) {
@@ -304,17 +1559,39 @@
         document.getElementById("question").value = s.q;
         document.getElementById("ai_response").value = s.a;
         document.getElementById("reference_answer").value = s.ref;
+        updateCounters();
       }
 
+      function updateCounters() {
+        const qVal = document.getElementById("question").value || "";
+        const aVal = document.getElementById("ai_response").value || "";
+
+        const qWords = qVal.trim() ? qVal.trim().split(/\s+/).length : 0;
+        const aWords = aVal.trim() ? aVal.trim().split(/\s+/).length : 0;
+
+        document.getElementById("question-counter").textContent = `${qWords} words, ${qVal.length} chars`;
+        document.getElementById("response-counter").textContent = `${aWords} words, ${aVal.length} chars`;
+      }
+
+      function clearSingleForm() {
+        document.getElementById("question").value = "";
+        document.getElementById("ai_response").value = "";
+        document.getElementById("reference_answer").value = "";
+        updateCounters();
+        document.getElementById("result-container").style.display = "none";
+        try { sessionStorage.removeItem("last_single_eval"); } catch (e) {}
+      }
+
+      // -------------------------------------------------------------
+      // Single Evaluation Execution
+      // -------------------------------------------------------------
       const form = document.getElementById("eval-form");
       const submitBtn = document.getElementById("submit-btn");
-      const resultBox = document.getElementById("result");
-      const cardsContainer = document.getElementById("cards-container");
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         submitBtn.disabled = true;
-        submitBtn.textContent = "Running Judge Agents…";
+        submitBtn.textContent = "Synthesizing Multi-Agent Verdict…";
 
         const payload = {
           question: document.getElementById("question").value,
@@ -331,90 +1608,1094 @@
           const data = await res.json();
 
           if (res.ok) {
-            renderResults(data);
-            resultBox.classList.add("show");
-            resultBox.scrollIntoView({ behavior: "smooth" });
+            renderSingleResults(data);
+            document.getElementById("result-container").style.display = "block";
+            document.getElementById("result-container").scrollIntoView({ behavior: "smooth" });
+            try {
+              sessionStorage.setItem("last_single_eval", JSON.stringify({ payload, data }));
+            } catch (e) {}
           } else {
-            cardsContainer.innerHTML = `<div class="eval-card" style="border-color:var(--error);color:var(--error);"><strong>Evaluation failed:</strong> ${data.detail || data.error || "Server error"}</div>`;
-            resultBox.classList.add("show");
+            alert("Evaluation error: " + (data.detail || data.error || "Server error"));
           }
         } catch (err) {
-          cardsContainer.innerHTML = `<div class="eval-card" style="border-color:var(--error);color:var(--error);"><strong>Network error:</strong> Could not connect to the backend server.</div>`;
-          resultBox.classList.add("show");
+          alert("Network error: Could not reach backend server.");
         } finally {
           submitBtn.disabled = false;
-          submitBtn.textContent = "Run Milestone 2 Evaluation";
+          submitBtn.textContent = "Run Multi-Agent Evaluation";
         }
       });
 
-      function renderResults(data) {
+      function renderSingleResults(data, targetContainerId = null) {
         const rel = data.relevance;
         const acc = data.accuracy;
         const hal = data.hallucination;
+        const comp = data.completeness;
+        const verd = data.verdict;
 
-        const relBadge = rel.score >= 0.8 ? "success" : rel.score >= 0.4 ? "warning" : "danger";
-        const accBadge = acc.score >= 0.8 ? "success" : acc.score >= 0.4 ? "warning" : "danger";
-        const halBadge = hal.is_hallucinated ? "danger" : "success";
+        const groundednessPct = ((verd.dimension_scores?.groundedness ?? (1 - hal.hallucination_score)) * 100).toFixed(0);
+        const verdictClass = verd.verdict.replace(" ", "-");
 
+        // Clean executive assessment: extract just the core explanatory sentence, avoiding redundant repetition
+        let executiveSummary = "";
+        if (verd.consolidated_reasoning) {
+          const firstPara = verd.consolidated_reasoning.split("\n\n")[0] || "";
+          executiveSummary = firstPara.replace(/^OVERALL VERDICT:\s*[^)]+\)\.?\s*/i, "").trim();
+        }
+        if (!executiveSummary) {
+          if (verd.verdict === "Pass") executiveSummary = "The response meets quality standards across all evaluation dimensions with strong factual grounding.";
+          else if (verd.verdict === "Needs Improvement") executiveSummary = "The response is functional but requires revision to address highlighted quality or coverage issues.";
+          else executiveSummary = "The response failed critical quality standards due to factual inaccuracies, severe omissions, or ungrounded content.";
+        }
+
+        // Verdict Banner HTML (clean, non-repetitive executive synthesis)
+        const bannerHtml = `
+          <div class="verdict-banner ${verdictClass}">
+            <div class="verdict-header">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="verdict-badge ${verdictClass}">${escapeHtml(verd.verdict)}</span>
+                <div class="verdict-score">
+                  ${(verd.weighted_score * 100).toFixed(0)}%
+                  <small>Composite Score (${verd.weighted_score.toFixed(2)} / 1.0)</small>
+                </div>
+              </div>
+              <div style="font-size: 12px; color: var(--slate-500); font-family: monospace;">
+                Weights: Accuracy 35% | Completeness 25% | Relevance 20% | Groundedness 20%
+              </div>
+            </div>
+
+            <div style="font-size: 13.5px; line-height: 1.5; color: var(--slate-800); font-weight: 500;">
+              ${escapeHtml(executiveSummary)}
+            </div>
+
+            ${(verd.strengths.length > 0 || verd.major_issues.length > 0) ? `
+              <div class="pills-row" style="margin-top: 2px;">
+                ${verd.strengths.map(s => `<span class="pill pill-strength">✓ ${formatPillText(s)}</span>`).join("")}
+                ${verd.major_issues.map(i => `<span class="pill pill-issue">⚠ ${formatPillText(i)}</span>`).join("")}
+              </div>
+            ` : ''}
+          </div>
+        `;
+
+        // Evidence quotes
+        let evidenceHtml = "";
+        if (acc.supporting_evidence && acc.supporting_evidence.length > 0) {
+          evidenceHtml = `
+            <div style="margin-top:8px;">
+              <span style="font-size:11px;color:var(--slate-500);font-weight:700;">SUPPORTING EVIDENCE:</span>
+              ${acc.supporting_evidence.map(e => `<div class="evidence-tag">"${escapeHtml(e)}"</div>`).join("")}
+            </div>
+          `;
+        }
+
+        // Flagged Claims
         let flaggedHtml = "";
         if (hal.flagged_claims && hal.flagged_claims.length > 0) {
           flaggedHtml = `
-            <div style="margin-top:12px;">
-              <strong style="font-size:13px;">Flagged Unsupported / Contradicted Claims:</strong>
+            <div style="margin-top:10px;">
+              <span style="font-size:11px;color:var(--danger);font-weight:700;">FLAGGED CLAIMS:</span>
               ${hal.flagged_claims.map(c => `
-                <div class="claim-item">
-                  <span class="claim-status">[${c.status.toUpperCase()}]</span> ${c.claim}
-                  <div style="font-size:12px;color:var(--muted);margin-top:4px;"><strong>Reason:</strong> ${c.explanation}</div>
+                <div class="claim-item" style="border-left: 3px solid var(--danger);">
+                  <span class="claim-status" style="color:var(--danger);">[${escapeHtml(c.status.toUpperCase())}]</span> ${escapeHtml(c.claim)}
+                  <div style="font-size:11px;color:var(--slate-500);margin-top:2px;"><strong>Reason:</strong> ${escapeHtml(c.explanation)}</div>
                 </div>
               `).join("")}
             </div>
           `;
         }
 
-        let evidenceHtml = "";
-        if (acc.supporting_evidence && acc.supporting_evidence.length > 0) {
-          evidenceHtml = `
-            <div style="margin-top:8px;">
-              <span style="font-size:12px;color:var(--muted);font-weight:600;">Supporting Evidence Quoted:</span><br/>
-              ${acc.supporting_evidence.map(e => `<div class="evidence-tag">"${e}"</div>`).join("")}
+        // Completeness Aspects Breakdown with clean chips
+        let aspectsHtml = "";
+        const hasAddressed = comp.addressed_aspects && comp.addressed_aspects.length > 0;
+        const hasMissing = comp.missing_aspects && comp.missing_aspects.length > 0;
+        if (hasAddressed || hasMissing) {
+          aspectsHtml = `
+            <div style="display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0;">
+              ${(comp.addressed_aspects || []).map(a => `<span class="aspect-tag aspect-addressed">✓ ${escapeHtml(cleanAspect(a))}</span>`).join("")}
+              ${(comp.missing_aspects || []).map(m => `<span class="aspect-tag aspect-missing">⚠ Missing: ${escapeHtml(cleanAspect(m))}</span>`).join("")}
             </div>
           `;
         }
 
-        cardsContainer.innerHTML = `
-          <!-- M2.1 Relevance Card -->
+        const cardsHtml = `
+          <!-- Relevance Card -->
           <div class="eval-card">
-            <div class="card-header">
-              <h3 class="card-title">M2.1 Relevance Judge</h3>
-              <span class="badge ${relBadge}">${rel.classification.replace('_', ' ')}</span>
+            <div class="card-top">
+              <h4 class="card-title">Relevance Assessment</h4>
+              <span class="badge ${rel.score >= 0.8 ? 'success' : rel.score >= 0.4 ? 'warning' : 'danger'}">
+                ${escapeHtml(rel.classification.replace('_', ' '))}
+              </span>
             </div>
-            <div class="score-display">${(rel.score * 100).toFixed(0)}% <small>(${rel.score.toFixed(2)} / 1.0)</small></div>
-            <div class="reasoning-box"><strong>Judge Reasoning:</strong> ${rel.reasoning}</div>
+            <div class="score-bar-wrap">
+              <div class="score-num">${(rel.score * 100).toFixed(0)}%</div>
+              <div class="progress-bg">
+                <div class="progress-fill ${rel.score >= 0.8 ? 'success' : rel.score >= 0.4 ? 'warning' : 'danger'}" style="width: ${rel.score * 100}%;"></div>
+              </div>
+            </div>
+            <div class="reasoning-box">${escapeHtml(rel.reasoning)}</div>
           </div>
 
-          <!-- M2.2 Accuracy Card -->
+          <!-- Accuracy Card -->
           <div class="eval-card">
-            <div class="card-header">
-              <h3 class="card-title">M2.2 Accuracy Judge</h3>
-              <span class="badge ${accBadge}">${acc.classification.replace('_', ' ')}</span>
+            <div class="card-top">
+              <h4 class="card-title">Factual Accuracy</h4>
+              <span class="badge ${acc.score >= 0.8 ? 'success' : acc.score >= 0.4 ? 'warning' : 'danger'}">
+                ${escapeHtml(acc.classification.replace('_', ' '))}
+              </span>
             </div>
-            <div class="score-display">${(acc.score * 100).toFixed(0)}% <small>(${acc.score.toFixed(2)} / 1.0)</small></div>
+            <div class="score-bar-wrap">
+              <div class="score-num">${(acc.score * 100).toFixed(0)}%</div>
+              <div class="progress-bg">
+                <div class="progress-fill ${acc.score >= 0.8 ? 'success' : acc.score >= 0.4 ? 'warning' : 'danger'}" style="width: ${acc.score * 100}%;"></div>
+              </div>
+            </div>
             ${evidenceHtml}
-            <div class="reasoning-box"><strong>Judge Reasoning:</strong> ${acc.reasoning}</div>
+            <div class="reasoning-box">${escapeHtml(acc.reasoning)}</div>
           </div>
 
-          <!-- M2.3 Hallucination Detection Card -->
+          <!-- Hallucination Card -->
           <div class="eval-card">
-            <div class="card-header">
-              <h3 class="card-title">M2.3 Hallucination Detection Agent</h3>
-              <span class="badge ${halBadge}">${hal.is_hallucinated ? "Hallucination Detected" : "Fully Grounded"}</span>
+            <div class="card-top">
+              <h4 class="card-title">Hallucination & Grounding</h4>
+              <span class="badge ${hal.is_hallucinated ? 'danger' : 'success'}">
+                ${hal.is_hallucinated ? 'Hallucination Flagged' : 'Fully Grounded'}
+              </span>
             </div>
-            <div class="score-display">${(hal.hallucination_score * 100).toFixed(0)}% <small>hallucinated</small></div>
+            <div class="score-bar-wrap">
+              <div class="score-num">${groundednessPct}% <small style="font-size:12px;font-weight:400;color:var(--slate-500);">grounded</small></div>
+              <div class="progress-bg">
+                <div class="progress-fill ${hal.is_hallucinated ? 'danger' : 'success'}" style="width: ${groundednessPct}%;"></div>
+              </div>
+            </div>
             ${flaggedHtml}
-            <div class="reasoning-box"><strong>Judge Reasoning:</strong> ${hal.reasoning}</div>
+            <div class="reasoning-box">${escapeHtml(hal.reasoning)}</div>
+          </div>
+
+          <!-- Completeness Card -->
+          <div class="eval-card">
+            <div class="card-top">
+              <h4 class="card-title">Response Completeness</h4>
+              <span class="badge ${comp.score >= 0.8 ? 'success' : comp.score >= 0.4 ? 'warning' : 'danger'}">
+                ${escapeHtml(comp.classification.replace('_', ' '))}
+              </span>
+            </div>
+            <div class="score-bar-wrap">
+              <div class="score-num">${(comp.score * 100).toFixed(0)}%</div>
+              <div class="progress-bg">
+                <div class="progress-fill ${comp.score >= 0.8 ? 'success' : comp.score >= 0.4 ? 'warning' : 'danger'}" style="width: ${comp.score * 100}%;"></div>
+              </div>
+            </div>
+            ${aspectsHtml}
+            <div class="reasoning-box">${escapeHtml(comp.reasoning)}</div>
           </div>
         `;
+
+        if (targetContainerId) {
+          document.getElementById(targetContainerId).innerHTML = bannerHtml + `<div class="cards-grid">${cardsHtml}</div>`;
+        } else {
+          document.getElementById("verdict-banner-box").innerHTML = bannerHtml;
+          document.getElementById("cards-grid-box").innerHTML = cardsHtml;
+        }
       }
+
+      // -------------------------------------------------------------
+      // Batch Evaluation Logic & State
+      // -------------------------------------------------------------
+      let selectedBatchFile = null;
+      let activeBatchSummary = null;
+      let currentFilter = "ALL";
+      let batchPage = 1;
+      let batchPageSize = 25;
+      let sortColumn = "index";
+      let sortDirection = "asc";
+      let isCompact = false;
+      let activeDrawerRecordIndex = null;
+
+      function handleFileSelected(file) {
+        if (!file) return;
+        selectedBatchFile = file;
+        document.getElementById("batch-error-box").style.display = "none";
+
+        // Read first few KB to perform instant pre-flight validation
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const content = e.target.result;
+          const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
+          const header = lines[0] ? lines[0].toLowerCase() : "";
+          const rowCount = Math.max(0, lines.length - 1);
+
+          const hasQuestions = header.includes("questions") || header.includes("question");
+          const hasResponses = header.includes("ai_responses") || header.includes("ai_response");
+          const hasRef = header.includes("reference_answer") || header.includes("reference");
+
+          document.getElementById("preview-filename").textContent = file.name;
+          document.getElementById("preview-filesize").textContent = `(${(file.size / 1024).toFixed(1)} KB)`;
+          document.getElementById("preview-row-badge").textContent = `~${rowCount} records detected`;
+
+          const qBadge = document.getElementById("preview-col-questions");
+          const rBadge = document.getElementById("preview-col-responses");
+          const refBadge = document.getElementById("preview-col-reference");
+
+          qBadge.className = `csv-badge-col ${hasQuestions ? 'col-valid' : 'col-missing'}`;
+          qBadge.textContent = hasQuestions ? "✓ questions found" : "✕ 'questions' missing";
+
+          rBadge.className = `csv-badge-col ${hasResponses ? 'col-valid' : 'col-missing'}`;
+          rBadge.textContent = hasResponses ? "✓ ai_responses found" : "✕ 'ai_responses' missing";
+
+          refBadge.className = `csv-badge-col ${hasRef ? 'col-valid' : ''}`;
+          refBadge.textContent = hasRef ? "✓ reference_answer found" : "reference_answer (optional)";
+
+          document.getElementById("start-batch-btn").disabled = (!hasQuestions || !hasResponses);
+          document.getElementById("csv-preview-card").style.display = "block";
+        };
+        reader.readAsText(file.slice(0, 10000));
+      }
+
+      function clearSelectedFile() {
+        selectedBatchFile = null;
+        document.getElementById("csv-file-input").value = "";
+        document.getElementById("csv-preview-card").style.display = "none";
+        document.getElementById("batch-error-box").style.display = "none";
+      }
+
+      function toggleDensity() {
+        isCompact = !isCompact;
+        const table = document.getElementById("batch-main-table");
+        const label = document.getElementById("density-label");
+        if (isCompact) {
+          table.className = "density-compact";
+          label.textContent = "Comfortable Rows";
+        } else {
+          table.className = "density-comfortable";
+          label.textContent = "Compact Rows";
+        }
+      }
+
+      // Drag and drop listeners
+      const dropzone = document.getElementById("dropzone");
+      ["dragenter", "dragover"].forEach(event => {
+        dropzone.addEventListener(event, (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
+      });
+      ["dragleave", "drop"].forEach(event => {
+        dropzone.addEventListener(event, (e) => { e.preventDefault(); dropzone.classList.remove("dragover"); });
+      });
+      dropzone.addEventListener("drop", (e) => {
+        if (e.dataTransfer.files.length) {
+          handleFileSelected(e.dataTransfer.files[0]);
+        }
+      });
+
+      async function startBatchUpload() {
+        if (!selectedBatchFile) return;
+
+        const startBtn = document.getElementById("start-batch-btn");
+        const errorBox = document.getElementById("batch-error-box");
+        const errorMsg = document.getElementById("batch-error-msg");
+        const progressBox = document.getElementById("batch-progress-box");
+        const resultsSection = document.getElementById("batch-results-section");
+
+        errorBox.style.display = "none";
+        resultsSection.style.display = "none";
+        startBtn.disabled = true;
+        progressBox.style.display = "block";
+        document.getElementById("batch-progress-bar").style.width = "25%";
+        document.getElementById("batch-progress-pct").textContent = "Validating CSV…";
+
+        const formData = new FormData();
+        formData.append("file", selectedBatchFile);
+
+        try {
+          const res = await fetch("/api/v1/batch/upload-csv", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await res.json();
+
+          if (res.ok) {
+            activeBatchSummary = data;
+            document.getElementById("batch-progress-bar").style.width = "100%";
+            document.getElementById("batch-progress-pct").textContent = "100%";
+            document.getElementById("batch-progress-status").textContent = `Batch evaluation completed (${data.statistics.total_records} records)!`;
+            renderBatchResults(data);
+          } else {
+            progressBox.style.display = "none";
+            const detail = data.detail || (data.error ? JSON.stringify(data) : "CSV Validation or Evaluation Error");
+            errorMsg.textContent = detail;
+            errorBox.style.display = "flex";
+          }
+        } catch (err) {
+          progressBox.style.display = "none";
+          errorMsg.textContent = "Network error: Could not complete CSV batch upload. Please verify the server is running.";
+          errorBox.style.display = "flex";
+        } finally {
+          startBtn.disabled = false;
+        }
+      }
+
+      function renderBatchResults(summary) {
+        document.getElementById("batch-results-section").style.display = "block";
+        const stats = summary.statistics;
+
+        try {
+          sessionStorage.setItem("saved_batch_summary", JSON.stringify(summary));
+          localStorage.setItem("saved_batch_id", summary.batch_id);
+        } catch (e) {
+          console.warn("Could not save batch to sessionStorage:", e);
+        }
+
+        // Calculate average dimension scores and counts across valid evaluated items
+        let sumRel = 0, sumAcc = 0, sumComp = 0, sumGround = 0, validCount = 0;
+        let halCount = 0, emptyQCount = 0;
+
+        summary.items.forEach(item => {
+          const isQEmpty = !item.question || item.question === "[No Question Provided]" || item.question === "Empty" || item.question === "—";
+          if (isQEmpty) emptyQCount++;
+
+          if (item.status === "success" && item.result) {
+            validCount++;
+            sumRel += item.result.relevance?.score || 0;
+            sumAcc += item.result.accuracy?.score || 0;
+            sumComp += item.result.completeness?.score || 0;
+            const h = item.result.hallucination;
+            if (h && h.is_hallucinated) halCount++;
+            const g = item.result.verdict?.dimension_scores?.groundedness ?? (h ? (1 - h.hallucination_score) : 1);
+            sumGround += g;
+          }
+        });
+
+        const avgRel = validCount > 0 ? (sumRel / validCount * 100).toFixed(0) : 0;
+        const avgAcc = validCount > 0 ? (sumAcc / validCount * 100).toFixed(0) : 0;
+        const avgComp = validCount > 0 ? (sumComp / validCount * 100).toFixed(0) : 0;
+        const avgGround = validCount > 0 ? (sumGround / validCount * 100).toFixed(0) : 0;
+
+        // 1. Interactive Statistics Cards Grid (1-click quick filters)
+        document.getElementById("batch-stats-grid").innerHTML = `
+          <div class="stat-card ${currentFilter === 'ALL' ? 'active-filter' : ''}" onclick="filterBatch('ALL')" title="Click to filter: All Rows">
+            <div class="num">${stats.total_records}</div>
+            <div class="label">Total Rows</div>
+            <div class="subtext">Uploaded</div>
+          </div>
+          <div class="stat-card" onclick="filterBatch('ALL')" title="Click to view all successfully evaluated rows">
+            <div class="num" style="color:var(--success);">${stats.successful_records}</div>
+            <div class="label">Evaluated</div>
+            <div class="subtext">Completed</div>
+          </div>
+          <div class="stat-card ${currentFilter === 'Pass' ? 'active-filter' : ''}" onclick="filterBatch('Pass')" title="Click to filter: Pass rows">
+            <div class="num" style="color:var(--success);">${stats.pass_count}</div>
+            <div class="label">Pass</div>
+            <div class="subtext">${stats.pass_rate_percent}% rate</div>
+          </div>
+          <div class="stat-card ${currentFilter === 'Needs Improvement' ? 'active-filter' : ''}" onclick="filterBatch('Needs Improvement')" title="Click to filter: Needs Improvement rows">
+            <div class="num" style="color:var(--warning);">${stats.needs_improvement_count}</div>
+            <div class="label">Needs Imp.</div>
+            <div class="subtext">${((stats.needs_improvement_count / (stats.successful_records || 1)) * 100).toFixed(0)}% rate</div>
+          </div>
+          <div class="stat-card ${currentFilter === 'Fail' ? 'active-filter' : ''}" onclick="filterBatch('Fail')" title="Click to filter: Fail rows">
+            <div class="num" style="color:var(--danger);">${stats.fail_count}</div>
+            <div class="label">Fail</div>
+            <div class="subtext">${((stats.fail_count / (stats.successful_records || 1)) * 100).toFixed(0)}% rate</div>
+          </div>
+          <div class="stat-card ${currentFilter === 'SKIPPED' ? 'active-filter' : ''}" onclick="filterBatch('SKIPPED')" title="Click to filter: Skipped / Failed rows">
+            <div class="num" style="${stats.failed_records > 0 ? 'color:var(--danger); font-weight:800;' : 'color:var(--slate-400);'}">${stats.failed_records}</div>
+            <div class="label">Skipped</div>
+            <div class="subtext">Errors / un-evaluable</div>
+          </div>
+          <div class="stat-card" style="cursor:default;" title="Average composite score across all evaluated rows">
+            <div class="num">${(stats.average_weighted_score * 100).toFixed(0)}%</div>
+            <div class="label">Avg Quality</div>
+            <div class="subtext">Composite Score</div>
+          </div>
+          <div class="stat-card ${currentFilter === 'HAL' ? 'active-filter' : ''}" onclick="filterBatch('HAL')" title="Click to filter: Flagged Hallucinations">
+            <div class="num" style="${stats.hallucination_rate_percent > 30 ? 'color:var(--danger);' : ''}">${stats.hallucination_rate_percent}%</div>
+            <div class="label">Hallucinations</div>
+            <div class="subtext">${halCount} flagged</div>
+          </div>
+        `;
+
+        // 2. Verdict Distribution Bar Proportions
+        const evaluatedTotal = Math.max(1, stats.successful_records);
+        const passPct = (stats.pass_count / evaluatedTotal * 100).toFixed(1);
+        const needsPct = (stats.needs_improvement_count / evaluatedTotal * 100).toFixed(1);
+        const failPct = (stats.fail_count / evaluatedTotal * 100).toFixed(1);
+
+        document.getElementById("seg-pass").style.width = `${passPct}%`;
+        document.getElementById("seg-needs").style.width = `${needsPct}%`;
+        document.getElementById("seg-fail").style.width = `${failPct}%`;
+
+        document.getElementById("dist-bar-summary-text").textContent = `${stats.successful_records} evaluated items`;
+        document.getElementById("legend-pass").textContent = `Pass: ${stats.pass_count} (${passPct}%)`;
+        document.getElementById("legend-needs").textContent = `Needs Improvement: ${stats.needs_improvement_count} (${needsPct}%)`;
+        document.getElementById("legend-fail").textContent = `Fail: ${stats.fail_count} (${failPct}%)`;
+
+        // 3. Dimension Quality Meters
+        document.getElementById("batch-dim-meters").innerHTML = `
+          <div class="dim-meter-card">
+            <div class="dim-meter-header">
+              <span>Avg Relevance</span>
+              <span class="dim-bench-pill ${avgRel >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgRel}%</span>
+            </div>
+            <div class="progress-bg">
+              <div class="progress-fill ${avgRel >= 80 ? 'success' : avgRel >= 50 ? 'warning' : 'danger'}" style="width: ${avgRel}%;"></div>
+            </div>
+          </div>
+          <div class="dim-meter-card">
+            <div class="dim-meter-header">
+              <span>Avg Factual Accuracy</span>
+              <span class="dim-bench-pill ${avgAcc >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgAcc}%</span>
+            </div>
+            <div class="progress-bg">
+              <div class="progress-fill ${avgAcc >= 80 ? 'success' : avgAcc >= 50 ? 'warning' : 'danger'}" style="width: ${avgAcc}%;"></div>
+            </div>
+          </div>
+          <div class="dim-meter-card">
+            <div class="dim-meter-header">
+              <span>Avg Groundedness</span>
+              <span class="dim-bench-pill ${avgGround >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgGround}%</span>
+            </div>
+            <div class="progress-bg">
+              <div class="progress-fill ${avgGround >= 80 ? 'success' : avgGround >= 50 ? 'warning' : 'danger'}" style="width: ${avgGround}%;"></div>
+            </div>
+          </div>
+          <div class="dim-meter-card">
+            <div class="dim-meter-header">
+              <span>Avg Completeness</span>
+              <span class="dim-bench-pill ${avgComp >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgComp}%</span>
+            </div>
+            <div class="progress-bg">
+              <div class="progress-fill ${avgComp >= 80 ? 'success' : avgComp >= 50 ? 'warning' : 'danger'}" style="width: ${avgComp}%;"></div>
+            </div>
+          </div>
+        `;
+
+        // 4. Executive Summary Text
+        document.getElementById("batch-summary-text").innerHTML = `
+          Evaluated a total of <strong>${stats.total_records}</strong> records in batch: 
+          <strong>${stats.successful_records}</strong> evaluated successfully, 
+          <strong style="${stats.failed_records > 0 ? 'color:var(--danger);' : ''}">${stats.failed_records}</strong> skipped or un-evaluable. 
+          Quality distribution: 
+          <span style="color:var(--success); font-weight:700;">${stats.pass_count} Pass (${stats.pass_rate_percent}%)</span>, 
+          <span style="color:var(--warning); font-weight:700;">${stats.needs_improvement_count} Needs Improvement</span>, 
+          <span style="color:var(--danger); font-weight:700;">${stats.fail_count} Fail</span>. 
+          Average composite score: <strong>${(stats.average_weighted_score * 100).toFixed(1)}%</strong>. 
+          Hallucination flagged in <strong>${stats.hallucination_rate_percent}%</strong> of valid responses (${halCount} items).
+        `;
+
+        // Update count badges on filter chips
+        document.getElementById("count-filter-ALL").textContent = summary.items.length;
+        document.getElementById("count-filter-Pass").textContent = stats.pass_count;
+        document.getElementById("count-filter-Needs-Improvement").textContent = stats.needs_improvement_count;
+        document.getElementById("count-filter-Fail").textContent = stats.fail_count;
+        document.getElementById("count-filter-SKIPPED").textContent = stats.failed_records;
+        document.getElementById("count-filter-HAL").textContent = halCount;
+        document.getElementById("count-filter-EMPTY").textContent = emptyQCount;
+
+        updateFilterButtons();
+        renderBatchTableRows();
+      }
+
+      function updateFilterButtons() {
+        document.querySelectorAll("#batch-filter-buttons .filter-chip").forEach(b => b.classList.remove("filter-active"));
+        const activeId = currentFilter === "Needs Improvement" 
+          ? "btn-filter-Needs-Improvement" 
+          : `btn-filter-${currentFilter}`;
+        const activeBtn = document.getElementById(activeId);
+        if (activeBtn) activeBtn.classList.add("filter-active");
+
+        // Sync stat card highlights
+        document.querySelectorAll(".stat-card").forEach(c => c.classList.remove("active-filter"));
+        const matchingCard = document.querySelector(`.stat-card[onclick="filterBatch('${currentFilter}')"]`);
+        if (matchingCard) matchingCard.classList.add("active-filter");
+      }
+
+      function filterBatch(filterType) {
+        currentFilter = filterType;
+        batchPage = 1;
+        updateFilterButtons();
+        renderBatchTableRows();
+      }
+
+      function searchBatch(query) {
+        const clearBtn = document.getElementById("clear-search-btn");
+        if (query && query.trim().length > 0) {
+          clearBtn.style.display = "block";
+        } else {
+          clearBtn.style.display = "none";
+        }
+        batchPage = 1;
+        renderBatchTableRows();
+      }
+
+      function clearSearch() {
+        document.getElementById("table-search").value = "";
+        document.getElementById("clear-search-btn").style.display = "none";
+        batchPage = 1;
+        renderBatchTableRows();
+      }
+
+      function changePageSize(val) {
+        batchPageSize = val === "all" ? "all" : parseInt(val, 10);
+        batchPage = 1;
+        renderBatchTableRows();
+      }
+
+      function goToPage(p) {
+        batchPage = p;
+        renderBatchTableRows();
+      }
+
+      // Column Sorting Logic
+      function sortTable(column) {
+        if (sortColumn === column) {
+          sortDirection = sortDirection === "asc" ? "desc" : "asc";
+        } else {
+          sortColumn = column;
+          sortDirection = "desc";
+        }
+        updateSortIcons();
+        renderBatchTableRows();
+      }
+
+      function updateSortIcons() {
+        ["index", "verdict"].forEach(col => {
+          const icon = document.getElementById(`sort-icon-${col}`);
+          if (!icon) return;
+          if (sortColumn === col) {
+            icon.textContent = sortDirection === "asc" ? "▲" : "▼";
+            icon.style.color = "var(--primary)";
+          } else {
+            icon.textContent = "↕";
+            icon.style.color = "var(--slate-400)";
+          }
+        });
+      }
+
+      function getScoreSegClass(score) {
+        if (score === null || score === undefined || isNaN(score)) return "score-seg-empty";
+        if (score >= 0.8) return "score-seg-success";
+        if (score >= 0.5) return "score-seg-warning";
+        return "score-seg-danger";
+      }
+
+      function copyTextToClipboard(text, btnElement) {
+        if (!navigator.clipboard) {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+        } else {
+          navigator.clipboard.writeText(text);
+        }
+        const originalHtml = btnElement.innerHTML;
+        btnElement.innerHTML = `<span>Copied!</span>`;
+        setTimeout(() => {
+          btnElement.innerHTML = originalHtml;
+        }, 1500);
+      }
+
+      function highlightText(text, query) {
+        if (!text) return "";
+        const safe = escapeHtml(text);
+        if (!query) return safe;
+        const qSafe = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const reg = new RegExp(`(${qSafe})`, 'gi');
+        return safe.replace(reg, '<mark class="highlight">$1</mark>');
+      }
+
+      function getFilteredItems() {
+        if (!activeBatchSummary) return [];
+        const query = (document.getElementById("table-search").value || "").trim().toLowerCase();
+
+        return activeBatchSummary.items.filter(item => {
+          const res = item.result;
+          const isQEmpty = !item.question || item.question === "[No Question Provided]" || item.question === "Empty" || item.question === "—";
+
+          if (currentFilter === "SKIPPED") {
+            if (item.status === "success" && res) return false;
+          } else if (currentFilter === "HAL") {
+            if (!res || !res.hallucination?.is_hallucinated) return false;
+          } else if (currentFilter === "EMPTY") {
+            if (!isQEmpty) return false;
+          } else if (currentFilter !== "ALL") {
+            if (!res || res.verdict.verdict !== currentFilter) return false;
+          }
+
+          if (query) {
+            const q = (item.question || "").toLowerCase();
+            const a = (item.ai_response || "").toLowerCase();
+            const err = (item.error_message || "").toLowerCase();
+            const v = res ? res.verdict.verdict.toLowerCase() : "failed";
+            const rowIdx = String(item.index);
+            if (!q.includes(query) && !a.includes(query) && !err.includes(query) && !v.includes(query) && !rowIdx.includes(query)) {
+              return false;
+            }
+          }
+          return true;
+        });
+      }
+
+      function renderBatchTableRows() {
+        if (!activeBatchSummary) return;
+        const tbody = document.getElementById("batch-table-body");
+        const query = (document.getElementById("table-search").value || "").trim().toLowerCase();
+
+        // 1. Filter
+        let filtered = getFilteredItems();
+
+        // 2. Sort
+        filtered.sort((a, b) => {
+          let valA = 0;
+          let valB = 0;
+          if (sortColumn === "index") {
+            valA = a.index;
+            valB = b.index;
+          } else if (sortColumn === "verdict") {
+            valA = a.result?.verdict?.weighted_score ?? -1;
+            valB = b.result?.verdict?.weighted_score ?? -1;
+          }
+          if (valA < valB) return sortDirection === "asc" ? -1 : 1;
+          if (valA > valB) return sortDirection === "asc" ? 1 : -1;
+          return 0;
+        });
+
+        // 3. Paginate
+        const total = filtered.length;
+        const totalPages = batchPageSize === "all" ? 1 : Math.max(1, Math.ceil(total / batchPageSize));
+        if (batchPage > totalPages) batchPage = totalPages;
+        if (batchPage < 1) batchPage = 1;
+
+        const startIdx = batchPageSize === "all" ? 0 : (batchPage - 1) * batchPageSize;
+        const endIdx = batchPageSize === "all" ? total : Math.min(startIdx + batchPageSize, total);
+        const pagedItems = filtered.slice(startIdx, endIdx);
+
+        if (pagedItems.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 36px 20px; color: var(--slate-400);">No matching benchmark rows found.</td></tr>`;
+        } else {
+          let rowsHtml = "";
+
+          pagedItems.forEach(item => {
+            const res = item.result;
+            const isSelected = (activeDrawerRecordIndex === item.index);
+            const isQEmpty = !item.question || item.question === "[No Question Provided]" || item.question === "Empty" || item.question === "—";
+            const qHighlighted = highlightText(item.question, query);
+            const qDisplay = isQEmpty 
+              ? `<span style="color:var(--slate-400); font-style:italic;" title="No question provided in CSV">— (Empty)</span>` 
+              : `<div class="cell-truncate" title="${escapeHtml(item.question)}">${qHighlighted}</div>`;
+
+            // Failed / Skipped row rendering
+            if (item.status !== "success" || !res) {
+              const errDesc = item.error_message || "Evaluation error";
+              rowsHtml += `
+                <tr class="main-row row-failed ${isSelected ? 'active-row' : ''}" onclick="openRecordDrawer(${item.index})" title="Click to view failure details">
+                  <td style="text-align:center; font-weight:700; color:var(--slate-500);">${item.index}</td>
+                  <td>${qDisplay}</td>
+                  <td>
+                    <div class="cell-truncate" style="color:var(--danger); font-size:12px; font-weight:600;" title="${escapeHtml(errDesc)}">
+                      [Failed] ${highlightText(errDesc, query)}
+                    </div>
+                  </td>
+                  <td style="text-align:center; color:var(--slate-400);">—</td>
+                  <td style="text-align:center;"><span class="badge danger" title="${escapeHtml(errDesc)}">Failed</span></td>
+                </tr>
+              `;
+              return;
+            }
+
+            // Successfully evaluated row rendering
+            const verd = res.verdict;
+            const verdClass = verd.verdict.replace(" ", "-");
+            const relScore = res.relevance.score;
+            const accScore = res.accuracy.score;
+            const halScore = res.hallucination.hallucination_score;
+            const compScore = res.completeness.score;
+            // Low hallucination renders as a "good"/green fill (invert value)
+            const groundedScore = 1.0 - halScore;
+
+            const relPct = (relScore * 100).toFixed(0);
+            const accPct = (accScore * 100).toFixed(0);
+            const halPct = (halScore * 100).toFixed(0);
+            const compPct = (compScore * 100).toFixed(0);
+            const tooltipText = `Relevance: ${relPct}%\nAccuracy: ${accPct}%\nHallucination: ${halPct}%\nCompleteness: ${compPct}%`;
+
+            const aHighlighted = highlightText(item.ai_response, query);
+            const aDisplay = item.ai_response 
+              ? `<div class="cell-truncate" title="${escapeHtml(item.ai_response)}">${aHighlighted}</div>` 
+              : `<span style="color:var(--slate-400); font-style:italic;">[Empty Response]</span>`;
+
+            rowsHtml += `
+              <tr class="main-row ${isSelected ? 'active-row' : ''}" onclick="openRecordDrawer(${item.index})" title="Click to open record details drawer">
+                <td style="text-align:center; font-weight:700; color:var(--slate-500);">${item.index}</td>
+                <td>${qDisplay}</td>
+                <td>${aDisplay}</td>
+                <td style="text-align:center;">
+                  <div class="score-stacked-bar" title="${escapeHtml(tooltipText)}">
+                    <span class="score-segment ${getScoreSegClass(relScore)}"></span>
+                    <span class="score-segment ${getScoreSegClass(accScore)}"></span>
+                    <span class="score-segment ${getScoreSegClass(groundedScore)}"></span>
+                    <span class="score-segment ${getScoreSegClass(compScore)}"></span>
+                  </div>
+                </td>
+                <td style="text-align:center;">
+                  <div style="display:inline-flex; flex-direction:column; align-items:center; gap:2px;">
+                    <span class="verdict-badge ${verdClass}" style="font-size:10.5px; padding:2px 8px;">
+                      ${escapeHtml(verd.verdict)}
+                    </span>
+                    <span style="font-size:10px; color:var(--slate-500); font-weight:600;" title="Overall composite quality score">
+                      ${(verd.weighted_score * 100).toFixed(0)}% score
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            `;
+          });
+
+          tbody.innerHTML = rowsHtml;
+        }
+
+        // Update pagination bar
+        const infoEl = document.getElementById("pagination-info");
+        const btnsEl = document.getElementById("pagination-buttons");
+        if (total === 0) {
+          infoEl.textContent = "Showing 0 rows";
+          btnsEl.innerHTML = "";
+          return;
+        }
+
+        infoEl.textContent = `Showing rows ${startIdx + 1}–${endIdx} of ${total}`;
+
+        if (totalPages <= 1) {
+          btnsEl.innerHTML = "";
+          return;
+        }
+
+        let html = `<button class="page-btn" ${batchPage === 1 ? "disabled" : ""} onclick="goToPage(${batchPage - 1})">« Prev</button>`;
+        const startP = Math.max(1, batchPage - 2);
+        const endP = Math.min(totalPages, batchPage + 2);
+        if (startP > 1) {
+          html += `<button class="page-btn" onclick="goToPage(1)">1</button>`;
+          if (startP > 2) html += `<span style="padding:0 3px; color:var(--slate-400);">…</span>`;
+        }
+        for (let p = startP; p <= endP; p++) {
+          html += `<button class="page-btn ${p === batchPage ? "active" : ""}" onclick="goToPage(${p})">${p}</button>`;
+        }
+        if (endP < totalPages) {
+          if (endP < totalPages - 1) html += `<span style="padding:0 3px; color:var(--slate-400);">…</span>`;
+          html += `<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+        }
+        html += `<button class="page-btn" ${batchPage === totalPages ? "disabled" : ""} onclick="goToPage(${batchPage + 1})">Next »</button>`;
+        btnsEl.innerHTML = html;
+      }
+
+      // -------------------------------------------------------------
+      // Slide-over Record Details Drawer & Navigation
+      // -------------------------------------------------------------
+      function openRecordDrawer(idx) {
+        if (!activeBatchSummary) return;
+        activeDrawerRecordIndex = idx;
+        const item = activeBatchSummary.items.find(it => it.index === idx);
+        if (!item) return;
+
+        const currentFiltered = getFilteredItems();
+        const curIdxInFiltered = currentFiltered.findIndex(it => it.index === idx);
+
+        // Update Drawer header & navigation
+        document.getElementById("drawer-record-badge").textContent = `Row #${item.index} of ${activeBatchSummary.items.length}`;
+        const prevBtn = document.getElementById("drawer-prev-btn");
+        const nextBtn = document.getElementById("drawer-next-btn");
+        if (prevBtn) prevBtn.disabled = (curIdxInFiltered <= 0);
+        if (nextBtn) nextBtn.disabled = (curIdxInFiltered < 0 || curIdxInFiltered >= currentFiltered.length - 1);
+
+        // Highlight active row in table
+        document.querySelectorAll("#batch-table-body tr.main-row").forEach(tr => tr.classList.remove("active-row"));
+        const rowEls = document.querySelectorAll("#batch-table-body tr.main-row");
+        const activeTr = Array.from(rowEls).find(tr => tr.querySelector("td")?.textContent?.trim() === String(item.index));
+        if (activeTr) activeTr.classList.add("active-row");
+
+        const drawerContent = document.getElementById("drawer-content");
+        const isQEmpty = !item.question || item.question === "[No Question Provided]" || item.question === "Empty" || item.question === "—";
+        const qText = isQEmpty ? "— (Empty)" : item.question;
+        const aText = item.ai_response || "";
+        const refText = item.reference_answer || "";
+
+        if (item.status !== "success" || !item.result) {
+          const errDesc = item.error_message || "Encountered an unexpected error evaluating this row.";
+          drawerContent.innerHTML = `
+            <div style="background:var(--slate-50); padding:16px; border-radius:8px; border:1px solid var(--slate-200); font-size:13px; line-height:1.6;">
+              <div style="margin-bottom:8px;">
+                <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Row Number</span>
+                <div style="font-weight:700; color:var(--slate-900);">#${item.index}</div>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Question</span>
+                  ${!isQEmpty ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(qText)}', this)">Copy</button>` : ''}
+                </div>
+                <div style="color:var(--slate-800);">${isQEmpty ? '<span style="color:var(--slate-400); font-style:italic;">— (Empty)</span>' : escapeHtml(qText)}</div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">AI Response</span>
+                  ${aText ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(aText)}', this)">Copy</button>` : ''}
+                </div>
+                <div style="color:var(--slate-800); white-space:pre-wrap;">${aText ? escapeHtml(aText) : '<span style="color:var(--slate-400); font-style:italic;">[Empty Response]</span>'}</div>
+              </div>
+            </div>
+
+            <div class="alert-box danger">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <div>
+                <strong style="font-size:13px;">Reason for Failure:</strong>
+                <div style="margin-top:4px; font-size:13px; line-height:1.5;">${escapeHtml(errDesc)}</div>
+              </div>
+            </div>
+          `;
+        } else {
+          drawerContent.innerHTML = `
+            <!-- Input & Reference Context -->
+            <div style="background:var(--slate-50); padding:16px; border-radius:8px; border:1px solid var(--slate-200); font-size:13px; line-height:1.5; display:flex; flex-direction:column; gap:12px;">
+              <!-- Question -->
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Question</span>
+                  ${!isQEmpty ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(qText)}', this)">Copy</button>` : ''}
+                </div>
+                <div style="color:var(--slate-800); font-size:13px;">
+                  ${isQEmpty ? '<span style="color:var(--slate-400); font-style:italic;">— (Empty)</span>' : escapeHtml(qText)}
+                </div>
+              </div>
+
+              <!-- AI Response -->
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">AI Response</span>
+                  ${aText ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(aText)}', this)">Copy</button>` : ''}
+                </div>
+                <div style="color:var(--slate-800); font-size:13px; white-space:pre-wrap;">
+                  ${aText ? escapeHtml(aText) : '<span style="color:var(--slate-400); font-style:italic;">[Empty Response]</span>'}
+                </div>
+              </div>
+
+              <!-- Reference Answer -->
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Reference Answer</span>
+                  ${refText ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(refText)}', this)">Copy</button>` : ''}
+                </div>
+                <div style="color:var(--slate-800); font-size:13px; white-space:pre-wrap;">
+                  ${refText ? escapeHtml(refText) : '<span style="color:var(--slate-400); font-style:italic;">No reference answer provided</span>'}
+                </div>
+              </div>
+            </div>
+
+            <!-- Single Response Evaluation Result Layout Reused -->
+            <div id="drawer-eval-breakdown"></div>
+          `;
+
+          renderSingleResults(item.result, "drawer-eval-breakdown");
+        }
+
+        // Show drawer and backdrop
+        document.getElementById("drawer-backdrop").classList.add("show");
+        document.getElementById("record-drawer").classList.add("show");
+      }
+
+      function closeRecordDrawer() {
+        const backdrop = document.getElementById("drawer-backdrop");
+        const drawer = document.getElementById("record-drawer");
+        if (backdrop) backdrop.classList.remove("show");
+        if (drawer) drawer.classList.remove("show");
+        activeDrawerRecordIndex = null;
+        document.querySelectorAll("#batch-table-body tr.main-row").forEach(tr => tr.classList.remove("active-row"));
+      }
+
+      function navigateDrawer(direction) {
+        if (activeDrawerRecordIndex === null) return;
+        const currentFiltered = getFilteredItems();
+        const curIdxInFiltered = currentFiltered.findIndex(it => it.index === activeDrawerRecordIndex);
+        if (curIdxInFiltered === -1) return;
+
+        const targetIdx = curIdxInFiltered + direction;
+        if (targetIdx >= 0 && targetIdx < currentFiltered.length) {
+          openRecordDrawer(currentFiltered[targetIdx].index);
+        }
+      }
+
+      // Legacy inspectRecord compatibility
+      function inspectRecord(idx) {
+        openRecordDrawer(idx);
+      }
+
+      window.addEventListener("keydown", (e) => {
+        const drawer = document.getElementById("record-drawer");
+        if (drawer && drawer.classList.contains("show")) {
+          if (e.key === "Escape") {
+            closeRecordDrawer();
+          } else if (e.key === "ArrowLeft") {
+            navigateDrawer(-1);
+          } else if (e.key === "ArrowRight") {
+            navigateDrawer(1);
+          }
+        }
+      });
+
+      function exportBatchCsv() {
+        if (!activeBatchSummary) return;
+        window.location.href = `/api/v1/batch/${activeBatchSummary.batch_id}/export`;
+      }
+
+      function exportFilteredCsv() {
+        const items = getFilteredItems();
+        if (!items || items.length === 0) {
+          alert("No records to export in the current view.");
+          return;
+        }
+
+        const headers = [
+          "row_number",
+          "question",
+          "ai_response",
+          "status",
+          "relevance_score",
+          "relevance_class",
+          "accuracy_score",
+          "accuracy_class",
+          "is_hallucinated",
+          "hallucination_score",
+          "completeness_score",
+          "completeness_class",
+          "overall_verdict",
+          "overall_score",
+          "reasoning",
+          "error_message"
+        ];
+
+        const csvRows = [headers.join(",")];
+
+        items.forEach(item => {
+          const res = item.result;
+          const rowData = [
+            item.index,
+            `"${(item.question || '').replace(/"/g, '""')}"`,
+            `"${(item.ai_response || '').replace(/"/g, '""')}"`,
+            item.status,
+            res ? (res.relevance?.score ?? '') : '',
+            res ? (res.relevance?.classification ?? '') : '',
+            res ? (res.accuracy?.score ?? '') : '',
+            res ? (res.accuracy?.classification ?? '') : '',
+            res ? (res.hallucination?.is_hallucinated ?? '') : '',
+            res ? (res.hallucination?.hallucination_score ?? '') : '',
+            res ? (res.completeness?.score ?? '') : '',
+            res ? (res.completeness?.classification ?? '') : '',
+            res ? (res.verdict?.verdict ?? '') : '',
+            res ? (res.verdict?.weighted_score ?? '') : '',
+            res ? `"${(res.verdict?.consolidated_reasoning || '').replace(/"/g, '""')}"` : '',
+            `"${(item.error_message || '').replace(/"/g, '""')}"`
+          ];
+          csvRows.push(rowData.join(","));
+        });
+
+        const csvBlob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(csvBlob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `filtered_batch_eval_${currentFilter.toLowerCase().replace(/\s+/g, '_')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      function escapeHtml(text) {
+        if (text === null || text === undefined) return "";
+        const div = document.createElement("div");
+        div.textContent = String(text);
+        return div.innerHTML;
+      }
+
+      function escapeJs(text) {
+        if (text === null || text === undefined) return "";
+        return String(text)
+          .replace(/\\/g, '\\\\')
+          .replace(/'/g, "\\'")
+          .replace(/"/g, '\\"')
+          .replace(/\n/g, '\\n')
+          .replace(/\r/g, '');
+      }
+
+      function clearBatchResults() {
+        activeBatchSummary = null;
+        try {
+          sessionStorage.removeItem("saved_batch_summary");
+          localStorage.removeItem("saved_batch_id");
+        } catch (e) {}
+        document.getElementById("batch-results-section").style.display = "none";
+        document.getElementById("csv-preview-card").style.display = "none";
+        document.getElementById("batch-progress-box").style.display = "none";
+        document.getElementById("batch-error-box").style.display = "none";
+        document.getElementById("csv-file-input").value = "";
+        selectedBatchFile = null;
+      }
+
+      // -------------------------------------------------------------
+      // Session & Disk State Restoration (Resistant to F5 refresh)
+      // -------------------------------------------------------------
+      window.addEventListener("DOMContentLoaded", async () => {
+        updateCounters();
+
+        // 1. Restore active tab
+        const savedTab = localStorage.getItem("active_eval_tab") || "batch";
+        switchTab(savedTab);
+
+        // 2. Restore single evaluation if present
+        const savedSingle = sessionStorage.getItem("last_single_eval");
+        if (savedSingle) {
+          try {
+            const { payload, data } = JSON.parse(savedSingle);
+            if (payload) {
+              if (payload.question) document.getElementById("question").value = payload.question;
+              if (payload.ai_response) document.getElementById("ai_response").value = payload.ai_response;
+              if (payload.reference_answer) document.getElementById("reference_answer").value = payload.reference_answer;
+              updateCounters();
+            }
+            if (data) {
+              renderSingleResults(data);
+              document.getElementById("result-container").style.display = "block";
+            }
+          } catch (e) {}
+        }
+
+        // 3. Restore batch evaluation if present (first check sessionStorage, then server cache)
+        const savedBatchJson = sessionStorage.getItem("saved_batch_summary");
+        if (savedBatchJson) {
+          try {
+            const parsed = JSON.parse(savedBatchJson);
+            if (parsed && parsed.items && parsed.items.length) {
+              activeBatchSummary = parsed;
+              renderBatchResults(parsed);
+              return;
+            }
+          } catch (e) {
+            console.warn("Could not parse saved batch from sessionStorage:", e);
+          }
+        }
+
+        // Fallback: check server for latest batch evaluation
+        try {
+          const res = await fetch("/api/v1/batch/latest");
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.items && data.items.length) {
+              activeBatchSummary = data;
+              renderBatchResults(data);
+            }
+          }
+        } catch (err) {
+          console.warn("Could not check server for latest batch:", err);
+        }
+      });
     </script>
   </body>
 </html>

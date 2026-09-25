@@ -13,6 +13,8 @@ from .schemas import EvaluationResult
 from .relevance_agent import RelevanceAgent
 from .accuracy_agent import AccuracyAgent
 from .hallucination_agent import HallucinationAgent
+from .completeness_agent import CompletenessAgent
+from .verdict_agent import VerdictAgent
 from ..knowledge_base.vector_store import retrieve
 
 logger = logging.getLogger(__name__)
@@ -20,17 +22,22 @@ logger = logging.getLogger(__name__)
 
 class EvaluationOrchestrator:
     """
-    Orchestrates the evaluation of an AI response across all three judge agents.
+    Orchestrates the evaluation of an AI response across all four judge agents
+    (Relevance, Accuracy, Hallucination, Completeness) and synthesizes the overall Verdict.
     """
     def __init__(
         self,
         relevance_agent: Optional[RelevanceAgent] = None,
         accuracy_agent: Optional[AccuracyAgent] = None,
         hallucination_agent: Optional[HallucinationAgent] = None,
+        completeness_agent: Optional[CompletenessAgent] = None,
+        verdict_agent: Optional[VerdictAgent] = None,
     ):
         self.relevance_agent = relevance_agent or RelevanceAgent()
         self.accuracy_agent = accuracy_agent or AccuracyAgent()
         self.hallucination_agent = hallucination_agent or HallucinationAgent()
+        self.completeness_agent = completeness_agent or CompletenessAgent()
+        self.verdict_agent = verdict_agent or VerdictAgent()
 
     def resolve_context(
         self,
@@ -54,7 +61,9 @@ class EvaluationOrchestrator:
         # If no reference or source was supplied, use RAG retrieval
         if not context_parts:
             try:
-                hits = retrieve(question, top_k=top_k)
+                # If question is empty, retrieval query can use fallback or skipped
+                query_str = question.strip() if question and question.strip() else "general facts"
+                hits = retrieve(query_str, top_k=top_k)
                 if hits:
                     rag_snippets = []
                     for h in hits:
@@ -80,40 +89,65 @@ class EvaluationOrchestrator:
         top_k: int = 3,
     ) -> EvaluationResult:
         """
-        Runs Relevance, Accuracy, and Hallucination agents concurrently.
+        Runs Relevance, Accuracy, Hallucination, and Completeness agents, then synthesizes the Verdict.
         """
+        clean_question = question.strip() if question else ""
+        clean_response = ai_response.strip() if ai_response else ""
+
         # 1. Resolve context
         context_str = self.resolve_context(
-            question=question,
+            question=clean_question,
             reference_answer=reference_answer,
             source_document=source_document,
             top_k=top_k,
         )
 
-        # 2. Execute agents sequentially to respect API rate limits smoothly
-        relevance_res = await self.relevance_agent.evaluate(
-            question=question,
-            ai_response=ai_response,
+        # 2. Execute dimension agents concurrently
+        (
+            relevance_res,
+            accuracy_res,
+            hallucination_res,
+            completeness_res,
+        ) = await asyncio.gather(
+            self.relevance_agent.evaluate(
+                question=clean_question,
+                ai_response=clean_response,
+            ),
+            self.accuracy_agent.evaluate(
+                question=clean_question,
+                ai_response=clean_response,
+                context=context_str,
+            ),
+            self.hallucination_agent.evaluate(
+                ai_response=clean_response,
+                context=context_str,
+                question=clean_question,
+            ),
+            self.completeness_agent.evaluate(
+                question=clean_question,
+                ai_response=clean_response,
+                context=context_str,
+            ),
         )
-        accuracy_res = await self.accuracy_agent.evaluate(
-            question=question,
-            ai_response=ai_response,
-            context=context_str,
-        )
-        hallucination_res = await self.hallucination_agent.evaluate(
-            ai_response=ai_response,
-            context=context_str,
-            question=question,
+
+        # 3. Verdict Agent synthesizes overall score and quality verdict without re-evaluating
+        verdict_res = self.verdict_agent.evaluate(
+            relevance=relevance_res,
+            accuracy=accuracy_res,
+            hallucination=hallucination_res,
+            completeness=completeness_res,
         )
 
         return EvaluationResult(
             submission_id=submission_id,
-            question=question,
-            ai_response=ai_response,
+            question=clean_question,
+            ai_response=clean_response,
             context_used=context_str,
             relevance=relevance_res,
             accuracy=accuracy_res,
             hallucination=hallucination_res,
+            completeness=completeness_res,
+            verdict=verdict_res,
             evaluated_at=datetime.now(timezone.utc).isoformat(),
         )
 
@@ -139,3 +173,4 @@ class EvaluationOrchestrator:
                 top_k=top_k,
             )
         )
+

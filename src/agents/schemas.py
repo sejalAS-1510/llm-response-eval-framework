@@ -77,4 +77,104 @@ class EvaluationResult(BaseModel):
     relevance: RelevanceResult
     accuracy: AccuracyResult
     hallucination: HallucinationResult
+    completeness: "CompletenessResult"
+    verdict: "VerdictResult"
     evaluated_at: str
+
+
+CompletenessClassification = Literal[
+    "fully_complete",
+    "mostly_complete",
+    "partially_complete",
+    "incomplete",
+]
+
+
+class CompletenessResult(BaseModel):
+    score: float = Field(..., description="Completeness score from 0.0 to 1.0")
+    classification: CompletenessClassification = Field(..., description="Category of completeness")
+    identified_requirements: List[str] = Field(
+        default_factory=list,
+        description="Key requirements, sub-questions, or aspects expected from the prompt/reference context",
+    )
+    addressed_aspects: List[str] = Field(
+        default_factory=list,
+        description="Aspects or sub-questions sufficiently answered by the AI response",
+    )
+    partially_addressed_aspects: List[str] = Field(
+        default_factory=list,
+        description="Aspects only partially, vaguely, or incompletely covered",
+    )
+    missing_aspects: List[str] = Field(
+        default_factory=list,
+        description="Specific omissions, unanswered sub-questions, or missing explanations",
+    )
+    reasoning: str = Field(..., description="Detailed justification explaining why information is complete, partial, or missing")
+
+
+VerdictCategory = Literal[
+    "Pass",
+    "Needs Improvement",
+    "Fail",
+]
+
+
+class VerdictResult(BaseModel):
+    weighted_score: float = Field(..., description="Overall weighted score from 0.0 to 1.0")
+    verdict: VerdictCategory = Field(..., description="Final overall quality verdict: Pass, Needs Improvement, or Fail")
+    dimension_scores: dict = Field(
+        default_factory=dict,
+        description="Normalized scores for relevance, accuracy, completeness, and groundedness",
+    )
+    major_issues: List[str] = Field(
+        default_factory=list,
+        description="Critical issues, contradictions, severe hallucinations, or major omissions",
+    )
+    strengths: List[str] = Field(
+        default_factory=list,
+        description="Observed strengths across evaluated dimensions",
+    )
+    consolidated_reasoning: str = Field(
+        ...,
+        description="Consolidated executive evaluation summary explaining strengths, weaknesses, and final verdict",
+    )
+
+
+class BatchEvaluationItem(BaseModel):
+    index: int = Field(..., description="1-indexed row number from the uploaded batch")
+    question: str
+    ai_response: str
+    reference_answer: Optional[str] = None
+    source_document: Optional[str] = None
+    result: Optional[EvaluationResult] = None
+    status: Literal["success", "failed", "skipped"] = "success"
+    error_message: Optional[str] = None
+
+
+class BatchStatistics(BaseModel):
+    total_records: int
+    successful_records: int
+    failed_records: int
+    pass_count: int
+    needs_improvement_count: int
+    fail_count: int
+    pass_rate_percent: float
+    average_weighted_score: float
+    average_relevance_score: float
+    average_accuracy_score: float
+    average_completeness_score: float
+    average_groundedness_score: float
+    hallucination_rate_percent: float
+
+
+class BatchEvaluationSummary(BaseModel):
+    batch_id: str
+    filename: Optional[str] = None
+    created_at: str
+    statistics: BatchStatistics
+    items: List[BatchEvaluationItem]
+
+
+# Rebuild EvaluationResult with full forward ref resolution
+EvaluationResult.model_rebuild()
+
