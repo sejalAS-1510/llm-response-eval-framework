@@ -9,6 +9,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
       :root {
+        /* Design Tokens: Semantic Colors (WCAG AA Compliant >= 4.5:1 against #ffffff and -light backgrounds) */
+        --color-success: #047857;          /* emerald-700: 5.48:1 on #ffffff */
+        --color-success-hover: #065f46;    /* emerald-800: 7.68:1 on #ffffff */
+        --color-success-light: #ecfdf5;
+        --color-success-border: #a7f3d0;
+        --color-success-text: #065f46;     /* emerald-800: 7.29:1 on #ecfdf5 */
+
+        --color-warning: #b45309;          /* amber-700: 5.02:1 on #ffffff */
+        --color-warning-hover: #92400e;    /* amber-800: 7.09:1 on #ffffff */
+        --color-warning-light: #fffbeb;
+        --color-warning-border: #fde68a;
+        --color-warning-text: #92400e;     /* amber-800: 6.84:1 on #fffbeb */
+
+        --color-danger: #b91c1c;           /* red-700: 6.47:1 on #ffffff */
+        --color-danger-hover: #991b1b;     /* red-800: 8.68:1 on #ffffff */
+        --color-danger-light: #fef2f2;
+        --color-danger-border: #fecaca;
+        --color-danger-text: #991b1b;      /* red-800: 8.24:1 on #fef2f2 */
+
+        --color-accent: #1d4ed8;           /* blue-700: 6.70:1 on #ffffff */
+        --color-accent-hover: #1e40af;     /* blue-800: 8.78:1 on #ffffff */
+        --color-accent-light: #eff6ff;
+        --color-accent-border: #bfdbfe;
+        --color-accent-text: #1e40af;      /* blue-800: 8.35:1 on #eff6ff */
+
+        --color-neutral: #334155;          /* slate-700: 9.45:1 on #ffffff */
+        --color-neutral-hover: #1e293b;    /* slate-800: 13.0:1 on #ffffff */
+        --color-neutral-light: #f1f5f9;
+        --color-neutral-border: #cbd5e1;
+        --color-neutral-text: #1e293b;     /* slate-800: 12.0:1 on #f1f5f9 */
+
+        /* Slate Scale */
         --slate-50: #f8fafc;
         --slate-100: #f1f5f9;
         --slate-200: #e2e8f0;
@@ -20,25 +52,26 @@
         --slate-800: #1e293b;
         --slate-900: #0f172a;
 
-        --primary: #2563eb;
-        --primary-hover: #1d4ed8;
-        --primary-light: #eff6ff;
-        --primary-border: #bfdbfe;
+        /* Backward Compatibility Aliases */
+        --primary: var(--color-accent);
+        --primary-hover: var(--color-accent-hover);
+        --primary-light: var(--color-accent-light);
+        --primary-border: var(--color-accent-border);
 
-        --success: #059669;
-        --success-hover: #047857;
-        --success-light: #ecfdf5;
-        --success-border: #a7f3d0;
+        --success: var(--color-success);
+        --success-hover: var(--color-success-hover);
+        --success-light: var(--color-success-light);
+        --success-border: var(--color-success-border);
 
-        --warning: #d97706;
-        --warning-hover: #b45309;
-        --warning-light: #fffbeb;
-        --warning-border: #fde68a;
+        --warning: var(--color-warning);
+        --warning-hover: var(--color-warning-hover);
+        --warning-light: var(--color-warning-light);
+        --warning-border: var(--color-warning-border);
 
-        --danger: #dc2626;
-        --danger-hover: #b91c1c;
-        --danger-light: #fef2f2;
-        --danger-border: #fecaca;
+        --danger: var(--color-danger);
+        --danger-hover: var(--color-danger-hover);
+        --danger-light: var(--color-danger-light);
+        --danger-border: var(--color-danger-border);
 
         --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.05);
         --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.09), 0 2px 4px -2px rgb(0 0 0 / 0.05);
@@ -48,6 +81,21 @@
         box-sizing: border-box;
       }
 
+      /* Keyboard Accessibility: Visible Focus Rings */
+      :focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible,
+      select:focus-visible,
+      [tabindex]:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+
       body {
         margin: 0;
         background: var(--slate-50);
@@ -55,7 +103,7 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
+        overflow-x: clip;
       }
 
       .wrap {
@@ -87,7 +135,7 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: var(--success);
+        background: var(--color-success);
       }
       .agent-badges-list {
         display: flex;
@@ -96,24 +144,85 @@
         align-items: center;
       }
       .agent-tag {
-        background: var(--slate-100);
-        color: var(--slate-600);
-        border: 1px solid var(--slate-200);
-        padding: 2px 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--color-neutral-light);
+        color: var(--color-neutral-text);
+        border: 1px solid var(--color-neutral-border);
+        padding: 3px 8px;
         border-radius: 4px;
         font-size: 11px;
         font-weight: 500;
+        transition: all 0.2s ease;
+      }
+      .agent-tag.status-pending {
+        background: var(--color-neutral-light);
+        color: var(--color-neutral-text);
+        border-color: var(--color-neutral-border);
+      }
+      .agent-tag.status-running {
+        background: var(--color-accent-light);
+        color: var(--color-accent-text);
+        border-color: var(--color-accent);
+        font-weight: 600;
+        animation: pulse-badge 1.5s infinite;
+      }
+      .agent-tag.status-done {
+        background: var(--color-success-light);
+        color: var(--color-success-text);
+        border-color: var(--color-success-border);
+        font-weight: 600;
+      }
+      @keyframes pulse-badge {
+        0% {
+          box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45);
+        }
+        70% {
+          box-shadow: 0 0 0 6px rgba(37, 99, 235, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+        }
+      }
+      .agent-status-spinner {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border: 1.5px solid var(--color-accent);
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: agent-spin 0.75s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes agent-spin {
+        to { transform: rotate(360deg); }
+      }
+      .agent-status-check {
+        display: inline-block;
+        font-weight: 800;
+        font-size: 11px;
+        line-height: 1;
+        color: var(--color-success);
+        flex-shrink: 0;
+      }
+      .agent-status-dot {
+        display: inline-block;
+        font-size: 9px;
+        opacity: 0.6;
+        line-height: 1;
+        flex-shrink: 0;
       }
 
       /* Header */
       header {
-        margin-bottom: 24px;
+        margin-bottom: 32px;
       }
       .eyebrow {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        color: var(--primary);
+        color: var(--color-accent);
         font-size: 11.5px;
         font-weight: 700;
         margin-bottom: 6px;
@@ -121,8 +230,9 @@
         letter-spacing: 0.05em;
       }
       .eyebrow-badge {
-        background: var(--primary-light);
-        border: 1px solid var(--primary-border);
+        background: var(--color-accent-light);
+        border: 1px solid var(--color-accent-border);
+        color: var(--color-accent-text);
         padding: 2px 8px;
         border-radius: 4px;
       }
@@ -166,20 +276,20 @@
         color: var(--slate-800);
       }
       .tab-btn.active {
-        color: var(--primary);
-        border-bottom-color: var(--primary);
+        color: var(--color-accent);
+        border-bottom-color: var(--color-accent);
       }
       .tab-counter {
-        background: var(--slate-100);
-        color: var(--slate-600);
+        background: var(--color-neutral-light);
+        color: var(--color-neutral-text);
         padding: 2px 7px;
         border-radius: 12px;
         font-size: 11px;
         font-weight: 600;
       }
       .tab-btn.active .tab-counter {
-        background: var(--primary-light);
-        color: var(--primary);
+        background: var(--color-accent-light);
+        color: var(--color-accent-text);
       }
 
       .tab-content {
@@ -204,7 +314,7 @@
       }
       .preset-chip {
         background: #ffffff;
-        border: 1px solid var(--slate-200);
+        border: 1px solid var(--color-neutral-border);
         border-radius: 6px;
         padding: 5px 12px;
         font-size: 12px;
@@ -217,8 +327,8 @@
         transition: all 0.15s ease;
       }
       .preset-chip:hover {
-        background: var(--slate-100);
-        border-color: var(--slate-300);
+        background: var(--color-neutral-light);
+        border-color: var(--slate-400);
         color: var(--slate-900);
       }
 
@@ -268,14 +378,14 @@
       }
       textarea:focus, input[type="text"]:focus {
         outline: none;
-        border-color: var(--primary);
+        border-color: var(--color-accent);
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
       }
       .optional-pill {
         font-weight: 500;
-        color: var(--slate-500);
+        color: var(--color-neutral-text);
         font-size: 11px;
-        background: var(--slate-100);
+        background: var(--color-neutral-light);
         padding: 2px 6px;
         border-radius: 4px;
       }
@@ -296,11 +406,11 @@
         line-height: 1.4;
       }
       .btn-primary {
-        background: var(--primary);
+        background: var(--color-accent);
         color: #ffffff;
       }
       .btn-primary:hover {
-        background: var(--primary-hover);
+        background: var(--color-accent-hover);
       }
       .btn-primary:disabled {
         opacity: 0.65;
@@ -308,11 +418,11 @@
       }
       .btn-secondary {
         background: #ffffff;
-        border-color: var(--slate-300);
+        border-color: var(--color-neutral-border);
         color: var(--slate-700);
       }
       .btn-secondary:hover {
-        background: var(--slate-100);
+        background: var(--color-neutral-light);
         color: var(--slate-900);
         border-color: var(--slate-400);
       }
@@ -333,23 +443,22 @@
         box-shadow: var(--card-shadow);
       }
       .verdict-banner.Pass {
-        background: var(--success-light);
-        border-color: var(--success-border);
+        background: var(--color-success-light);
+        border-color: var(--color-success-border);
       }
       .verdict-banner.Needs-Improvement {
-        background: var(--warning-light);
-        border-color: var(--warning-border);
+        background: var(--color-warning-light);
+        border-color: var(--color-warning-border);
       }
       .verdict-banner.Fail {
-        background: var(--danger-light);
-        border-color: var(--danger-border);
+        background: var(--color-danger-light);
+        border-color: var(--color-danger-border);
       }
-      .verdict-header {
+      /* Row 1: Status badge + score only */
+      .verdict-row-1 {
         display: flex;
-        flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
+        gap: 14px;
       }
       .verdict-badge {
         font-size: 12.5px;
@@ -363,15 +472,15 @@
         gap: 6px;
       }
       .verdict-badge.Pass {
-        background: var(--success);
+        background: var(--color-success);
         color: #ffffff;
       }
       .verdict-badge.Needs-Improvement {
-        background: var(--warning);
+        background: var(--color-warning);
         color: #ffffff;
       }
       .verdict-badge.Fail {
-        background: var(--danger);
+        background: var(--color-danger);
         color: #ffffff;
       }
       .verdict-score {
@@ -388,6 +497,202 @@
         font-weight: 500;
         color: var(--slate-500);
       }
+
+      /* Row 2: One concise plain-English summary line + popover */
+      .verdict-row-2 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: var(--slate-800);
+        font-weight: 500;
+      }
+      .verdict-summary-text {
+        flex: 1 1 280px;
+      }
+      .how-scored-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+      }
+      .how-scored-btn {
+        background: #ffffff;
+        border: 1px solid var(--slate-300);
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--slate-700);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: all 0.15s ease;
+        flex-shrink: 0;
+      }
+      .how-scored-btn:hover {
+        background: #ffffff;
+        color: var(--color-accent);
+        border-color: var(--color-accent);
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.12);
+      }
+      .info-circle-icon {
+        font-style: normal;
+        font-weight: 700;
+        color: var(--color-accent);
+        font-size: 13px;
+        display: inline-block;
+        line-height: 1;
+      }
+
+      /* Scoring Popover Box */
+      .scoring-popover {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        width: 320px;
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+        padding: 14px 16px;
+        z-index: 1050;
+        font-size: 12px;
+        text-align: left;
+        box-sizing: border-box;
+      }
+      .scoring-popover.show {
+        display: block;
+      }
+      .scoring-popover .badge {
+        font-size: 10px;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+      .popover-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        color: var(--slate-900);
+        margin-bottom: 8px;
+        border-bottom: 1px solid var(--slate-100);
+        padding-bottom: 5px;
+      }
+      .popover-close {
+        background: none;
+        border: none;
+        font-size: 11px;
+        cursor: pointer;
+        color: var(--slate-400);
+        padding: 2px 4px;
+      }
+      .popover-close:hover {
+        color: var(--slate-800);
+      }
+      .popover-section-label {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--slate-500);
+        margin-bottom: 4px;
+      }
+      .popover-weights-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 10px;
+      }
+      .popover-weight-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--slate-700);
+        font-size: 12px;
+      }
+      .popover-thresholds-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .popover-thresh-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--slate-700);
+        font-size: 11.5px;
+      }
+      .popover-thresh-item .thresh-val {
+        color: var(--slate-600);
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      /* Row 3: 4 equal-width status chips */
+      .status-chips-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        width: 100%;
+        margin-top: 2px;
+      }
+      @media (max-width: 768px) {
+        .status-chips-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 440px) {
+        .status-chips-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        background: #ffffff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .status-chip.strength {
+        color: var(--color-success-text);
+        background: var(--color-success-light);
+        border: 1px solid var(--color-success-border);
+      }
+      .status-chip.issue {
+        color: var(--color-warning-text);
+        background: var(--color-warning-light);
+        border: 1px solid var(--color-warning-border);
+      }
+      .status-chip.danger {
+        color: var(--color-danger-text);
+        background: var(--color-danger-light);
+        border: 1px solid var(--color-danger-border);
+      }
+      .status-chip.neutral {
+        color: var(--color-neutral-text);
+        background: var(--color-neutral-light);
+        border: 1px solid var(--color-neutral-border);
+      }
+
       .pills-row {
         display: flex;
         flex-wrap: wrap;
@@ -401,16 +706,6 @@
         border-radius: 4px;
         font-size: 12px;
         font-weight: 500;
-      }
-      .pill-strength {
-        background: #ffffff;
-        color: var(--success);
-        border: 1px solid var(--success-border);
-      }
-      .pill-issue {
-        background: #ffffff;
-        color: var(--danger);
-        border: 1px solid var(--danger-border);
       }
 
       /* 4 Dimension Scoring Cards Grid */
@@ -434,6 +729,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 8px;
         margin-bottom: 10px;
       }
       .card-title {
@@ -450,21 +746,33 @@
         text-transform: uppercase;
         letter-spacing: 0.04em;
         line-height: 1.2;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
       .badge.success {
-        background: var(--success-light);
-        color: var(--success);
-        border: 1px solid var(--success-border);
+        background: var(--color-success-light);
+        color: var(--color-success-text);
+        border: 1px solid var(--color-success-border);
       }
       .badge.warning {
-        background: var(--warning-light);
-        color: var(--warning);
-        border: 1px solid var(--warning-border);
+        background: var(--color-warning-light);
+        color: var(--color-warning-text);
+        border: 1px solid var(--color-warning-border);
       }
       .badge.danger {
-        background: var(--danger-light);
-        color: var(--danger);
-        border: 1px solid var(--danger-border);
+        background: var(--color-danger-light);
+        color: var(--color-danger-text);
+        border: 1px solid var(--color-danger-border);
+      }
+      .badge.accent {
+        background: var(--color-accent-light);
+        color: var(--color-accent-text);
+        border: 1px solid var(--color-accent-border);
+      }
+      .badge.neutral {
+        background: var(--color-neutral-light);
+        color: var(--color-neutral-text);
+        border: 1px solid var(--color-neutral-border);
       }
 
       .score-bar-wrap {
@@ -484,32 +792,37 @@
       }
       .progress-fill {
         height: 100%;
-        background: var(--primary);
+        background: var(--color-accent);
         border-radius: 3px;
         transition: width 0.3s ease;
       }
-      .progress-fill.danger { background: var(--danger); }
-      .progress-fill.warning { background: var(--warning); }
-      .progress-fill.success { background: var(--success); }
+      .progress-fill.danger { background: var(--color-danger); }
+      .progress-fill.warning { background: var(--color-warning); }
+      .progress-fill.success { background: var(--color-success); }
 
       .reasoning-box {
         font-size: 12.5px;
-        color: var(--slate-600);
+        color: var(--slate-700);
         background: var(--slate-50);
         border-radius: 6px;
         padding: 10px 12px;
-        line-height: 1.5;
-        margin-top: 10px;
+        line-height: 1.55;
+        margin-top: 8px;
         border-left: 3px solid var(--slate-300);
+        white-space: pre-line;
+        word-break: break-word;
+        overflow-wrap: break-word;
       }
 
       .claim-item {
         font-size: 12px;
         background: #ffffff;
-        border: 1px solid var(--danger-border);
+        border: 1px solid var(--color-danger-border);
         border-radius: 4px;
         padding: 8px 10px;
         margin-top: 6px;
+        word-break: break-word;
+        line-height: 1.45;
       }
       .claim-status {
         font-weight: 700;
@@ -517,31 +830,35 @@
       .evidence-tag {
         font-size: 11.5px;
         font-style: normal;
-        background: var(--slate-100);
-        padding: 4px 8px;
+        background: var(--color-neutral-light);
+        padding: 6px 10px;
         border-radius: 4px;
         margin-top: 4px;
         color: var(--slate-700);
-        border-left: 2px solid var(--slate-400);
+        border-left: 2px solid var(--color-neutral-border);
+        word-break: break-word;
+        line-height: 1.45;
       }
       .aspect-tag {
         font-size: 11.5px;
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        padding: 2px 7px;
+        padding: 3px 8px;
         border-radius: 4px;
         margin: 2px;
+        line-height: 1.35;
+        word-break: break-word;
       }
       .aspect-addressed {
-        background: var(--success-light);
-        color: var(--success);
-        border: 1px solid var(--success-border);
+        background: var(--color-success-light);
+        color: var(--color-success);
+        border: 1px solid var(--color-success-border);
       }
       .aspect-missing {
-        background: var(--warning-light);
-        color: var(--warning);
-        border: 1px solid var(--warning-border);
+        background: var(--color-warning-light);
+        color: var(--color-warning);
+        border: 1px solid var(--color-warning-border);
         font-weight: 600;
       }
 
@@ -555,9 +872,18 @@
         cursor: pointer;
         transition: all 0.2s ease;
       }
-      .dropzone:hover, .dropzone.dragover {
-        border-color: var(--primary);
-        background: var(--primary-light);
+      .dropzone:hover, .dropzone.dragover, .dropzone.drag-active {
+        border-color: var(--color-accent);
+        background: var(--color-accent-light);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+      }
+      .dropzone.dropzone-error {
+        border-color: var(--color-danger);
+        background: var(--color-danger-light);
+      }
+      .dropzone.dropzone-error:hover {
+        border-color: var(--color-danger);
+        background: #fee2e2;
       }
       .dropzone-icon {
         display: inline-flex;
@@ -568,8 +894,31 @@
         border-radius: 8px;
         background: #ffffff;
         border: 1px solid var(--slate-200);
-        color: var(--primary);
+        color: var(--color-accent);
         margin-bottom: 8px;
+        transition: all 0.2s ease;
+      }
+      .dropzone.dropzone-error .dropzone-icon {
+        color: var(--color-danger);
+        border-color: var(--color-danger-border);
+      }
+      .dropzone-inline-error {
+        display: none;
+        margin-top: 14px;
+        padding: 9px 14px;
+        border-radius: 6px;
+        background: #ffffff;
+        border: 1px solid var(--color-danger-border);
+        color: #991b1b;
+        font-size: 12.5px;
+        font-weight: 500;
+        text-align: left;
+        line-height: 1.4;
+      }
+      .dropzone-inline-error.show {
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
 
       /* CSV Instant Preview Card */
@@ -599,62 +948,277 @@
         font-weight: 600;
       }
       .col-valid {
-        background: var(--success-light);
-        color: var(--success);
-        border: 1px solid var(--success-border);
+        background: var(--color-success-light);
+        color: var(--color-success-text);
+        border: 1px solid var(--color-success-border);
       }
       .col-missing {
-        background: var(--danger-light);
-        color: var(--danger);
-        border: 1px solid var(--danger-border);
+        background: var(--color-danger-light);
+        color: var(--color-danger-text);
+        border: 1px solid var(--color-danger-border);
       }
 
-      /* Interactive Stat Cards Grid */
+      /* 3-Zone Architecture for Batch Evaluation Dashboard */
+      .batch-dashboard-zones {
+        display: block;
+        margin-top: 32px;
+      }
+      .zone-card {
+        border-radius: 10px;
+        padding: 24px 26px;
+        transition: all 0.2s ease;
+        margin-bottom: 32px; /* Explicit vertical spacing between zone boxes */
+      }
+      .zone-card:last-child {
+        margin-bottom: 0;
+      }
+      .zone-overview .dim-meters-grid {
+        margin-bottom: 0;
+      }
+      .zone-overview {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        box-shadow: var(--card-shadow);
+      }
+      .zone-insights {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-left: 5px solid var(--color-accent);
+        box-shadow: var(--card-shadow);
+      }
+      .zone-data {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        box-shadow: var(--card-shadow);
+        overflow: visible;
+      }
+      .zone-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--slate-100);
+        flex-wrap: wrap;
+      }
+      .zone-insights .zone-header {
+        border-bottom-color: #e2e8f0;
+      }
+      .zone-badge {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: var(--color-neutral-light);
+        color: var(--color-neutral-text);
+        border: 1px solid var(--color-neutral-border);
+      }
+      .zone-badge.accent {
+        background: var(--color-accent-light);
+        color: var(--color-accent-text);
+        border-color: var(--color-accent-border);
+      }
+      .zone-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--slate-900);
+        margin: 0;
+      }
+      .zone-subtitle {
+        font-size: 12.5px;
+        color: var(--slate-500);
+        margin-left: 2px;
+      }
+
+      /* Insights Zone Internal Styling */
+      .insight-content-box {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 18px 20px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      }
+      .insight-card-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .insight-pill-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .insight-tagline {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--slate-400);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .insight-headline {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: var(--slate-900);
+        line-height: 1.45;
+        margin: 2px 0 0;
+      }
+      .insight-explanation {
+        font-size: 13px;
+        color: var(--slate-600);
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      /* Zone 3: Sticky Data Toolbar */
+      .batch-data-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 35;
+        background: #ffffff;
+        padding: 12px 0 14px 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--slate-200);
+        box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .toolbar-left {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+      .toolbar-right {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+      .zone-data .table-container {
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        margin-top: 0;
+        box-shadow: none;
+      }
+      .zone-data #batch-pagination {
+        padding: 14px 2px 2px;
+      }
+
+      @media (max-width: 768px) {
+        .batch-dashboard-zones {
+          margin-top: 24px;
+        }
+        .zone-card {
+          padding: 18px 16px;
+          margin-bottom: 24px;
+        }
+        .zone-card:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      /* Interactive Stat Cards Grid: 8-col Desktop, 4-col Tablet, 2-col Mobile */
       .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 12px;
         margin: 20px 0 16px;
+      }
+      @media (max-width: 1024px) {
+        /* Tablet breakpoint: 4 columns */
+        .stats-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 10px;
+        }
+      }
+      @media (max-width: 640px) {
+        /* Mobile breakpoint: 2 columns */
+        .stats-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+        .stat-card {
+          padding: 12px 10px;
+        }
+        .stat-card .num {
+          font-size: 24px;
+        }
       }
       .stat-card {
         background: #ffffff;
         border: 1px solid var(--slate-200);
+        border-left: 4px solid var(--color-neutral);
         border-radius: 8px;
-        padding: 12px 10px;
-        text-align: center;
+        padding: 14px 14px;
+        text-align: left;
         cursor: pointer;
         transition: all 0.15s ease;
         position: relative;
         box-shadow: var(--card-shadow);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
       .stat-card:hover {
-        border-color: var(--slate-400);
+        border-color: var(--slate-300);
         box-shadow: var(--card-shadow-hover);
         transform: translateY(-1px);
       }
-      .stat-card.active-filter {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
-        background: var(--primary-light);
+      .stat-card:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+        box-shadow: var(--card-shadow-hover);
       }
+      .stat-card.active-filter {
+        box-shadow: 0 0 0 2px var(--color-accent), var(--card-shadow-hover);
+        background: var(--color-accent-light);
+        transform: translateY(-1px);
+      }
+
+      /* Category Color Keyed Left Borders using design tokens from 0.2 */
+      .stat-card.stat-neutral {
+        border-left-color: var(--color-neutral);
+      }
+      .stat-card.stat-accent {
+        border-left-color: var(--color-accent);
+      }
+      .stat-card.stat-success {
+        border-left-color: var(--color-success);
+      }
+      .stat-card.stat-warning {
+        border-left-color: var(--color-warning);
+      }
+      .stat-card.stat-danger {
+        border-left-color: var(--color-danger);
+      }
+
       .stat-card .num {
-        font-size: 22px;
+        font-size: 28px;
         font-weight: 800;
         color: var(--slate-900);
         line-height: 1.1;
+        letter-spacing: -0.02em;
       }
       .stat-card .label {
-        font-size: 10.5px;
-        font-weight: 600;
+        font-size: 11px;
+        font-weight: 700;
         color: var(--slate-500);
         text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-top: 4px;
+        letter-spacing: 0.05em;
+        margin-top: 6px;
+        line-height: 1.25;
       }
       .stat-card .subtext {
-        font-size: 10px;
+        font-size: 10.5px;
         color: var(--slate-400);
-        margin-top: 2px;
+        margin-top: 3px;
+        font-weight: 500;
+        line-height: 1.2;
       }
 
       /* Distribution Progress Bar */
@@ -686,9 +1250,9 @@
         height: 100%;
         transition: width 0.3s ease;
       }
-      .dist-seg-pass { background: var(--success); }
-      .dist-seg-needs { background: var(--warning); }
-      .dist-seg-fail { background: var(--danger); }
+      .dist-seg-pass { background: var(--color-success); }
+      .dist-seg-needs { background: var(--color-warning); }
+      .dist-seg-fail { background: var(--color-danger); }
       .dist-bar-legend {
         display: flex;
         flex-wrap: wrap;
@@ -790,10 +1354,31 @@
         background: var(--slate-200);
         color: var(--slate-900);
       }
+      th.sortable:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: -2px;
+        background: var(--slate-200);
+      }
       .th-content {
         display: inline-flex;
         align-items: center;
         gap: 5px;
+      }
+      .sort-icon {
+        display: inline-block;
+        font-size: 11px;
+        line-height: 1;
+        transition: color 0.15s ease, opacity 0.15s ease;
+      }
+      .sort-icon.sort-neutral {
+        color: var(--slate-400);
+        opacity: 0.45;
+        font-weight: 400;
+      }
+      .sort-icon.sort-active {
+        color: var(--color-accent);
+        opacity: 1;
+        font-weight: 700;
       }
       td {
         border-bottom: 1px solid var(--slate-100);
@@ -807,11 +1392,19 @@
       tr.main-row:hover td {
         background: var(--slate-100);
       }
+      tr.main-row:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: -2px;
+        background: var(--color-accent-light);
+      }
+      tr.main-row:focus-visible td {
+        background: var(--color-accent-light);
+      }
       tr.main-row.active-row td {
-        background: #eff6ff;
+        background: var(--color-accent-light);
       }
       tr.row-failed td {
-        background: #fff8f8;
+        background: var(--color-danger-light);
       }
       tr.row-failed:hover td {
         background: #fee2e2;
@@ -844,16 +1437,16 @@
         height: 100%;
       }
       .score-seg-success {
-        background: var(--success);
+        background: var(--color-success);
       }
       .score-seg-warning {
-        background: var(--warning);
+        background: var(--color-warning);
       }
       .score-seg-danger {
-        background: var(--danger);
+        background: var(--color-danger);
       }
       .score-seg-empty {
-        background: var(--slate-300);
+        background: var(--color-neutral-border);
       }
 
       /* Slide-over Right Drawer */
@@ -876,8 +1469,8 @@
         top: 0;
         right: 0;
         bottom: 0;
-        width: 480px;
-        max-width: 92vw;
+        width: 540px;
+        max-width: 95vw;
         height: 100vh;
         background: #ffffff;
         z-index: 999;
@@ -901,7 +1494,7 @@
       }
       .drawer-close-btn {
         background: #ffffff;
-        border: 1px solid var(--slate-200);
+        border: 1px solid var(--color-neutral-border);
         border-radius: 6px;
         width: 28px;
         height: 28px;
@@ -909,14 +1502,14 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: var(--slate-600);
+        color: var(--color-neutral);
         font-size: 13px;
         transition: all 0.15s ease;
       }
       .drawer-close-btn:hover {
-        background: var(--slate-100);
+        background: var(--color-neutral-light);
         color: var(--slate-900);
-        border-color: var(--slate-300);
+        border-color: var(--slate-400);
       }
       .drawer-scroll-body {
         flex: 1;
@@ -931,67 +1524,191 @@
         gap: 14px;
         margin-bottom: 10px;
       }
+      .slide-over-drawer .eval-card {
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 16px;
+      }
       .slide-over-drawer .verdict-banner {
         margin-bottom: 0;
+        padding: 16px;
+      }
+      .slide-over-drawer .verdict-row-1 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .slide-over-drawer .verdict-score {
+        font-size: 22px;
+      }
+      .slide-over-drawer .verdict-score small {
+        font-size: 11.5px;
+      }
+      .slide-over-drawer .verdict-row-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .slide-over-drawer .verdict-summary-text {
+        flex: none;
+        width: 100%;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .slide-over-drawer .how-scored-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-self: flex-start;
+      }
+      .slide-over-drawer .scoring-popover {
+        left: 0;
+        right: auto;
+        width: 320px;
+        box-sizing: border-box;
+        z-index: 1050;
+      }
+
+      /* Drawer Context Cards (Question, AI Response, Reference Answer) */
+      .drawer-context-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .drawer-context-card {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 12px 14px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .drawer-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--slate-100);
+        padding-bottom: 6px;
+      }
+      .drawer-card-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--slate-500);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .drawer-card-body {
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--slate-800);
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+      .drawer-card-body.text-muted {
+        color: var(--slate-400);
+        font-style: italic;
+      }
+      .slide-over-drawer .status-chips-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .slide-over-drawer .status-chip {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        height: auto;
+        min-height: 38px;
+        justify-content: flex-start;
+        text-align: left;
+        padding: 6px 10px;
+        font-size: 11.5px;
+        line-height: 1.35;
+        word-break: break-word;
       }
 
       mark.highlight {
-        background-color: #fef08a;
-        color: #854d0e;
+        background-color: var(--color-accent-light);
+        color: #1e40af;
         padding: 0 2px;
         border-radius: 2px;
+        font-weight: 600;
       }
 
       .copy-btn {
         background: none;
-        border: 1px solid var(--slate-200);
+        border: 1px solid var(--color-neutral-border);
         border-radius: 4px;
         padding: 2px 7px;
         font-size: 11px;
         cursor: pointer;
-        color: var(--slate-600);
+        color: var(--color-neutral-text);
         display: inline-flex;
         align-items: center;
         gap: 4px;
         transition: all 0.15s ease;
       }
       .copy-btn:hover {
-        background: var(--slate-100);
+        background: var(--color-neutral-light);
         color: var(--slate-900);
+      }
+      .copy-btn:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
       }
 
       /* Filter chip buttons */
       .filter-chip {
         background: #ffffff;
-        border: 1px solid var(--slate-200);
+        border: 1px solid var(--color-neutral-border);
         border-radius: 6px;
         padding: 5px 12px;
         font-size: 12px;
         font-weight: 500;
         cursor: pointer;
-        color: var(--slate-700);
+        color: var(--slate-800);
         display: inline-flex;
         align-items: center;
         gap: 6px;
         transition: all 0.15s ease;
       }
       .filter-chip:hover {
-        background: var(--slate-100);
+        background: var(--color-neutral-light);
         color: var(--slate-900);
       }
+      .filter-chip:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
       .filter-chip.filter-active {
-        background: var(--primary) !important;
+        background: var(--color-accent) !important;
         color: #ffffff !important;
-        border-color: var(--primary) !important;
+        border-color: var(--color-accent) !important;
         font-weight: 600;
+      }
+      .filter-chip.filter-active:focus-visible {
+        outline: 2px solid var(--slate-900);
+        outline-offset: 2px;
+      }
+      .filter-chip.filter-active::before {
+        content: "✓";
+        font-size: 11px;
+        font-weight: 800;
+        display: inline-block;
+        line-height: 1;
+        margin-right: 1px;
       }
       .filter-chip.filter-active .chip-count {
         background: rgba(255, 255, 255, 0.25);
         color: #ffffff;
       }
       .chip-count {
-        background: var(--slate-100);
-        color: var(--slate-600);
+        background: var(--color-neutral-light);
+        color: var(--color-neutral-text);
         font-size: 10.5px;
         padding: 1px 6px;
         border-radius: 10px;
@@ -1001,7 +1718,7 @@
       /* Pagination controls */
       .page-btn {
         background: #ffffff;
-        border: 1px solid var(--slate-200);
+        border: 1px solid var(--color-neutral-border);
         border-radius: 6px;
         padding: 5px 11px;
         font-size: 12px;
@@ -1011,14 +1728,14 @@
         transition: all 0.15s ease;
       }
       .page-btn:hover:not(:disabled) {
-        background: var(--slate-100);
+        background: var(--color-neutral-light);
         color: var(--slate-900);
-        border-color: var(--slate-300);
+        border-color: var(--slate-400);
       }
       .page-btn.active {
-        background: var(--primary);
+        background: var(--color-accent);
         color: #ffffff;
-        border-color: var(--primary);
+        border-color: var(--color-accent);
         font-weight: 700;
       }
       .page-btn:disabled {
@@ -1062,8 +1779,8 @@
         padding-bottom: 12px;
       }
       .modal-close-btn {
-        background: var(--slate-100);
-        border: 1px solid var(--slate-200);
+        background: var(--color-neutral-light);
+        border: 1px solid var(--color-neutral-border);
         border-radius: 6px;
         width: 30px;
         height: 30px;
@@ -1071,7 +1788,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: var(--slate-600);
+        color: var(--color-neutral);
         transition: all 0.15s ease;
       }
       .modal-close-btn:hover {
@@ -1091,13 +1808,13 @@
         margin-top: 14px;
       }
       .alert-box.danger {
-        background: var(--danger-light);
-        border: 1px solid var(--danger-border);
+        background: var(--color-danger-light);
+        border: 1px solid var(--color-danger-border);
         color: #991b1b;
       }
       .alert-box.info {
-        background: var(--primary-light);
-        border: 1px solid var(--primary-border);
+        background: var(--color-accent-light);
+        border: 1px solid var(--color-accent-border);
         color: #1e40af;
       }
     </style>
@@ -1112,12 +1829,12 @@
           <span style="color:var(--slate-400);">•</span>
           <span style="color:var(--slate-500);">Concurrency Limit: 5</span>
         </div>
-        <div class="agent-badges-list">
-          <span class="agent-tag">Relevance</span>
-          <span class="agent-tag">Factual Accuracy</span>
-          <span class="agent-tag">Hallucination Grounding</span>
-          <span class="agent-tag">Completeness</span>
-          <span class="agent-tag">Verdict Synthesis</span>
+        <div class="agent-badges-list" id="top-agent-badges">
+          <span class="agent-tag status-pending" id="badge-agent-relevance"><span class="agent-status-dot">○</span><span>Relevance</span></span>
+          <span class="agent-tag status-pending" id="badge-agent-accuracy"><span class="agent-status-dot">○</span><span>Factual Accuracy</span></span>
+          <span class="agent-tag status-pending" id="badge-agent-hallucination"><span class="agent-status-dot">○</span><span>Hallucination Grounding</span></span>
+          <span class="agent-tag status-pending" id="badge-agent-completeness"><span class="agent-status-dot">○</span><span>Completeness</span></span>
+          <span class="agent-tag status-pending" id="badge-agent-verdict"><span class="agent-status-dot">○</span><span>Verdict Synthesis</span></span>
         </div>
       </div>
 
@@ -1148,20 +1865,20 @@
       <div id="tab-single" class="tab-content active">
         <div class="presets-bar">
           <span>Benchmark Presets:</span>
-          <button class="preset-chip" onclick="loadSample('pass')">
-            <span class="dist-dot" style="background:var(--success);"></span>
+          <button type="button" class="preset-chip" onclick="loadSample('pass')" aria-label="Load preset: Quality Grounded (Pass)">
+            <span class="dist-dot" style="background:var(--color-success);" aria-hidden="true"></span>
             <span>Quality Grounded (Pass)</span>
           </button>
-          <button class="preset-chip" onclick="loadSample('incomplete')">
-            <span class="dist-dot" style="background:var(--warning);"></span>
+          <button type="button" class="preset-chip" onclick="loadSample('incomplete')" aria-label="Load preset: Missing Requirements (Needs Improvement)">
+            <span class="dist-dot" style="background:var(--color-warning);" aria-hidden="true"></span>
             <span>Missing Requirements (Needs Imp)</span>
           </button>
-          <button class="preset-chip" onclick="loadSample('hallucinated')">
-            <span class="dist-dot" style="background:var(--danger);"></span>
+          <button type="button" class="preset-chip" onclick="loadSample('hallucinated')" aria-label="Load preset: Hallucinated Facts (Fail / Needs Improvement)">
+            <span class="dist-dot" style="background:var(--color-danger);" aria-hidden="true"></span>
             <span>Hallucinated Facts (Fail / Needs Imp)</span>
           </button>
-          <button class="preset-chip" onclick="loadSample('contradicted')">
-            <span class="dist-dot" style="background:var(--danger);"></span>
+          <button type="button" class="preset-chip" onclick="loadSample('contradicted')" aria-label="Load preset: Contradicted Fact (Fail)">
+            <span class="dist-dot" style="background:var(--color-danger);" aria-hidden="true"></span>
             <span>Contradicted Fact (Fail)</span>
           </button>
         </div>
@@ -1225,9 +1942,9 @@
                 Upload a CSV containing 100+ questions & AI responses. Required columns: <code>questions</code> and <code>ai_responses</code>.
               </p>
             </div>
-            <a href="/api/v1/batch/sample/template.csv" class="btn btn-secondary btn-sm" style="text-decoration: none;">
+            <a href="/api/v1/batch/sample/template.csv" class="btn btn-secondary btn-sm" style="text-decoration: none;" aria-label="Download benchmark CSV template (100+ records)">
               <!-- Standard SVG Download Icon -->
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
@@ -1237,11 +1954,11 @@
           </div>
 
           <!-- Upload Dropzone (Clean SVG, no emojis) -->
-          <div id="dropzone" class="dropzone" onclick="document.getElementById('csv-file-input').click()">
-            <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="handleFileSelected(this.files[0])" />
+          <div id="dropzone" class="dropzone" onclick="handleDropzoneClick(event)" role="button" tabindex="0" aria-label="Upload CSV file: Drag and drop CSV here or press Enter to browse files" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('csv-file-input').click();}">
+            <input type="file" id="csv-file-input" accept=".csv" style="display: none;" aria-label="Select CSV benchmark file to upload" onchange="if (this.files && this.files.length) handleFileSelected(this.files[0])" />
             <div class="dropzone-icon">
               <!-- Standard SVG File Upload Icon -->
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                 <polyline points="14 2 14 8 20 8"/>
                 <line x1="12" y1="18" x2="12" y2="12"/>
@@ -1254,13 +1971,26 @@
             <div style="font-size: 12px; color: var(--slate-500);">
               Optimized for 100+ records. Empty questions allowed. Validates required columns.
             </div>
+
+            <!-- Inline Error Display on Dropzone -->
+            <div id="dropzone-inline-error" class="dropzone-inline-error">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <div style="flex:1;">
+                <span id="dropzone-error-text"></span>
+              </div>
+              <button type="button" onclick="clearDropzoneError(event)" style="background:none; border:none; color:inherit; font-size:15px; cursor:pointer; line-height:1; padding:2px;" title="Dismiss error" aria-label="Dismiss CSV upload error">✕</button>
+            </div>
           </div>
 
           <!-- Instant CSV Pre-flight Validation Card -->
           <div id="csv-preview-card" class="csv-preview-card">
             <div class="csv-preview-header">
               <div style="display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--slate-500);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--slate-500);" aria-hidden="true">
                   <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
                   <polyline points="13 2 13 9 20 9"></polyline>
                 </svg>
@@ -1280,15 +2010,15 @@
                 <span id="preview-col-reference" class="csv-badge-col">reference_answer (optional)</span>
               </div>
               <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-secondary btn-sm" onclick="clearSelectedFile()">Cancel</button>
-                <button id="start-batch-btn" class="btn btn-primary btn-sm" onclick="startBatchUpload()">Start Batch Evaluation</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="clearSelectedFile()" aria-label="Cancel selected CSV file">Cancel</button>
+                <button id="start-batch-btn" class="btn btn-primary btn-sm" onclick="startBatchUpload()" aria-label="Start multi-agent batch evaluation">Start Batch Evaluation</button>
               </div>
             </div>
           </div>
 
           <!-- Validation Error Box (Clean SVG, no emojis) -->
           <div id="batch-error-box" class="alert-box danger" style="display: none;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true">
               <circle cx="12" cy="12" r="10"/>
               <line x1="12" y1="8" x2="12" y2="12"/>
               <line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -1297,7 +2027,7 @@
               <strong style="font-size: 13px;">CSV Validation Error</strong>
               <div id="batch-error-msg" style="margin-top: 2px;"></div>
             </div>
-            <button type="button" onclick="document.getElementById('batch-error-box').style.display='none'" style="background:none; border:none; color:inherit; font-size:16px; cursor:pointer; line-height:1;">✕</button>
+            <button type="button" onclick="document.getElementById('batch-error-box').style.display='none'" style="background:none; border:none; color:inherit; font-size:16px; cursor:pointer; line-height:1;" aria-label="Dismiss CSV validation error alert">✕</button>
           </div>
 
           <!-- Evaluation Progress Bar -->
@@ -1312,176 +2042,210 @@
           </div>
         </div>
 
-        <!-- Batch Results Dashboard Section -->
-        <div id="batch-results-section" style="display: none;">
-          <!-- 1. Interactive Stat Cards Grid (Clickable Filters) -->
-          <div class="stats-grid" id="batch-stats-grid"></div>
+        <!-- Batch Results Dashboard Section (3 Visually Distinct Zones) -->
+        <div id="batch-results-section" style="display: none;" class="batch-dashboard-zones">
 
-          <!-- 2. Horizontal Verdict Distribution Bar -->
-          <div class="dist-bar-wrap" id="batch-dist-wrap">
-            <div class="dist-bar-header">
-              <span>Overall Verdict Distribution</span>
-              <span id="dist-bar-summary-text" style="color:var(--slate-500); font-weight:500;"></span>
+          <!-- ZONE 1: OVERVIEW -->
+          <section class="zone-card zone-overview" id="zone-overview">
+            <div class="zone-header">
+              <span class="zone-badge">Zone 1</span>
+              <h3 class="zone-title">Overview</h3>
+              <span class="zone-subtitle">High-level KPI statistics, volume counts, and verdict distribution</span>
             </div>
-            <div class="dist-segmented-bar" id="dist-segmented-bar">
-              <div id="seg-pass" class="dist-seg dist-seg-pass" style="width: 0%;" title="Pass"></div>
-              <div id="seg-needs" class="dist-seg dist-seg-needs" style="width: 0%;" title="Needs Improvement"></div>
-              <div id="seg-fail" class="dist-seg dist-seg-fail" style="width: 0%;" title="Fail"></div>
-            </div>
-            <div class="dist-bar-legend">
-              <div class="dist-legend-item">
-                <span class="dist-dot" style="background:var(--success);"></span>
-                <span id="legend-pass">Pass: 0%</span>
+
+            <!-- 1. Interactive Stat Cards Grid (Clickable Filters) -->
+            <div class="stats-grid" id="batch-stats-grid"></div>
+
+            <!-- 2. Horizontal Verdict Distribution Bar -->
+            <div class="dist-bar-wrap" id="batch-dist-wrap">
+              <div class="dist-bar-header">
+                <span>Overall Verdict Distribution</span>
+                <span id="dist-bar-summary-text" style="color:var(--slate-500); font-weight:500;"></span>
               </div>
-              <div class="dist-legend-item">
-                <span class="dist-dot" style="background:var(--warning);"></span>
-                <span id="legend-needs">Needs Improvement: 0%</span>
+              <div class="dist-segmented-bar" id="dist-segmented-bar">
+                <div id="seg-pass" class="dist-seg dist-seg-pass" style="width: 0%;" title="Pass"></div>
+                <div id="seg-needs" class="dist-seg dist-seg-needs" style="width: 0%;" title="Needs Improvement"></div>
+                <div id="seg-fail" class="dist-seg dist-seg-fail" style="width: 0%;" title="Fail"></div>
               </div>
-              <div class="dist-legend-item">
-                <span class="dist-dot" style="background:var(--danger);"></span>
-                <span id="legend-fail">Fail: 0%</span>
+              <div class="dist-bar-legend">
+                <div class="dist-legend-item">
+                  <span class="dist-dot" style="background:var(--color-success);"></span>
+                  <span id="legend-pass">Pass: 0%</span>
+                </div>
+                <div class="dist-legend-item">
+                  <span class="dist-dot" style="background:var(--color-warning);"></span>
+                  <span id="legend-needs">Needs Improvement: 0%</span>
+                </div>
+                <div class="dist-legend-item">
+                  <span class="dist-dot" style="background:var(--color-danger);"></span>
+                  <span id="legend-fail">Fail: 0%</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- 3. Dimension Quality Averages -->
-          <div class="dim-meters-grid" id="batch-dim-meters"></div>
+            <!-- 3. Dimension Quality Averages -->
+            <div class="dim-meters-grid" id="batch-dim-meters"></div>
+          </section>
 
-          <!-- 4. Overall Evaluation Summary Box -->
-          <div class="panel-card" style="margin-bottom: 16px; padding: 14px 18px; background: #ffffff;">
-            <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 4px; color: var(--slate-900);">
-              Executive Evaluation Summary
-            </div>
-            <div id="batch-summary-text" style="font-size: 13px; color: var(--slate-600); line-height: 1.55;"></div>
-          </div>
-
-          <!-- 5. Controls, Filter Chips, Density and Search Bar -->
-          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 18px;">
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;" id="batch-filter-buttons">
-              <button class="filter-chip filter-active" id="btn-filter-ALL" onclick="filterBatch('ALL')">
-                <span>All</span>
-                <span class="chip-count" id="count-filter-ALL">0</span>
-              </button>
-              <button class="filter-chip" id="btn-filter-Pass" onclick="filterBatch('Pass')">
-                <span>Pass</span>
-                <span class="chip-count" id="count-filter-Pass">0</span>
-              </button>
-              <button class="filter-chip" id="btn-filter-Needs-Improvement" onclick="filterBatch('Needs Improvement')">
-                <span>Needs Improvement</span>
-                <span class="chip-count" id="count-filter-Needs-Improvement">0</span>
-              </button>
-              <button class="filter-chip" id="btn-filter-Fail" onclick="filterBatch('Fail')">
-                <span>Fail</span>
-                <span class="chip-count" id="count-filter-Fail">0</span>
-              </button>
-              <button class="filter-chip" id="btn-filter-SKIPPED" onclick="filterBatch('SKIPPED')">
-                <span>Skipped / Errors</span>
-                <span class="chip-count" id="count-filter-SKIPPED">0</span>
-              </button>
-              <button class="filter-chip" id="btn-filter-HAL" onclick="filterBatch('HAL')" title="Show rows where hallucination was flagged">
-                <span>Flagged Hallucinations</span>
-                <span class="chip-count" id="count-filter-HAL">0</span>
-              </button>
-              <button class="filter-chip" id="btn-filter-EMPTY" onclick="filterBatch('EMPTY')" title="Show rows with empty questions">
-                <span>Empty Questions</span>
-                <span class="chip-count" id="count-filter-EMPTY">0</span>
-              </button>
+          <!-- ZONE 2: INSIGHTS -->
+          <section class="zone-card zone-insights" id="zone-insights">
+            <div class="zone-header">
+              <span class="zone-badge accent">Zone 2</span>
+              <h3 class="zone-title">Insights</h3>
+              <span class="zone-subtitle">AI-synthesized diagnostic analysis and dominant failure dimension detection</span>
             </div>
 
-            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
-              <!-- Table Density Toggle -->
-              <button class="btn btn-secondary btn-sm" id="density-btn" onclick="toggleDensity()" title="Toggle compact / comfortable table rows">
-                <span id="density-label">Compact Rows</span>
-              </button>
+            <div class="insight-content-box" id="batch-insights-box">
+              <div id="batch-summary-text"></div>
+            </div>
+          </section>
 
-              <select id="batch-page-size" onchange="changePageSize(this.value)" style="font-size: 12px; padding: 6px 10px; border: 1px solid var(--slate-300); border-radius: 6px; background: #fff; color:var(--slate-700);">
-                <option value="10">10 rows / page</option>
-                <option value="25" selected>25 rows / page</option>
-                <option value="50">50 rows / page</option>
-                <option value="100">100 rows / page</option>
-                <option value="all">Show All Rows</option>
-              </select>
+          <!-- ZONE 3: DATA -->
+          <section class="zone-card zone-data" id="zone-data">
+            <div class="zone-header">
+              <span class="zone-badge">Zone 3</span>
+              <h3 class="zone-title">Data</h3>
+              <span class="zone-subtitle">Granular response records, multi-facet filtering, search, and full dataset export</span>
+            </div>
 
-              <div style="position: relative;">
-                <input type="text" id="table-search" placeholder="Search rows..." style="width: 190px; font-size: 12px; padding: 6px 28px 6px 10px;" oninput="searchBatch(this.value)" />
-                <button type="button" onclick="clearSearch()" id="clear-search-btn" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 12px; color: var(--slate-400); cursor: pointer; display: none;">✕</button>
+            <!-- Sticky Toolbar (Filters, Search, Export, Density) -->
+            <div class="batch-data-toolbar" id="batch-data-toolbar" role="toolbar" aria-label="Batch table filters and controls">
+              <div class="toolbar-left" id="batch-filter-buttons" role="group" aria-label="Filter benchmark rows">
+                <button type="button" class="filter-chip filter-active" id="btn-filter-ALL" onclick="filterBatch('ALL')" aria-label="Filter by all records" aria-pressed="true">
+                  <span>All</span>
+                  <span class="chip-count" id="count-filter-ALL">0</span>
+                </button>
+                <button type="button" class="filter-chip" id="btn-filter-Pass" onclick="filterBatch('Pass')" aria-label="Filter by Pass records" aria-pressed="false">
+                  <span>Pass</span>
+                  <span class="chip-count" id="count-filter-Pass">0</span>
+                </button>
+                <button type="button" class="filter-chip" id="btn-filter-Needs-Improvement" onclick="filterBatch('Needs Improvement')" aria-label="Filter by Needs Improvement records" aria-pressed="false">
+                  <span>Needs Improvement</span>
+                  <span class="chip-count" id="count-filter-Needs-Improvement">0</span>
+                </button>
+                <button type="button" class="filter-chip" id="btn-filter-Fail" onclick="filterBatch('Fail')" aria-label="Filter by Fail records" aria-pressed="false">
+                  <span>Fail</span>
+                  <span class="chip-count" id="count-filter-Fail">0</span>
+                </button>
+                <button type="button" class="filter-chip" id="btn-filter-SKIPPED" onclick="filterBatch('SKIPPED')" aria-label="Filter by Skipped and Error records" aria-pressed="false">
+                  <span>Skipped / Errors</span>
+                  <span class="chip-count" id="count-filter-SKIPPED">0</span>
+                </button>
+                <button type="button" class="filter-chip" id="btn-filter-HAL" onclick="filterBatch('HAL')" title="Show rows where hallucination was flagged" aria-label="Filter by flagged hallucinations" aria-pressed="false">
+                  <span>Flagged Hallucinations</span>
+                  <span class="chip-count" id="count-filter-HAL">0</span>
+                </button>
+                <button type="button" class="filter-chip" id="btn-filter-EMPTY" onclick="filterBatch('EMPTY')" title="Show rows with empty questions" aria-label="Filter by empty questions" aria-pressed="false">
+                  <span>Empty Questions</span>
+                  <span class="chip-count" id="count-filter-EMPTY">0</span>
+                </button>
               </div>
 
-              <!-- Export Full CSV -->
-              <button id="export-csv-btn" class="btn btn-secondary btn-sm" onclick="exportBatchCsv()" title="Download complete batch evaluation as CSV">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                <span>Export Full CSV</span>
-              </button>
+              <div class="toolbar-right">
+                <!-- Table Density Toggle -->
+                <button type="button" class="btn btn-secondary btn-sm" id="density-btn" onclick="toggleDensity()" title="Toggle compact / comfortable table rows" aria-label="Toggle compact or comfortable table row density">
+                  <span id="density-label">Compact Rows</span>
+                </button>
 
-              <!-- Export Filtered Rows -->
-              <button class="btn btn-secondary btn-sm" onclick="exportFilteredCsv()" title="Export only the currently filtered rows">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-                <span>Export Filtered</span>
-              </button>
+                <select id="batch-page-size" onchange="changePageSize(this.value)" style="font-size: 12px; padding: 6px 10px; border: 1px solid var(--slate-300); border-radius: 6px; background: #fff; color:var(--slate-700);" aria-label="Select rows per page">
+                  <option value="10">10 rows / page</option>
+                  <option value="25" selected>25 rows / page</option>
+                  <option value="50">50 rows / page</option>
+                  <option value="100">100 rows / page</option>
+                  <option value="all">Show All Rows</option>
+                </select>
 
-              <button class="btn btn-secondary btn-sm" onclick="clearBatchResults()">
-                <span>Upload New Batch</span>
-              </button>
+                <div style="position: relative;">
+                  <input type="text" id="table-search" placeholder="Search rows..." style="width: 170px; font-size: 12px; padding: 6px 28px 6px 10px;" oninput="searchBatch(this.value)" aria-label="Search rows by question or AI response text" />
+                  <button type="button" onclick="clearSearch()" id="clear-search-btn" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 12px; color: var(--slate-400); cursor: pointer; display: none;" aria-label="Clear search input">✕</button>
+                </div>
+
+                <!-- Export Full CSV -->
+                <button type="button" id="export-csv-btn" class="btn btn-secondary btn-sm" onclick="exportBatchCsv()" title="Download complete batch evaluation as CSV" aria-label="Download complete batch evaluation as CSV">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  <span>Export Full CSV</span>
+                </button>
+
+                <!-- Export Filtered Rows -->
+                <button type="button" class="btn btn-secondary btn-sm" onclick="exportFilteredCsv()" title="Export only the currently filtered rows" aria-label="Export currently filtered batch records as CSV">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                  </svg>
+                  <span>Export Filtered</span>
+                </button>
+
+                <button type="button" class="btn btn-secondary btn-sm" onclick="clearBatchResults()" aria-label="Clear results and upload a new CSV batch">
+                  <span>Upload New Batch</span>
+                </button>
+              </div>
             </div>
-          </div>
 
-          <!-- 6. Results Table -->
-          <div class="table-container">
-            <div class="table-wrap">
-              <table id="batch-main-table" class="density-comfortable">
-                <thead>
-                  <tr>
-                    <th style="width: 50px; text-align: center;" class="sortable" onclick="sortTable('index')">
-                      <div class="th-content" style="justify-content:center;">
-                        <span>#</span>
-                        <span id="sort-icon-index">↕</span>
-                      </div>
-                    </th>
-                    <th>Question</th>
-                    <th>AI Response</th>
-                    <th style="width: 85px; text-align: center;" title="Scores: Relevance, Accuracy, Groundedness, Completeness">
-                      Scores
-                    </th>
-                    <th style="width: 115px; text-align: center;" class="sortable" onclick="sortTable('verdict')" title="Final verdict category and composite quality score">
-                      <div class="th-content" style="justify-content:center;">
-                        <span>Verdict</span>
-                        <span id="sort-icon-verdict">↕</span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="batch-table-body"></tbody>
-              </table>
+            <!-- Results Table -->
+            <div class="table-container">
+              <div class="table-wrap">
+                <table id="batch-main-table" class="density-comfortable" aria-label="Benchmark records table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px; text-align: center;" class="sortable" id="th-sort-index" onclick="sortTable('index')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('index');}" tabindex="0" role="button" aria-label="Sort by index" aria-sort="ascending" title="Sort by index">
+                        <div class="th-content" style="justify-content:center;">
+                          <span>#</span>
+                          <span id="sort-icon-index" class="sort-icon sort-active" aria-hidden="true">↑</span>
+                        </div>
+                      </th>
+                      <th style="width: calc(50% - 125px); text-align: left;" class="sortable" id="th-sort-question" onclick="sortTable('question')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('question');}" tabindex="0" role="button" aria-label="Sort by question text" aria-sort="none" title="Sort by question text">
+                        <div class="th-content">
+                          <span>Question</span>
+                          <span id="sort-icon-question" class="sort-icon sort-neutral" aria-hidden="true">↕</span>
+                        </div>
+                      </th>
+                      <th style="width: calc(50% - 125px); text-align: left;" class="sortable" id="th-sort-response" onclick="sortTable('response')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('response');}" tabindex="0" role="button" aria-label="Sort by AI response text" aria-sort="none" title="Sort by AI response text">
+                        <div class="th-content">
+                          <span>AI Response</span>
+                          <span id="sort-icon-response" class="sort-icon sort-neutral" aria-hidden="true">↕</span>
+                        </div>
+                      </th>
+                      <th style="width: 85px; text-align: center;" title="Scores: Relevance, Accuracy, Groundedness, Completeness">
+                        Scores
+                      </th>
+                      <th style="width: 115px; text-align: center;" class="sortable" id="th-sort-verdict" onclick="sortTable('verdict')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('verdict');}" tabindex="0" role="button" aria-label="Sort by final verdict and composite score" aria-sort="none" title="Final verdict category and composite quality score">
+                        <div class="th-content" style="justify-content:center;">
+                          <span>Verdict</span>
+                          <span id="sort-icon-verdict" class="sort-icon sort-neutral" aria-hidden="true">↕</span>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="batch-table-body"></tbody>
+                </table>
+              </div>
             </div>
-          </div>
 
-          <!-- 7. Pagination Bar -->
-          <div id="batch-pagination" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--slate-500);">
-            <div id="pagination-info">Showing 0 rows</div>
-            <div style="display: flex; gap: 4px; align-items: center;" id="pagination-buttons"></div>
-          </div>
+            <!-- Pagination Bar -->
+            <div id="batch-pagination" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--slate-500);">
+              <div id="pagination-info">Showing 0 rows</div>
+              <div style="display: flex; gap: 4px; align-items: center;" id="pagination-buttons"></div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
 
     <!-- Slide-over Drawer for Inspecting Detailed Record Results -->
-    <div id="drawer-backdrop" class="drawer-backdrop" onclick="closeRecordDrawer()"></div>
-    <aside id="record-drawer" class="slide-over-drawer" aria-label="Record Evaluation Drawer">
+    <div id="drawer-backdrop" class="drawer-backdrop" onclick="closeRecordDrawer()" aria-hidden="true"></div>
+    <aside id="record-drawer" class="slide-over-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-heading" tabindex="-1">
       <div class="drawer-header-bar">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <h2 style="font-size: 15px; font-weight: 700; margin: 0; color: var(--slate-900);">Evaluation Breakdown</h2>
+          <h2 id="drawer-heading" style="font-size: 15px; font-weight: 700; margin: 0; color: var(--slate-900);">Evaluation Breakdown</h2>
           <span id="drawer-record-badge" style="font-size: 11.5px; font-weight: 600; color: var(--slate-600); background: var(--slate-200); padding: 2px 7px; border-radius: 4px;"></span>
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <button class="btn btn-secondary btn-sm" id="drawer-prev-btn" onclick="navigateDrawer(-1)" title="Previous Record (Left Arrow)">« Prev</button>
-          <button class="btn btn-secondary btn-sm" id="drawer-next-btn" onclick="navigateDrawer(1)" title="Next Record (Right Arrow)">Next »</button>
-          <button class="drawer-close-btn" onclick="closeRecordDrawer()" title="Close Drawer (Esc)">✕</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="drawer-prev-btn" onclick="navigateDrawer(-1)" title="Previous Record (Left Arrow)" aria-label="View previous record (Left Arrow)">« Prev</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="drawer-next-btn" onclick="navigateDrawer(1)" title="Next Record (Right Arrow)" aria-label="View next record (Right Arrow)">Next »</button>
+          <button type="button" class="drawer-close-btn" id="drawer-close-btn" onclick="closeRecordDrawer()" title="Close Drawer (Esc)" aria-label="Close record drawer (Escape)">✕</button>
         </div>
       </div>
       <div id="drawer-content" class="drawer-scroll-body"></div>
@@ -1529,6 +2293,44 @@
       }
 
       // -------------------------------------------------------------
+      // Scoring Methodology Popover Handlers
+      // -------------------------------------------------------------
+      function toggleScoringPopover(btn, event) {
+        if (event) event.stopPropagation();
+        const popover = btn.nextElementSibling;
+        if (!popover) return;
+        const isShown = popover.classList.contains("show");
+        document.querySelectorAll(".scoring-popover.show").forEach(p => p.classList.remove("show"));
+        document.querySelectorAll(".how-scored-btn").forEach(b => b.setAttribute("aria-expanded", "false"));
+        if (!isShown) {
+          popover.classList.add("show");
+          btn.setAttribute("aria-expanded", "true");
+          const closeBtn = popover.querySelector(".popover-close");
+          if (closeBtn) closeBtn.focus();
+        }
+      }
+
+      function closeScoringPopover(event) {
+        if (event) event.stopPropagation();
+        document.querySelectorAll(".scoring-popover.show").forEach(p => {
+          p.classList.remove("show");
+          const btn = p.previousElementSibling;
+          if (btn && btn.classList.contains("how-scored-btn")) {
+            btn.setAttribute("aria-expanded", "false");
+            btn.focus();
+          }
+        });
+      }
+
+      document.addEventListener("click", () => {
+        document.querySelectorAll(".scoring-popover.show").forEach(p => {
+          p.classList.remove("show");
+          const btn = p.previousElementSibling;
+          if (btn) btn.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      // -------------------------------------------------------------
       // Single Evaluation Presets & Counters
       // -------------------------------------------------------------
       const samples = {
@@ -1573,12 +2375,44 @@
         document.getElementById("response-counter").textContent = `${aWords} words, ${aVal.length} chars`;
       }
 
+      // -------------------------------------------------------------
+      // Top-Bar Live Agent Status Indicators
+      // -------------------------------------------------------------
+      const AGENT_CONFIGS = [
+        { key: "relevance", label: "Relevance", id: "badge-agent-relevance" },
+        { key: "accuracy", label: "Factual Accuracy", id: "badge-agent-accuracy" },
+        { key: "hallucination", label: "Hallucination Grounding", id: "badge-agent-hallucination" },
+        { key: "completeness", label: "Completeness", id: "badge-agent-completeness" },
+        { key: "verdict", label: "Verdict Synthesis", id: "badge-agent-verdict" },
+      ];
+
+      function setAgentStatus(agentKey, status) {
+        const cfg = AGENT_CONFIGS.find(a => a.key === agentKey);
+        if (!cfg) return;
+        const el = document.getElementById(cfg.id);
+        if (!el) return;
+
+        el.className = `agent-tag status-${status}`;
+        let iconHtml = '<span class="agent-status-dot">○</span>';
+        if (status === "running") {
+          iconHtml = '<span class="agent-status-spinner"></span>';
+        } else if (status === "done") {
+          iconHtml = '<span class="agent-status-check">✓</span>';
+        }
+        el.innerHTML = `${iconHtml}<span>${cfg.label}</span>`;
+      }
+
+      function resetAllAgents(status = "pending") {
+        AGENT_CONFIGS.forEach(a => setAgentStatus(a.key, status));
+      }
+
       function clearSingleForm() {
         document.getElementById("question").value = "";
         document.getElementById("ai_response").value = "";
         document.getElementById("reference_answer").value = "";
         updateCounters();
         document.getElementById("result-container").style.display = "none";
+        resetAllAgents("pending");
         try { sessionStorage.removeItem("last_single_eval"); } catch (e) {}
       }
 
@@ -1587,11 +2421,35 @@
       // -------------------------------------------------------------
       const form = document.getElementById("eval-form");
       const submitBtn = document.getElementById("submit-btn");
+      let singleEvalTimers = [];
+
+      function clearSingleEvalTimers() {
+        singleEvalTimers.forEach(t => clearTimeout(t));
+        singleEvalTimers = [];
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        clearSingleEvalTimers();
+
         submitBtn.disabled = true;
         submitBtn.textContent = "Synthesizing Multi-Agent Verdict…";
+
+        // Initial live agent states: dimensions running, verdict pending
+        setAgentStatus("relevance", "running");
+        setAgentStatus("accuracy", "running");
+        setAgentStatus("hallucination", "running");
+        setAgentStatus("completeness", "running");
+        setAgentStatus("verdict", "pending");
+
+        // Staggered visual transitions representing multi-agent pipeline stages
+        singleEvalTimers.push(setTimeout(() => setAgentStatus("relevance", "done"), 350));
+        singleEvalTimers.push(setTimeout(() => setAgentStatus("accuracy", "done"), 650));
+        singleEvalTimers.push(setTimeout(() => setAgentStatus("hallucination", "done"), 900));
+        singleEvalTimers.push(setTimeout(() => {
+          setAgentStatus("completeness", "done");
+          setAgentStatus("verdict", "running");
+        }, 1150));
 
         const payload = {
           question: document.getElementById("question").value,
@@ -1606,8 +2464,16 @@
             body: JSON.stringify(payload),
           });
           const data = await res.json();
+          clearSingleEvalTimers();
 
           if (res.ok) {
+            // All 5 agents completed successfully
+            setAgentStatus("relevance", "done");
+            setAgentStatus("accuracy", "done");
+            setAgentStatus("hallucination", "done");
+            setAgentStatus("completeness", "done");
+            setAgentStatus("verdict", "done");
+
             renderSingleResults(data);
             document.getElementById("result-container").style.display = "block";
             document.getElementById("result-container").scrollIntoView({ behavior: "smooth" });
@@ -1615,9 +2481,12 @@
               sessionStorage.setItem("last_single_eval", JSON.stringify({ payload, data }));
             } catch (e) {}
           } else {
+            resetAllAgents("pending");
             alert("Evaluation error: " + (data.detail || data.error || "Server error"));
           }
         } catch (err) {
+          clearSingleEvalTimers();
+          resetAllAgents("pending");
           alert("Network error: Could not reach backend server.");
         } finally {
           submitBtn.disabled = false;
@@ -1647,32 +2516,98 @@
           else executiveSummary = "The response failed critical quality standards due to factual inaccuracies, severe omissions, or ungrounded content.";
         }
 
-        // Verdict Banner HTML (clean, non-repetitive executive synthesis)
+        // 1. Relevance Status Chip
+        let relChip = "";
+        if (rel.score >= 0.8) {
+          relChip = `<div class="status-chip strength" title="Relevance: ${(rel.score * 100).toFixed(0)}%">✓ High Relevance</div>`;
+        } else if (rel.score >= 0.5) {
+          relChip = `<div class="status-chip issue" title="Relevance: ${(rel.score * 100).toFixed(0)}%">⚠ Partial Relevance</div>`;
+        } else {
+          relChip = `<div class="status-chip danger" title="Relevance: ${(rel.score * 100).toFixed(0)}%">✕ Low Relevance</div>`;
+        }
+
+        // 2. Accuracy Status Chip
+        let accChip = "";
+        if (acc.classification === "contradictory") {
+          accChip = `<div class="status-chip danger" title="Accuracy: Contradicted by ground truth">✕ Contradicted</div>`;
+        } else if (acc.score >= 0.8) {
+          accChip = `<div class="status-chip strength" title="Accuracy: ${(acc.score * 100).toFixed(0)}%">✓ High Accuracy</div>`;
+        } else if (acc.score >= 0.5) {
+          accChip = `<div class="status-chip issue" title="Accuracy: ${(acc.score * 100).toFixed(0)}%">⚠ Partial Accuracy</div>`;
+        } else {
+          accChip = `<div class="status-chip danger" title="Accuracy: ${(acc.score * 100).toFixed(0)}%">✕ Inaccurate</div>`;
+        }
+
+        // 3. Grounding Status Chip
+        let groundChip = "";
+        const groundedScoreVal = verd.dimension_scores?.groundedness ?? (1 - hal.hallucination_score);
+        if (hal.is_hallucinated && hal.hallucination_score > 0.5) {
+          groundChip = `<div class="status-chip danger" title="Groundedness: ${(groundedScoreVal * 100).toFixed(0)}%">✕ Severe Hallucination</div>`;
+        } else if (hal.is_hallucinated) {
+          groundChip = `<div class="status-chip issue" title="Groundedness: ${(groundedScoreVal * 100).toFixed(0)}%">⚠ Hallucination Flagged</div>`;
+        } else {
+          groundChip = `<div class="status-chip strength" title="Groundedness: ${(groundedScoreVal * 100).toFixed(0)}%">✓ Grounded Content</div>`;
+        }
+
+        // 4. Completeness Status Chip
+        let compChip = "";
+        if (comp.score >= 0.8) {
+          compChip = `<div class="status-chip strength" title="Completeness: ${(comp.score * 100).toFixed(0)}%">✓ Comprehensive Coverage</div>`;
+        } else if (comp.score >= 0.5) {
+          compChip = `<div class="status-chip issue" title="Completeness: ${(comp.score * 100).toFixed(0)}%">⚠ Partially Complete</div>`;
+        } else {
+          compChip = `<div class="status-chip danger" title="Completeness: ${(comp.score * 100).toFixed(0)}%">✕ Substantially Incomplete</div>`;
+        }
+
+        // Verdict Banner HTML (Row 1: Badge+Score, Row 2: Summary+Popover, Row 3: 4 Equal-Width Chips)
         const bannerHtml = `
           <div class="verdict-banner ${verdictClass}">
-            <div class="verdict-header">
-              <div style="display: flex; align-items: center; gap: 12px;">
-                <span class="verdict-badge ${verdictClass}">${escapeHtml(verd.verdict)}</span>
-                <div class="verdict-score">
-                  ${(verd.weighted_score * 100).toFixed(0)}%
-                  <small>Composite Score (${verd.weighted_score.toFixed(2)} / 1.0)</small>
+            <!-- Row 1: status badge + score only, nothing else on that line -->
+            <div class="verdict-row-1">
+              <span class="verdict-badge ${verdictClass}">${escapeHtml(verd.verdict)}</span>
+              <div class="verdict-score">
+                ${(verd.weighted_score * 100).toFixed(0)}%
+                <small>Composite Score (${verd.weighted_score.toFixed(2)} / 1.0)</small>
+              </div>
+            </div>
+
+            <!-- Row 2: one concise plain-English summary line + popover -->
+            <div class="verdict-row-2">
+              <div class="verdict-summary-text">${escapeHtml(executiveSummary)}</div>
+              <div class="how-scored-wrapper">
+                <button type="button" class="how-scored-btn" onclick="toggleScoringPopover(this, event)" title="Click to view scoring weights and methodology" aria-label="How this is scored: view scoring weights and thresholds" aria-haspopup="dialog" aria-expanded="false">
+                  <span class="info-circle-icon" aria-hidden="true">ⓘ</span>
+                  <span>how this is scored</span>
+                </button>
+                <div class="scoring-popover" role="dialog" aria-label="Scoring Methodology Details" onclick="event.stopPropagation()">
+                  <div class="popover-title-row">
+                    <span>Scoring Methodology</span>
+                    <button type="button" class="popover-close" onclick="closeScoringPopover(event)" aria-label="Close scoring methodology popover">✕</button>
+                  </div>
+                  <div class="popover-section-label">Dimension Weights</div>
+                  <div class="popover-weights-grid">
+                    <div class="popover-weight-row"><span>Factual Accuracy</span><strong>35%</strong></div>
+                    <div class="popover-weight-row"><span>Completeness</span><strong>25%</strong></div>
+                    <div class="popover-weight-row"><span>Relevance</span><strong>20%</strong></div>
+                    <div class="popover-weight-row"><span>Groundedness</span><strong>20%</strong></div>
+                  </div>
+                  <div class="popover-section-label" style="margin-top:8px;">Verdict Thresholds</div>
+                  <div class="popover-thresholds-grid">
+                    <div class="popover-thresh-item"><span class="badge success">Pass</span> ≥ 80% composite</div>
+                    <div class="popover-thresh-item"><span class="badge warning">Needs Improvement</span> 50% – 79%</div>
+                    <div class="popover-thresh-item"><span class="badge danger">Fail</span> &lt; 50% or safety override</div>
+                  </div>
                 </div>
               </div>
-              <div style="font-size: 12px; color: var(--slate-500); font-family: monospace;">
-                Weights: Accuracy 35% | Completeness 25% | Relevance 20% | Groundedness 20%
-              </div>
             </div>
 
-            <div style="font-size: 13.5px; line-height: 1.5; color: var(--slate-800); font-weight: 500;">
-              ${escapeHtml(executiveSummary)}
+            <!-- Row 3: 4 equal-width status chips (icon + short label) -->
+            <div class="status-chips-grid">
+              ${relChip}
+              ${accChip}
+              ${groundChip}
+              ${compChip}
             </div>
-
-            ${(verd.strengths.length > 0 || verd.major_issues.length > 0) ? `
-              <div class="pills-row" style="margin-top: 2px;">
-                ${verd.strengths.map(s => `<span class="pill pill-strength">✓ ${formatPillText(s)}</span>`).join("")}
-                ${verd.major_issues.map(i => `<span class="pill pill-issue">⚠ ${formatPillText(i)}</span>`).join("")}
-              </div>
-            ` : ''}
           </div>
         `;
 
@@ -1692,10 +2627,10 @@
         if (hal.flagged_claims && hal.flagged_claims.length > 0) {
           flaggedHtml = `
             <div style="margin-top:10px;">
-              <span style="font-size:11px;color:var(--danger);font-weight:700;">FLAGGED CLAIMS:</span>
+              <span style="font-size:11px;color:var(--color-danger);font-weight:700;">FLAGGED CLAIMS:</span>
               ${hal.flagged_claims.map(c => `
-                <div class="claim-item" style="border-left: 3px solid var(--danger);">
-                  <span class="claim-status" style="color:var(--danger);">[${escapeHtml(c.status.toUpperCase())}]</span> ${escapeHtml(c.claim)}
+                <div class="claim-item" style="border-left: 3px solid var(--color-danger);">
+                  <span class="claim-status" style="color:var(--color-danger);">[${escapeHtml(c.status.toUpperCase())}]</span> ${escapeHtml(c.claim)}
                   <div style="font-size:11px;color:var(--slate-500);margin-top:2px;"><strong>Reason:</strong> ${escapeHtml(c.explanation)}</div>
                 </div>
               `).join("")}
@@ -1709,9 +2644,12 @@
         const hasMissing = comp.missing_aspects && comp.missing_aspects.length > 0;
         if (hasAddressed || hasMissing) {
           aspectsHtml = `
-            <div style="display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0;">
-              ${(comp.addressed_aspects || []).map(a => `<span class="aspect-tag aspect-addressed">✓ ${escapeHtml(cleanAspect(a))}</span>`).join("")}
-              ${(comp.missing_aspects || []).map(m => `<span class="aspect-tag aspect-missing">⚠ Missing: ${escapeHtml(cleanAspect(m))}</span>`).join("")}
+            <div style="margin-top:8px;">
+              <span style="font-size:11px;color:var(--slate-500);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">Aspect Coverage:</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px;">
+                ${(comp.addressed_aspects || []).map(a => `<span class="aspect-tag aspect-addressed">✓ ${escapeHtml(cleanAspect(a))}</span>`).join("")}
+                ${(comp.missing_aspects || []).map(m => `<span class="aspect-tag aspect-missing">⚠ Missing: ${escapeHtml(cleanAspect(m))}</span>`).join("")}
+              </div>
             </div>
           `;
         }
@@ -1809,23 +2747,125 @@
       let sortDirection = "asc";
       let isCompact = false;
       let activeDrawerRecordIndex = null;
+      let lastFocusedElementBeforeDrawer = null;
+
+      function handleDropzoneClick(e) {
+        if (e.target.closest('#dropzone-inline-error')) {
+          return;
+        }
+        document.getElementById('csv-file-input').click();
+      }
+
+      function showDropzoneError(message) {
+        selectedBatchFile = null;
+        const dropzoneEl = document.getElementById("dropzone");
+        const inlineError = document.getElementById("dropzone-inline-error");
+        const errorText = document.getElementById("dropzone-error-text");
+        const previewCard = document.getElementById("csv-preview-card");
+        const startBtn = document.getElementById("start-batch-btn");
+
+        if (dropzoneEl) dropzoneEl.classList.add("dropzone-error");
+        if (errorText) errorText.textContent = message;
+        if (inlineError) inlineError.classList.add("show");
+        if (previewCard) previewCard.style.display = "none";
+        if (startBtn) startBtn.disabled = true;
+      }
+
+      function clearDropzoneError(e) {
+        if (e) e.stopPropagation();
+        const dropzoneEl = document.getElementById("dropzone");
+        const inlineError = document.getElementById("dropzone-inline-error");
+        if (dropzoneEl) dropzoneEl.classList.remove("dropzone-error");
+        if (inlineError) inlineError.classList.remove("show");
+        const fileInput = document.getElementById("csv-file-input");
+        if (fileInput) fileInput.value = "";
+      }
+
+      function parseCsvHeader(line) {
+        const result = [];
+        let current = "";
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char === '"' || char === "'") {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            result.push(current.trim().replace(/^["']|["']$/g, ''));
+            current = "";
+          } else {
+            current += char;
+          }
+        }
+        result.push(current.trim().replace(/^["']|["']$/g, ''));
+        return result;
+      }
 
       function handleFileSelected(file) {
         if (!file) return;
-        selectedBatchFile = file;
+        clearDropzoneError();
         document.getElementById("batch-error-box").style.display = "none";
 
-        // Read first few KB to perform instant pre-flight validation
+        // 1. Specific Validation: File Extension / Type
+        const fileName = file.name || "";
+        const lowerName = fileName.toLowerCase();
+        if (!lowerName.endsWith(".csv")) {
+          showDropzoneError(`Wrong file type: Please upload a .csv file (detected: "${fileName}"). Only CSV format is supported.`);
+          return;
+        }
+
+        // 2. Specific Validation: File Size
+        if (file.size === 0) {
+          showDropzoneError(`Empty file: The file "${fileName}" is 0 bytes and contains no data.`);
+          return;
+        }
+        const maxSizeBytes = 25 * 1024 * 1024; // 25 MB limit
+        if (file.size > maxSizeBytes) {
+          const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+          showDropzoneError(`File too large: "${fileName}" (${sizeMB}MB) exceeds the 25MB maximum limit.`);
+          return;
+        }
+
+        selectedBatchFile = file;
+
+        // 3. Specific Validation: CSV Header and Columns
         const reader = new FileReader();
         reader.onload = (e) => {
           const content = e.target.result;
-          const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
-          const header = lines[0] ? lines[0].toLowerCase() : "";
-          const rowCount = Math.max(0, lines.length - 1);
+          if (!content || !content.trim()) {
+            showDropzoneError(`Empty file: The file "${fileName}" contains no CSV rows.`);
+            return;
+          }
 
-          const hasQuestions = header.includes("questions") || header.includes("question");
-          const hasResponses = header.includes("ai_responses") || header.includes("ai_response");
-          const hasRef = header.includes("reference_answer") || header.includes("reference");
+          const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
+          if (lines.length === 0) {
+            showDropzoneError(`Empty file: The file "${fileName}" contains no records.`);
+            return;
+          }
+
+          const headerLine = lines[0] || "";
+          const rawHeaders = parseCsvHeader(headerLine);
+          const normHeaders = rawHeaders.map(h => h.toLowerCase().trim().replace(/[- ]/g, "_").replace(/^\ufeff/, ""));
+
+          const QUESTION_VARIANTS = ["question", "questions", "query", "prompt", "q", "user_question", "input"];
+          const RESPONSE_VARIANTS = ["ai_response", "ai_responses", "response", "answer", "a", "ai_answer", "output", "model_response", "completion", "generated_response", "llm_response", "model_answer"];
+          const REFERENCE_VARIANTS = ["reference_answer", "reference", "ref_answer", "ground_truth", "expected_answer", "correct_answer", "target", "reference_response", "ideal_answer"];
+
+          const hasQuestions = normHeaders.some(h => QUESTION_VARIANTS.includes(h));
+          const hasResponses = normHeaders.some(h => RESPONSE_VARIANTS.includes(h));
+          const hasRef = normHeaders.some(h => REFERENCE_VARIANTS.includes(h));
+
+          if (!hasQuestions || !hasResponses) {
+            const missing = [];
+            if (!hasQuestions) missing.push("'questions'");
+            if (!hasResponses) missing.push("'ai_responses'");
+            const detectedStr = rawHeaders.length > 0 ? ` Detected columns: [${rawHeaders.join(", ")}].` : "";
+            showDropzoneError(`Missing required column(s): Missing ${missing.join(" and ")} column. Your CSV must have both 'questions' and 'ai_responses'.${detectedStr}`);
+            return;
+          }
+
+          // File passed all pre-flight validations!
+          clearDropzoneError();
+          const rowCount = Math.max(0, lines.length - 1);
 
           document.getElementById("preview-filename").textContent = file.name;
           document.getElementById("preview-filesize").textContent = `(${(file.size / 1024).toFixed(1)} KB)`;
@@ -1835,19 +2875,24 @@
           const rBadge = document.getElementById("preview-col-responses");
           const refBadge = document.getElementById("preview-col-reference");
 
-          qBadge.className = `csv-badge-col ${hasQuestions ? 'col-valid' : 'col-missing'}`;
-          qBadge.textContent = hasQuestions ? "✓ questions found" : "✕ 'questions' missing";
+          qBadge.className = "csv-badge-col col-valid";
+          qBadge.textContent = "✓ questions found";
 
-          rBadge.className = `csv-badge-col ${hasResponses ? 'col-valid' : 'col-missing'}`;
-          rBadge.textContent = hasResponses ? "✓ ai_responses found" : "✕ 'ai_responses' missing";
+          rBadge.className = "csv-badge-col col-valid";
+          rBadge.textContent = "✓ ai_responses found";
 
           refBadge.className = `csv-badge-col ${hasRef ? 'col-valid' : ''}`;
           refBadge.textContent = hasRef ? "✓ reference_answer found" : "reference_answer (optional)";
 
-          document.getElementById("start-batch-btn").disabled = (!hasQuestions || !hasResponses);
+          document.getElementById("start-batch-btn").disabled = false;
           document.getElementById("csv-preview-card").style.display = "block";
         };
-        reader.readAsText(file.slice(0, 10000));
+
+        reader.onerror = () => {
+          showDropzoneError(`Read error: Could not read file "${fileName}".`);
+        };
+
+        reader.readAsText(file.slice(0, 32768));
       }
 
       function clearSelectedFile() {
@@ -1855,6 +2900,7 @@
         document.getElementById("csv-file-input").value = "";
         document.getElementById("csv-preview-card").style.display = "none";
         document.getElementById("batch-error-box").style.display = "none";
+        clearDropzoneError();
       }
 
       function toggleDensity() {
@@ -1870,20 +2916,29 @@
         }
       }
 
-      // Drag and drop listeners
+      // Drag and drop listeners with drag-active state
       const dropzone = document.getElementById("dropzone");
       ["dragenter", "dragover"].forEach(event => {
-        dropzone.addEventListener(event, (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
+        dropzone.addEventListener(event, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add("drag-active", "dragover");
+        });
       });
       ["dragleave", "drop"].forEach(event => {
-        dropzone.addEventListener(event, (e) => { e.preventDefault(); dropzone.classList.remove("dragover"); });
+        dropzone.addEventListener(event, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove("drag-active", "dragover");
+        });
       });
       dropzone.addEventListener("drop", (e) => {
-        if (e.dataTransfer.files.length) {
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
           handleFileSelected(e.dataTransfer.files[0]);
         }
       });
 
+      let batchProgressTimer = null;
       async function startBatchUpload() {
         if (!selectedBatchFile) return;
 
@@ -1894,11 +2949,42 @@
         const resultsSection = document.getElementById("batch-results-section");
 
         errorBox.style.display = "none";
+        clearDropzoneError();
         resultsSection.style.display = "none";
         startBtn.disabled = true;
         progressBox.style.display = "block";
-        document.getElementById("batch-progress-bar").style.width = "25%";
-        document.getElementById("batch-progress-pct").textContent = "Validating CSV…";
+        document.getElementById("batch-progress-bar").style.width = "20%";
+        document.getElementById("batch-progress-pct").textContent = "20%";
+        document.getElementById("batch-progress-status").textContent = "Evaluating records through multi-agent pipeline…";
+
+        // Badges: dimension agents running, verdict pending
+        setAgentStatus("relevance", "running");
+        setAgentStatus("accuracy", "running");
+        setAgentStatus("hallucination", "running");
+        setAgentStatus("completeness", "running");
+        setAgentStatus("verdict", "pending");
+
+        let curPct = 20;
+        if (batchProgressTimer) clearInterval(batchProgressTimer);
+        batchProgressTimer = setInterval(() => {
+          if (curPct < 85) {
+            curPct += Math.floor(Math.random() * 8) + 4;
+            if (curPct > 85) curPct = 85;
+            document.getElementById("batch-progress-bar").style.width = `${curPct}%`;
+            document.getElementById("batch-progress-pct").textContent = `${curPct}%`;
+            if (curPct >= 45) {
+              setAgentStatus("relevance", "done");
+            }
+            if (curPct >= 60) {
+              setAgentStatus("accuracy", "done");
+            }
+            if (curPct >= 75) {
+              setAgentStatus("hallucination", "done");
+              setAgentStatus("completeness", "done");
+              setAgentStatus("verdict", "running");
+            }
+          }
+        }, 500);
 
         const formData = new FormData();
         formData.append("file", selectedBatchFile);
@@ -1909,8 +2995,16 @@
             body: formData,
           });
           const data = await res.json();
+          if (batchProgressTimer) clearInterval(batchProgressTimer);
 
           if (res.ok) {
+            // All 5 agents completed
+            setAgentStatus("relevance", "done");
+            setAgentStatus("accuracy", "done");
+            setAgentStatus("hallucination", "done");
+            setAgentStatus("completeness", "done");
+            setAgentStatus("verdict", "done");
+
             activeBatchSummary = data;
             document.getElementById("batch-progress-bar").style.width = "100%";
             document.getElementById("batch-progress-pct").textContent = "100%";
@@ -1919,13 +3013,19 @@
           } else {
             progressBox.style.display = "none";
             const detail = data.detail || (data.error ? JSON.stringify(data) : "CSV Validation or Evaluation Error");
+            showDropzoneError(detail);
             errorMsg.textContent = detail;
             errorBox.style.display = "flex";
+            resetAllAgents("pending");
           }
         } catch (err) {
+          if (batchProgressTimer) clearInterval(batchProgressTimer);
           progressBox.style.display = "none";
-          errorMsg.textContent = "Network error: Could not complete CSV batch upload. Please verify the server is running.";
+          const netMsg = "Network error: Could not complete CSV batch upload. Please verify the server is running.";
+          showDropzoneError(netMsg);
+          errorMsg.textContent = netMsg;
           errorBox.style.display = "flex";
+          resetAllAgents("pending");
         } finally {
           startBtn.disabled = false;
         }
@@ -1969,44 +3069,44 @@
 
         // 1. Interactive Statistics Cards Grid (1-click quick filters)
         document.getElementById("batch-stats-grid").innerHTML = `
-          <div class="stat-card ${currentFilter === 'ALL' ? 'active-filter' : ''}" onclick="filterBatch('ALL')" title="Click to filter: All Rows">
+          <div class="stat-card stat-neutral ${currentFilter === 'ALL' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: All rows (${stats.total_records})" aria-pressed="${currentFilter === 'ALL' ? 'true' : 'false'}" onclick="filterBatch('ALL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('ALL');}" title="Click to filter: All Rows">
             <div class="num">${stats.total_records}</div>
             <div class="label">Total Rows</div>
             <div class="subtext">Uploaded</div>
           </div>
-          <div class="stat-card" onclick="filterBatch('ALL')" title="Click to view all successfully evaluated rows">
-            <div class="num" style="color:var(--success);">${stats.successful_records}</div>
+          <div class="stat-card stat-neutral" tabindex="0" role="button" aria-label="Filter: All successfully evaluated rows (${stats.successful_records})" aria-pressed="${currentFilter === 'ALL' ? 'true' : 'false'}" onclick="filterBatch('ALL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('ALL');}" title="Click to view all successfully evaluated rows">
+            <div class="num">${stats.successful_records}</div>
             <div class="label">Evaluated</div>
             <div class="subtext">Completed</div>
           </div>
-          <div class="stat-card ${currentFilter === 'Pass' ? 'active-filter' : ''}" onclick="filterBatch('Pass')" title="Click to filter: Pass rows">
-            <div class="num" style="color:var(--success);">${stats.pass_count}</div>
+          <div class="stat-card stat-success ${currentFilter === 'Pass' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Pass rows (${stats.pass_count})" aria-pressed="${currentFilter === 'Pass' ? 'true' : 'false'}" onclick="filterBatch('Pass')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('Pass');}" title="Click to filter: Pass rows">
+            <div class="num" style="color:var(--color-success);">${stats.pass_count}</div>
             <div class="label">Pass</div>
             <div class="subtext">${stats.pass_rate_percent}% rate</div>
           </div>
-          <div class="stat-card ${currentFilter === 'Needs Improvement' ? 'active-filter' : ''}" onclick="filterBatch('Needs Improvement')" title="Click to filter: Needs Improvement rows">
-            <div class="num" style="color:var(--warning);">${stats.needs_improvement_count}</div>
-            <div class="label">Needs Imp.</div>
+          <div class="stat-card stat-warning ${currentFilter === 'Needs Improvement' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Needs Improvement rows (${stats.needs_improvement_count})" aria-pressed="${currentFilter === 'Needs Improvement' ? 'true' : 'false'}" onclick="filterBatch('Needs Improvement')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('Needs Improvement');}" title="Click to filter: Needs Improvement rows">
+            <div class="num" style="color:var(--color-warning);">${stats.needs_improvement_count}</div>
+            <div class="label">Needs Improvement</div>
             <div class="subtext">${((stats.needs_improvement_count / (stats.successful_records || 1)) * 100).toFixed(0)}% rate</div>
           </div>
-          <div class="stat-card ${currentFilter === 'Fail' ? 'active-filter' : ''}" onclick="filterBatch('Fail')" title="Click to filter: Fail rows">
-            <div class="num" style="color:var(--danger);">${stats.fail_count}</div>
+          <div class="stat-card stat-danger ${currentFilter === 'Fail' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Fail rows (${stats.fail_count})" aria-pressed="${currentFilter === 'Fail' ? 'true' : 'false'}" onclick="filterBatch('Fail')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('Fail');}" title="Click to filter: Fail rows">
+            <div class="num" style="color:var(--color-danger);">${stats.fail_count}</div>
             <div class="label">Fail</div>
             <div class="subtext">${((stats.fail_count / (stats.successful_records || 1)) * 100).toFixed(0)}% rate</div>
           </div>
-          <div class="stat-card ${currentFilter === 'SKIPPED' ? 'active-filter' : ''}" onclick="filterBatch('SKIPPED')" title="Click to filter: Skipped / Failed rows">
-            <div class="num" style="${stats.failed_records > 0 ? 'color:var(--danger); font-weight:800;' : 'color:var(--slate-400);'}">${stats.failed_records}</div>
+          <div class="stat-card stat-neutral ${currentFilter === 'SKIPPED' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Skipped and failed rows (${stats.failed_records})" aria-pressed="${currentFilter === 'SKIPPED' ? 'true' : 'false'}" onclick="filterBatch('SKIPPED')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('SKIPPED');}" title="Click to filter: Skipped / Failed rows">
+            <div class="num" style="${stats.failed_records > 0 ? 'color:var(--color-danger);' : ''}">${stats.failed_records}</div>
             <div class="label">Skipped</div>
             <div class="subtext">Errors / un-evaluable</div>
           </div>
-          <div class="stat-card" style="cursor:default;" title="Average composite score across all evaluated rows">
-            <div class="num">${(stats.average_weighted_score * 100).toFixed(0)}%</div>
+          <div class="stat-card stat-accent" style="cursor:default;" role="region" aria-label="Average Quality Composite Score: ${(stats.average_weighted_score * 100).toFixed(0)}%" title="Average composite score across all evaluated rows">
+            <div class="num" style="color:var(--color-accent);">${(stats.average_weighted_score * 100).toFixed(0)}%</div>
             <div class="label">Avg Quality</div>
             <div class="subtext">Composite Score</div>
           </div>
-          <div class="stat-card ${currentFilter === 'HAL' ? 'active-filter' : ''}" onclick="filterBatch('HAL')" title="Click to filter: Flagged Hallucinations">
-            <div class="num" style="${stats.hallucination_rate_percent > 30 ? 'color:var(--danger);' : ''}">${stats.hallucination_rate_percent}%</div>
-            <div class="label">Hallucinations</div>
+          <div class="stat-card stat-danger ${currentFilter === 'HAL' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Flagged hallucinations (${stats.hallucination_rate_percent}%)" aria-pressed="${currentFilter === 'HAL' ? 'true' : 'false'}" onclick="filterBatch('HAL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('HAL');}" title="Click to filter: Flagged Hallucinations">
+            <div class="num" style="${stats.hallucination_rate_percent > 30 ? 'color:var(--color-danger);' : ''}">${stats.hallucination_rate_percent}%</div>
+            <div class="label">Hallucinations %</div>
             <div class="subtext">${halCount} flagged</div>
           </div>
         `;
@@ -2066,17 +3166,73 @@
           </div>
         `;
 
-        // 4. Executive Summary Text
+        // 4. Synthesize ONE non-obvious analytical insight (Zone 2: Insights)
+        const nonPassItems = summary.items.filter(it => it.status === "success" && it.result && it.result.verdict.verdict !== "Pass");
+        const totalNonPass = Math.max(1, nonPassItems.length);
+        
+        let accIssues = 0, halIssues = 0, compIssues = 0, relIssues = 0;
+        nonPassItems.forEach(it => {
+          const r = it.result;
+          if (r.accuracy && (r.accuracy.score < 0.7 || r.accuracy.classification === "contradictory")) accIssues++;
+          if (r.hallucination && r.hallucination.is_hallucinated) halIssues++;
+          if (r.completeness && (r.completeness.score < 0.7 || (r.completeness.missing_aspects && r.completeness.missing_aspects.length > 0))) compIssues++;
+          if (r.relevance && r.relevance.score < 0.7) relIssues++;
+        });
+
+        const passRate = stats.successful_records > 0 ? (stats.pass_count / stats.successful_records * 100) : 0;
+        let insightBadge = "Diagnostic Finding";
+        let insightBadgeClass = "warning";
+        let insightHeadline = "";
+        let insightBody = "";
+
+        if (passRate >= 75) {
+          insightBadge = "Benchmark Strength";
+          insightBadgeClass = "success";
+          insightHeadline = `High multi-dimensional stability: Factual grounding and relevance exhibit tight alignment.`;
+          insightBody = `Quality is uniformly distributed across evaluation dimensions with no recurring bottleneck. The remaining ${(100 - passRate).toFixed(0)}% non-pass records represent isolated edge-case omissions rather than a systemic dimensional failure pattern.`;
+        } else if (avgRel >= 75 && (avgAcc < 65 || stats.hallucination_rate_percent >= 35)) {
+          insightBadge = "Dominant Failure Dimension";
+          insightBadgeClass = "danger";
+          insightHeadline = `Intent-Grounding Divergence: Model understands query intent (${avgRel}% relevance), but factual accuracy is the primary bottleneck.`;
+          insightBody = `While prompt relevance remains high (${avgRel}%), ${stats.hallucination_rate_percent}% of evaluated generations contained ungrounded claims or factual inaccuracies (${avgAcc}% avg accuracy). Non-pass outcomes are overwhelmingly driven by factual fabrication rather than prompt drift.`;
+        } else if (avgAcc >= 70 && avgComp < 65) {
+          insightBadge = "Dominant Failure Dimension";
+          insightBadgeClass = "warning";
+          insightHeadline = `Constraint Omission: Addressed facts are accurate (${avgAcc}%), but incomplete coverage in multi-part prompts limits quality.`;
+          insightBody = `Response completeness is the primary limiting factor (${avgComp}% average), whereas addressed claims remain strongly grounded (${avgGround}%). Non-pass verdicts stem primarily from omitting secondary criteria or sub-questions rather than making false claims.`;
+        } else if (stats.hallucination_rate_percent >= 40) {
+          insightBadge = "Critical Vulnerability";
+          insightBadgeClass = "danger";
+          insightHeadline = `Pervasive Hallucination: Grounding failures trigger the vast majority of non-pass downgrades.`;
+          insightBody = `Grounding verification flagged ${halCount} responses (${stats.hallucination_rate_percent}% of benchmark items) with unverified or contradictory statements. Grounding overrides directly penalized composite quality despite otherwise fluent and complete answers.`;
+        } else if (relIssues >= Math.max(accIssues, compIssues, halIssues)) {
+          insightBadge = "Dominant Failure Dimension";
+          insightBadgeClass = "warning";
+          insightHeadline = `Instruction Drift: Relevance decay accounts for the largest concentration of quality penalties.`;
+          insightBody = `Unlike typical benchmarks where accuracy is the limiting factor, ${((relIssues / totalNonPass) * 100).toFixed(0)}% of non-pass items suffered from query drift or tangential elaboration that failed to resolve the core user prompt.`;
+        } else if (compIssues >= accIssues) {
+          insightBadge = "Dominant Failure Dimension";
+          insightBadgeClass = "warning";
+          insightHeadline = `Coverage Deficit: Omission of required response facets outpaces factual inaccuracies.`;
+          insightBody = `Analysis of non-pass records reveals that ${((compIssues / totalNonPass) * 100).toFixed(0)}% were penalized for missing key criteria or context, while factual accuracy on stated claims remained comparatively solid at ${avgAcc}%.`;
+        } else {
+          insightBadge = "Dominant Failure Dimension";
+          insightBadgeClass = "danger";
+          insightHeadline = `Factual Accuracy Deficit (${avgAcc}%) is the primary barrier to benchmark pass criteria.`;
+          insightBody = `Across non-pass records, ${((accIssues / totalNonPass) * 100).toFixed(0)}% failed on factual consistency or grounding verification, making retrieval augmented grounding or prompt assertion verification the highest-impact improvement vector.`;
+        }
+
         document.getElementById("batch-summary-text").innerHTML = `
-          Evaluated a total of <strong>${stats.total_records}</strong> records in batch: 
-          <strong>${stats.successful_records}</strong> evaluated successfully, 
-          <strong style="${stats.failed_records > 0 ? 'color:var(--danger);' : ''}">${stats.failed_records}</strong> skipped or un-evaluable. 
-          Quality distribution: 
-          <span style="color:var(--success); font-weight:700;">${stats.pass_count} Pass (${stats.pass_rate_percent}%)</span>, 
-          <span style="color:var(--warning); font-weight:700;">${stats.needs_improvement_count} Needs Improvement</span>, 
-          <span style="color:var(--danger); font-weight:700;">${stats.fail_count} Fail</span>. 
-          Average composite score: <strong>${(stats.average_weighted_score * 100).toFixed(1)}%</strong>. 
-          Hallucination flagged in <strong>${stats.hallucination_rate_percent}%</strong> of valid responses (${halCount} items).
+          <div class="insight-card-inner">
+            <div class="insight-pill-row">
+              <span class="badge ${insightBadgeClass}" style="font-size:11px; padding:3px 9px; text-transform:uppercase; letter-spacing:0.04em; font-weight:700;">
+                ${escapeHtml(insightBadge)}
+              </span>
+              <span class="insight-tagline">Key Diagnostic Takeaway</span>
+            </div>
+            <div class="insight-headline">${escapeHtml(insightHeadline)}</div>
+            <p class="insight-explanation">${escapeHtml(insightBody)}</p>
+          </div>
         `;
 
         // Update count badges on filter chips
@@ -2089,21 +3245,34 @@
         document.getElementById("count-filter-EMPTY").textContent = emptyQCount;
 
         updateFilterButtons();
+        updateSortIcons();
         renderBatchTableRows();
       }
 
       function updateFilterButtons() {
-        document.querySelectorAll("#batch-filter-buttons .filter-chip").forEach(b => b.classList.remove("filter-active"));
+        document.querySelectorAll("#batch-filter-buttons .filter-chip").forEach(b => {
+          b.classList.remove("filter-active");
+          b.setAttribute("aria-pressed", "false");
+        });
         const activeId = currentFilter === "Needs Improvement" 
           ? "btn-filter-Needs-Improvement" 
           : `btn-filter-${currentFilter}`;
         const activeBtn = document.getElementById(activeId);
-        if (activeBtn) activeBtn.classList.add("filter-active");
+        if (activeBtn) {
+          activeBtn.classList.add("filter-active");
+          activeBtn.setAttribute("aria-pressed", "true");
+        }
 
-        // Sync stat card highlights
-        document.querySelectorAll(".stat-card").forEach(c => c.classList.remove("active-filter"));
+        // Sync stat card highlights and aria-pressed
+        document.querySelectorAll(".stat-card").forEach(c => {
+          c.classList.remove("active-filter");
+          if (c.getAttribute("role") === "button") c.setAttribute("aria-pressed", "false");
+        });
         const matchingCard = document.querySelector(`.stat-card[onclick="filterBatch('${currentFilter}')"]`);
-        if (matchingCard) matchingCard.classList.add("active-filter");
+        if (matchingCard) {
+          matchingCard.classList.add("active-filter");
+          if (matchingCard.getAttribute("role") === "button") matchingCard.setAttribute("aria-pressed", "true");
+        }
       }
 
       function filterBatch(filterType) {
@@ -2148,22 +3317,25 @@
           sortDirection = sortDirection === "asc" ? "desc" : "asc";
         } else {
           sortColumn = column;
-          sortDirection = "desc";
+          sortDirection = (column === "index" || column === "question" || column === "response") ? "asc" : "desc";
         }
         updateSortIcons();
         renderBatchTableRows();
       }
 
       function updateSortIcons() {
-        ["index", "verdict"].forEach(col => {
+        ["index", "question", "response", "verdict"].forEach(col => {
           const icon = document.getElementById(`sort-icon-${col}`);
+          const th = document.getElementById(`th-sort-${col}`);
           if (!icon) return;
           if (sortColumn === col) {
-            icon.textContent = sortDirection === "asc" ? "▲" : "▼";
-            icon.style.color = "var(--primary)";
+            icon.textContent = sortDirection === "asc" ? "↑" : "↓";
+            icon.className = "sort-icon sort-active";
+            if (th) th.setAttribute("aria-sort", sortDirection === "asc" ? "ascending" : "descending");
           } else {
             icon.textContent = "↕";
-            icon.style.color = "var(--slate-400)";
+            icon.className = "sort-icon sort-neutral";
+            if (th) th.setAttribute("aria-sort", "none");
           }
         });
       }
@@ -2244,17 +3416,27 @@
 
         // 2. Sort
         filtered.sort((a, b) => {
-          let valA = 0;
-          let valB = 0;
           if (sortColumn === "index") {
-            valA = a.index;
-            valB = b.index;
+            const numA = a.index;
+            const numB = b.index;
+            return sortDirection === "asc" ? numA - numB : numB - numA;
           } else if (sortColumn === "verdict") {
-            valA = a.result?.verdict?.weighted_score ?? -1;
-            valB = b.result?.verdict?.weighted_score ?? -1;
+            const scoreA = a.result?.verdict?.weighted_score ?? -1;
+            const scoreB = b.result?.verdict?.weighted_score ?? -1;
+            return sortDirection === "asc" ? scoreA - scoreB : scoreB - scoreA;
+          } else if (sortColumn === "question") {
+            const valA = (a.question || "").toLowerCase();
+            const valB = (b.question || "").toLowerCase();
+            if (valA < valB) return sortDirection === "asc" ? -1 : 1;
+            if (valA > valB) return sortDirection === "asc" ? 1 : -1;
+            return 0;
+          } else if (sortColumn === "response") {
+            const valA = (a.ai_response || "").toLowerCase();
+            const valB = (b.ai_response || "").toLowerCase();
+            if (valA < valB) return sortDirection === "asc" ? -1 : 1;
+            if (valA > valB) return sortDirection === "asc" ? 1 : -1;
+            return 0;
           }
-          if (valA < valB) return sortDirection === "asc" ? -1 : 1;
-          if (valA > valB) return sortDirection === "asc" ? 1 : -1;
           return 0;
         });
 
@@ -2286,11 +3468,11 @@
             if (item.status !== "success" || !res) {
               const errDesc = item.error_message || "Evaluation error";
               rowsHtml += `
-                <tr class="main-row row-failed ${isSelected ? 'active-row' : ''}" onclick="openRecordDrawer(${item.index})" title="Click to view failure details">
+                <tr class="main-row row-failed ${isSelected ? 'active-row' : ''}" tabindex="0" role="button" aria-label="Row ${item.index}: Evaluation failed. ${escapeHtml(errDesc)}. Press Enter to view details." onclick="openRecordDrawer(${item.index})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecordDrawer(${item.index});}" title="Click or press Enter to view failure details">
                   <td style="text-align:center; font-weight:700; color:var(--slate-500);">${item.index}</td>
                   <td>${qDisplay}</td>
                   <td>
-                    <div class="cell-truncate" style="color:var(--danger); font-size:12px; font-weight:600;" title="${escapeHtml(errDesc)}">
+                    <div class="cell-truncate" style="color:var(--color-danger); font-size:12px; font-weight:600;" title="${escapeHtml(errDesc)}">
                       [Failed] ${highlightText(errDesc, query)}
                     </div>
                   </td>
@@ -2323,7 +3505,7 @@
               : `<span style="color:var(--slate-400); font-style:italic;">[Empty Response]</span>`;
 
             rowsHtml += `
-              <tr class="main-row ${isSelected ? 'active-row' : ''}" onclick="openRecordDrawer(${item.index})" title="Click to open record details drawer">
+              <tr class="main-row ${isSelected ? 'active-row' : ''}" tabindex="0" role="button" aria-label="Row ${item.index}: ${escapeHtml(item.question ? item.question.slice(0, 70) : 'No question')}. Verdict: ${escapeHtml(verd.verdict)}, ${(verd.weighted_score * 100).toFixed(0)}% composite score. Press Enter to view breakdown." onclick="openRecordDrawer(${item.index})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecordDrawer(${item.index});}" title="Click or press Enter to open record details drawer">
                 <td style="text-align:center; font-weight:700; color:var(--slate-500);">${item.index}</td>
                 <td>${qDisplay}</td>
                 <td>${aDisplay}</td>
@@ -2391,6 +3573,10 @@
       // -------------------------------------------------------------
       function openRecordDrawer(idx) {
         if (!activeBatchSummary) return;
+        const drawer = document.getElementById("record-drawer");
+        if (drawer && !drawer.classList.contains("show")) {
+          lastFocusedElementBeforeDrawer = document.activeElement;
+        }
         activeDrawerRecordIndex = idx;
         const item = activeBatchSummary.items.find(it => it.index === idx);
         if (!item) return;
@@ -2420,28 +3606,36 @@
         if (item.status !== "success" || !item.result) {
           const errDesc = item.error_message || "Encountered an unexpected error evaluating this row.";
           drawerContent.innerHTML = `
-            <div style="background:var(--slate-50); padding:16px; border-radius:8px; border:1px solid var(--slate-200); font-size:13px; line-height:1.6;">
-              <div style="margin-bottom:8px;">
-                <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Row Number</span>
-                <div style="font-weight:700; color:var(--slate-900);">#${item.index}</div>
-              </div>
-              <div style="margin-bottom:12px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Question</span>
-                  ${!isQEmpty ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(qText)}', this)">Copy</button>` : ''}
+            <div class="drawer-context-section">
+              <div class="drawer-context-card">
+                <div class="drawer-card-header">
+                  <span class="drawer-card-label">Row Number</span>
                 </div>
-                <div style="color:var(--slate-800);">${isQEmpty ? '<span style="color:var(--slate-400); font-style:italic;">— (Empty)</span>' : escapeHtml(qText)}</div>
+                <div class="drawer-card-body" style="font-weight:700; color:var(--slate-900);">#${item.index}</div>
               </div>
-              <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">AI Response</span>
-                  ${aText ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(aText)}', this)">Copy</button>` : ''}
+
+              <div class="drawer-context-card">
+                <div class="drawer-card-header">
+                  <span class="drawer-card-label">Question</span>
+                  ${!isQEmpty ? `<button type="button" class="copy-btn" onclick="copyTextToClipboard('${escapeJs(qText)}', this)">Copy</button>` : ''}
                 </div>
-                <div style="color:var(--slate-800); white-space:pre-wrap;">${aText ? escapeHtml(aText) : '<span style="color:var(--slate-400); font-style:italic;">[Empty Response]</span>'}</div>
+                <div class="drawer-card-body ${isQEmpty ? 'text-muted' : ''}">
+                  ${isQEmpty ? '— (Empty)' : escapeHtml(qText)}
+                </div>
+              </div>
+
+              <div class="drawer-context-card">
+                <div class="drawer-card-header">
+                  <span class="drawer-card-label">AI Response</span>
+                  ${aText ? `<button type="button" class="copy-btn" onclick="copyTextToClipboard('${escapeJs(aText)}', this)">Copy</button>` : ''}
+                </div>
+                <div class="drawer-card-body ${!aText ? 'text-muted' : ''}">
+                  ${aText ? escapeHtml(aText) : '[Empty Response]'}
+                </div>
               </div>
             </div>
 
-            <div class="alert-box danger">
+            <div class="alert-box danger" style="margin-top:12px;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" y1="8" x2="12" y2="12"/>
@@ -2455,40 +3649,46 @@
           `;
         } else {
           drawerContent.innerHTML = `
-            <!-- Input & Reference Context -->
-            <div style="background:var(--slate-50); padding:16px; border-radius:8px; border:1px solid var(--slate-200); font-size:13px; line-height:1.5; display:flex; flex-direction:column; gap:12px;">
-              <!-- Question -->
-              <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Question</span>
-                  ${!isQEmpty ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(qText)}', this)">Copy</button>` : ''}
+            <!-- Input & Reference Context Cards -->
+            <div class="drawer-context-section">
+              <!-- Question Card -->
+              <div class="drawer-context-card">
+                <div class="drawer-card-header">
+                  <span class="drawer-card-label">Question</span>
+                  ${!isQEmpty ? `<button type="button" class="copy-btn" onclick="copyTextToClipboard('${escapeJs(qText)}', this)">Copy</button>` : ''}
                 </div>
-                <div style="color:var(--slate-800); font-size:13px;">
-                  ${isQEmpty ? '<span style="color:var(--slate-400); font-style:italic;">— (Empty)</span>' : escapeHtml(qText)}
-                </div>
-              </div>
-
-              <!-- AI Response -->
-              <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">AI Response</span>
-                  ${aText ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(aText)}', this)">Copy</button>` : ''}
-                </div>
-                <div style="color:var(--slate-800); font-size:13px; white-space:pre-wrap;">
-                  ${aText ? escapeHtml(aText) : '<span style="color:var(--slate-400); font-style:italic;">[Empty Response]</span>'}
+                <div class="drawer-card-body ${isQEmpty ? 'text-muted' : ''}">
+                  ${isQEmpty ? '— (Empty)' : escapeHtml(qText)}
                 </div>
               </div>
 
-              <!-- Reference Answer -->
-              <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                  <span style="font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.04em;">Reference Answer</span>
-                  ${refText ? `<button class="copy-btn" onclick="copyTextToClipboard('${escapeJs(refText)}', this)">Copy</button>` : ''}
+              <!-- AI Response Card -->
+              <div class="drawer-context-card">
+                <div class="drawer-card-header">
+                  <span class="drawer-card-label">AI Response</span>
+                  ${aText ? `<button type="button" class="copy-btn" onclick="copyTextToClipboard('${escapeJs(aText)}', this)">Copy</button>` : ''}
                 </div>
-                <div style="color:var(--slate-800); font-size:13px; white-space:pre-wrap;">
-                  ${refText ? escapeHtml(refText) : '<span style="color:var(--slate-400); font-style:italic;">No reference answer provided</span>'}
+                <div class="drawer-card-body ${!aText ? 'text-muted' : ''}">
+                  ${aText ? escapeHtml(aText) : '[Empty Response]'}
                 </div>
               </div>
+
+              <!-- Reference Answer Card -->
+              <div class="drawer-context-card">
+                <div class="drawer-card-header">
+                  <span class="drawer-card-label">Reference Answer</span>
+                  ${refText ? `<button type="button" class="copy-btn" onclick="copyTextToClipboard('${escapeJs(refText)}', this)">Copy</button>` : ''}
+                </div>
+                <div class="drawer-card-body ${!refText ? 'text-muted' : ''}">
+                  ${refText ? escapeHtml(refText) : 'No reference answer provided'}
+                </div>
+              </div>
+            </div>
+
+            <!-- Section Divider & Title -->
+            <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+              <span style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--slate-500); white-space:nowrap;">Evaluation Breakdown</span>
+              <div style="flex:1; height:1px; background:var(--slate-200);"></div>
             </div>
 
             <!-- Single Response Evaluation Result Layout Reused -->
@@ -2500,7 +3700,13 @@
 
         // Show drawer and backdrop
         document.getElementById("drawer-backdrop").classList.add("show");
-        document.getElementById("record-drawer").classList.add("show");
+        if (drawer) {
+          drawer.classList.add("show");
+          const closeBtn = drawer.querySelector(".drawer-close-btn");
+          if (closeBtn) {
+            setTimeout(() => closeBtn.focus(), 50);
+          }
+        }
       }
 
       function closeRecordDrawer() {
@@ -2510,6 +3716,10 @@
         if (drawer) drawer.classList.remove("show");
         activeDrawerRecordIndex = null;
         document.querySelectorAll("#batch-table-body tr.main-row").forEach(tr => tr.classList.remove("active-row"));
+        if (lastFocusedElementBeforeDrawer && typeof lastFocusedElementBeforeDrawer.focus === "function") {
+          lastFocusedElementBeforeDrawer.focus();
+          lastFocusedElementBeforeDrawer = null;
+        }
       }
 
       function navigateDrawer(direction) {
@@ -2533,11 +3743,32 @@
         const drawer = document.getElementById("record-drawer");
         if (drawer && drawer.classList.contains("show")) {
           if (e.key === "Escape") {
+            e.preventDefault();
             closeRecordDrawer();
           } else if (e.key === "ArrowLeft") {
             navigateDrawer(-1);
           } else if (e.key === "ArrowRight") {
             navigateDrawer(1);
+          } else if (e.key === "Tab") {
+            const focusables = Array.from(drawer.querySelectorAll(
+              'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )).filter(el => el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement);
+
+            if (focusables.length > 0) {
+              const firstEl = focusables[0];
+              const lastEl = focusables[focusables.length - 1];
+              if (e.shiftKey) {
+                if (document.activeElement === firstEl || !drawer.contains(document.activeElement)) {
+                  e.preventDefault();
+                  lastEl.focus();
+                }
+              } else {
+                if (document.activeElement === lastEl || !drawer.contains(document.activeElement)) {
+                  e.preventDefault();
+                  firstEl.focus();
+                }
+              }
+            }
           }
         }
       });
@@ -2637,6 +3868,8 @@
         document.getElementById("batch-error-box").style.display = "none";
         document.getElementById("csv-file-input").value = "";
         selectedBatchFile = null;
+        clearDropzoneError();
+        resetAllAgents("pending");
       }
 
       // -------------------------------------------------------------
@@ -2644,6 +3877,7 @@
       // -------------------------------------------------------------
       window.addEventListener("DOMContentLoaded", async () => {
         updateCounters();
+        updateSortIcons();
 
         // 1. Restore active tab
         const savedTab = localStorage.getItem("active_eval_tab") || "batch";
@@ -2663,6 +3897,7 @@
             if (data) {
               renderSingleResults(data);
               document.getElementById("result-container").style.display = "block";
+              resetAllAgents("done");
             }
           } catch (e) {}
         }
@@ -2675,6 +3910,7 @@
             if (parsed && parsed.items && parsed.items.length) {
               activeBatchSummary = parsed;
               renderBatchResults(parsed);
+              resetAllAgents("done");
               return;
             }
           } catch (e) {
@@ -2690,6 +3926,7 @@
             if (data && data.items && data.items.length) {
               activeBatchSummary = data;
               renderBatchResults(data);
+              resetAllAgents("done");
             }
           }
         } catch (err) {
