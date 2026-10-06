@@ -193,6 +193,8 @@ class BatchEvaluator:
                         source_document=src,
                         result=eval_result,
                         status="success",
+                        batch_id=batch_id,
+                        batch_filename=filename,
                     )
                 except Exception as exc:
                     logger.error(f"Error evaluating batch row {idx}: {exc}")
@@ -205,6 +207,8 @@ class BatchEvaluator:
                         result=None,
                         status="failed",
                         error_message=str(exc),
+                        batch_id=batch_id,
+                        batch_filename=filename,
                     )
 
                 async with lock:
@@ -294,8 +298,11 @@ class BatchEvaluator:
         output = io.StringIO()
         writer = csv.writer(output)
 
+        has_batch_cols = any(bool(it.batch_id or it.batch_filename) for it in summary.items)
+
         headers = [
             "Row",
+            *(["Batch ID", "Batch Filename"] if has_batch_cols else []),
             "Question",
             "AI Response",
             "Reference Answer",
@@ -316,9 +323,11 @@ class BatchEvaluator:
         for item in summary.items:
             res = item.result
             q_text = "—" if (not item.question or item.question in ("[No Question Provided]", "[Empty]", "Empty", "—")) else item.question
+            batch_fields = [item.batch_id or "", item.batch_filename or ""] if has_batch_cols else []
             if res is None:
                 writer.writerow([
                     item.index,
+                    *batch_fields,
                     q_text,
                     item.ai_response,
                     item.reference_answer or "",
@@ -338,6 +347,7 @@ class BatchEvaluator:
 
             writer.writerow([
                 item.index,
+                *batch_fields,
                 q_text,
                 item.ai_response,
                 item.reference_answer or "",

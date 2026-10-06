@@ -73,8 +73,8 @@
         --danger-light: var(--color-danger-light);
         --danger-border: var(--color-danger-border);
 
-        --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.05);
-        --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.09), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        --card-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+        --card-shadow-hover: 0 6px 16px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
       }
 
       * {
@@ -96,18 +96,111 @@
         outline-offset: 2px;
       }
 
+      /* Modern Custom Scrollbars */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--slate-300);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--slate-400);
+      }
+
       body {
         margin: 0;
-        background: var(--slate-50);
+        background-color: #f8fafc;
+        background-image: 
+          radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 40%),
+          radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 40%),
+          radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.03) 0px, transparent 50%),
+          linear-gradient(180deg, #ffffff 0%, #f8fafc 260px);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         color: var(--slate-900);
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
         overflow-x: clip;
+        min-height: 100vh;
+      }
+
+      /* Top Enterprise Application Navigation Bar */
+      .app-topbar {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+        box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03);
+      }
+      .app-topbar-inner {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .brand-wrapper {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-logo-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #4f46e5 100%);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px -1px rgba(37, 99, 235, 0.35);
+        flex-shrink: 0;
+      }
+      .brand-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .brand-title {
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: var(--slate-900);
+        line-height: 1.2;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .brand-title .brand-accent {
+        color: var(--color-accent);
+      }
+      .brand-badge-pill {
+        font-size: 9.5px;
+        font-weight: 700;
+        background: var(--color-accent-light);
+        color: var(--color-accent-text);
+        border: 1px solid var(--color-accent-border);
+        padding: 1px 6px;
+        border-radius: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .brand-subtext {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--slate-500);
       }
 
       .wrap {
-        max-width: 1220px;
+        max-width: 1240px;
         margin: 0 auto;
         padding: 24px 20px 80px;
       }
@@ -116,12 +209,9 @@
       .top-status-bar {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid var(--slate-200);
+        gap: 12px;
         font-size: 12px;
       }
       .system-status-indicator {
@@ -214,9 +304,25 @@
         flex-shrink: 0;
       }
 
-      /* Header */
+      /* Header & Hero Card */
       header {
-        margin-bottom: 32px;
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 12px;
+        padding: 22px 26px;
+        margin-bottom: 24px;
+        box-shadow: var(--card-shadow);
+        position: relative;
+        overflow: hidden;
+      }
+      header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 35%, #6366f1 70%, #06b6d4 100%);
       }
       .eyebrow {
         display: inline-flex;
@@ -237,7 +343,7 @@
         border-radius: 4px;
       }
       h1 {
-        font-size: 26px;
+        font-size: 24px;
         margin: 0 0 6px;
         letter-spacing: -0.02em;
         font-weight: 800;
@@ -248,24 +354,29 @@
         margin: 0;
         font-size: 13.5px;
         max-width: 860px;
+        line-height: 1.5;
       }
 
       /* Tab Navigation */
       .nav-tabs {
-        display: flex;
-        gap: 8px;
-        border-bottom: 1px solid var(--slate-200);
+        display: inline-flex;
+        gap: 4px;
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 10px;
+        padding: 4px;
         margin-bottom: 22px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        flex-wrap: wrap;
       }
       .tab-btn {
-        background: none;
-        border: none;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-        padding: 10px 18px;
-        font-size: 13.5px;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        padding: 8px 16px;
+        font-size: 13px;
         font-weight: 600;
-        color: var(--slate-500);
+        color: var(--slate-600);
         cursor: pointer;
         display: inline-flex;
         align-items: center;
@@ -273,23 +384,27 @@
         transition: all 0.15s ease;
       }
       .tab-btn:hover {
-        color: var(--slate-800);
+        color: var(--slate-900);
+        background: var(--slate-100);
       }
       .tab-btn.active {
         color: var(--color-accent);
-        border-bottom-color: var(--color-accent);
+        background: var(--color-accent-light);
+        border-color: var(--color-accent-border);
+        box-shadow: 0 1px 2px rgba(37, 99, 235, 0.06);
       }
       .tab-counter {
         background: var(--color-neutral-light);
         color: var(--color-neutral-text);
         padding: 2px 7px;
-        border-radius: 12px;
+        border-radius: 10px;
         font-size: 11px;
         font-weight: 600;
       }
       .tab-btn.active .tab-counter {
-        background: var(--color-accent-light);
-        color: var(--color-accent-text);
+        background: #ffffff;
+        color: var(--color-accent);
+        border: 1px solid var(--color-accent-border);
       }
 
       .tab-content {
@@ -314,8 +429,8 @@
       }
       .preset-chip {
         background: #ffffff;
-        border: 1px solid var(--color-neutral-border);
-        border-radius: 6px;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
         padding: 5px 12px;
         font-size: 12px;
         cursor: pointer;
@@ -324,22 +439,25 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         transition: all 0.15s ease;
       }
       .preset-chip:hover {
-        background: var(--color-neutral-light);
+        background: var(--slate-50);
         border-color: var(--slate-400);
         color: var(--slate-900);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
       }
 
       /* Panels */
       .panel-card {
         background: #ffffff;
-        padding: 22px;
+        padding: 24px;
         border: 1px solid var(--slate-200);
-        border-radius: 8px;
+        border-radius: 12px;
         box-shadow: var(--card-shadow);
-        margin-bottom: 22px;
+        margin-bottom: 24px;
       }
       .field {
         margin-bottom: 16px;
@@ -368,18 +486,19 @@
       textarea, input[type="text"] {
         width: 100%;
         border: 1px solid var(--slate-300);
-        border-radius: 6px;
+        border-radius: 8px;
         padding: 9px 12px;
         font-size: 13px;
         font-family: inherit;
         background: #ffffff;
         color: var(--slate-900);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
       textarea:focus, input[type="text"]:focus {
         outline: none;
         border-color: var(--color-accent);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
       }
       .optional-pill {
         font-weight: 500;
@@ -397,45 +516,59 @@
         justify-content: center;
         gap: 6px;
         border: 1px solid transparent;
-        border-radius: 6px;
-        padding: 8px 15px;
+        border-radius: 7px;
+        padding: 8px 16px;
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
         line-height: 1.4;
       }
       .btn-primary {
-        background: var(--color-accent);
+        background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
         color: #ffffff;
+        box-shadow: 0 1px 2px rgba(29, 78, 216, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       }
       .btn-primary:hover {
-        background: var(--color-accent-hover);
+        background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+        box-shadow: 0 3px 8px rgba(29, 78, 216, 0.35);
+        transform: translateY(-1px);
+      }
+      .btn-primary:active {
+        transform: translateY(0);
       }
       .btn-primary:disabled {
         opacity: 0.65;
         cursor: not-allowed;
+        transform: none;
       }
       .btn-secondary {
         background: #ffffff;
-        border-color: var(--color-neutral-border);
+        border-color: var(--slate-300);
         color: var(--slate-700);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
       }
       .btn-secondary:hover {
-        background: var(--color-neutral-light);
+        background: var(--slate-50);
         color: var(--slate-900);
         border-color: var(--slate-400);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+        transform: translateY(-1px);
+      }
+      .btn-secondary:active {
+        transform: translateY(0);
       }
       .btn-sm {
-        padding: 5px 10px;
+        padding: 5px 11px;
         font-size: 12px;
+        border-radius: 6px;
       }
 
       /* Verdict Executive Banner */
       .verdict-banner {
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 22px;
+        border-radius: 12px;
+        padding: 22px 24px;
+        margin-bottom: 24px;
         border: 1px solid var(--slate-200);
         display: flex;
         flex-direction: column;
@@ -718,12 +851,17 @@
       .eval-card {
         background: #ffffff;
         border: 1px solid var(--slate-200);
-        border-radius: 8px;
-        padding: 16px;
+        border-radius: 12px;
+        padding: 18px 20px;
         box-shadow: var(--card-shadow);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        transition: all 0.2s ease;
+      }
+      .eval-card:hover {
+        box-shadow: var(--card-shadow-hover);
+        border-color: var(--slate-300);
       }
       .card-top {
         display: flex;
@@ -964,10 +1102,13 @@
         margin-top: 32px;
       }
       .zone-card {
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 24px 26px;
         transition: all 0.2s ease;
-        margin-bottom: 32px; /* Explicit vertical spacing between zone boxes */
+        margin-bottom: 30px; /* Explicit vertical spacing between zone boxes */
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        box-shadow: var(--card-shadow);
       }
       .zone-card:last-child {
         margin-bottom: 0;
@@ -1071,6 +1212,164 @@
         margin: 0;
       }
 
+      /* Top Issues Diagnostic Ranking Panel */
+      .top-issues-panel {
+        margin-top: 14px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px 18px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      }
+      .top-issues-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 10px;
+      }
+      .top-issues-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .top-issues-badge {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 2px 7px;
+        border-radius: 4px;
+        background: var(--color-danger-light);
+        color: var(--color-danger-text);
+        border: 1px solid var(--color-danger-border);
+      }
+      .top-issues-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--slate-900);
+        margin: 0;
+      }
+      .top-issues-subtitle {
+        font-size: 12px;
+        color: var(--slate-500);
+      }
+      .top-issues-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 12px;
+      }
+      .issue-item-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 12px 14px;
+        cursor: pointer;
+        transition: all 0.18s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        position: relative;
+        text-align: left;
+      }
+      .issue-item-card:hover {
+        background: #ffffff;
+        border-color: var(--color-accent);
+        box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.14);
+        transform: translateY(-1px);
+      }
+      .issue-item-card:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+      }
+      .issue-item-card.active-issue-card {
+        border-color: var(--color-accent);
+        background: #eff6ff;
+        box-shadow: 0 0 0 2px var(--color-accent);
+      }
+      .issue-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .issue-rank-badge {
+        font-size: 10.5px;
+        font-weight: 800;
+        color: var(--slate-700);
+        background: #e2e8f0;
+        padding: 2px 7px;
+        border-radius: 4px;
+        letter-spacing: 0.02em;
+      }
+      .issue-count-pill {
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 9999px;
+        background: var(--color-danger-light);
+        color: var(--color-danger-text);
+        border: 1px solid var(--color-danger-border);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .issue-count-pill.warning {
+        background: var(--color-warning-light);
+        color: var(--color-warning-text);
+        border-color: var(--color-warning-border);
+      }
+      .issue-title-text {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--slate-800);
+        line-height: 1.35;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .issue-desc-text {
+        font-size: 11.5px;
+        color: var(--slate-500);
+        line-height: 1.4;
+      }
+      .issue-bar-wrap {
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 9999px;
+        overflow: hidden;
+      }
+      .issue-bar-fill {
+        height: 100%;
+        border-radius: 9999px;
+        background: var(--color-danger);
+        transition: width 0.3s ease;
+      }
+      .issue-bar-fill.warning {
+        background: var(--color-warning);
+      }
+      .issue-drilldown-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--color-accent);
+        margin-top: 2px;
+      }
+      .zero-issues-card {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 24px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+      }
+
       /* Zone 3: Sticky Data Toolbar */
       .batch-data-toolbar {
         position: sticky;
@@ -1101,12 +1400,326 @@
       }
       .zone-data .table-container {
         border: 1px solid var(--slate-200);
-        border-radius: 8px;
+        border-radius: 10px;
         margin-top: 0;
         box-shadow: none;
       }
       .zone-data #batch-pagination {
         padding: 14px 2px 2px;
+      }
+
+      /* Scope Toggle Banner ("This batch" vs "All batches combined") */
+      .batch-scope-banner {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+      }
+      .scope-toggle-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .scope-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--slate-700);
+        display: inline-flex;
+        align-items: center;
+      }
+      .scope-switch {
+        display: inline-flex;
+        background: var(--slate-200);
+        padding: 3px;
+        border-radius: 7px;
+        gap: 3px;
+      }
+      .scope-switch-btn {
+        border: none;
+        background: transparent;
+        color: var(--slate-600);
+        padding: 6px 14px;
+        border-radius: 5px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .scope-switch-btn:hover {
+        color: var(--slate-900);
+      }
+      .scope-switch-btn:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+      .scope-switch-btn.active {
+        background: #ffffff;
+        color: var(--slate-900);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .scope-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--slate-400);
+        transition: background 0.15s ease;
+      }
+      .scope-switch-btn.active .scope-dot {
+        background: var(--color-accent);
+      }
+      .scope-pill {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 1px 7px;
+        border-radius: 10px;
+        background: var(--slate-100);
+        color: var(--slate-600);
+      }
+      .scope-switch-btn.active .scope-pill {
+        background: var(--color-accent-light);
+        color: var(--color-accent-text);
+      }
+      .scope-details {
+        font-size: 12.5px;
+        color: var(--slate-500);
+        font-weight: 500;
+      }
+
+      /* Multi-Facet Filter Controls */
+      .batch-filter-facets-bar {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        padding-top: 10px;
+        margin-top: 6px;
+        border-top: 1px dashed var(--slate-200);
+      }
+      .facet-control {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .facet-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--slate-600);
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+      }
+      .facet-select {
+        font-size: 12px;
+        padding: 5px 10px;
+        border: 1px solid var(--slate-300);
+        border-radius: 6px;
+        background: #ffffff;
+        color: var(--slate-700);
+        cursor: pointer;
+        transition: border-color 0.15s ease;
+      }
+      .facet-select:focus-visible, .facet-input:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 1px;
+        border-color: var(--color-accent);
+      }
+      .score-filter-inputs {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .score-input-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+      }
+      .score-input-wrap .unit {
+        position: absolute;
+        right: 7px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--slate-400);
+        pointer-events: none;
+      }
+      .facet-input {
+        font-size: 12px;
+        padding: 5px 18px 5px 8px;
+        border: 1px solid var(--slate-300);
+        border-radius: 6px;
+        background: #ffffff;
+        color: var(--slate-800);
+        width: 65px;
+      }
+      .facet-presets {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+      .facet-presets-label {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--slate-400);
+        margin-right: 2px;
+      }
+      .preset-pill {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 12px;
+        border: 1px solid var(--slate-200);
+        background: var(--slate-50);
+        color: var(--slate-700);
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .preset-pill:hover {
+        background: var(--color-accent-light);
+        border-color: var(--color-accent-border);
+        color: var(--color-accent-text);
+      }
+      .preset-pill:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 1px;
+      }
+      .facet-search {
+        position: relative;
+        margin-left: auto;
+      }
+      .facet-search input {
+        width: 190px;
+        font-size: 12px;
+        padding: 6px 28px 6px 10px;
+        border: 1px solid var(--slate-300);
+        border-radius: 6px;
+        background: #ffffff;
+        color: var(--slate-800);
+      }
+      .facet-search input:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 1px;
+        border-color: var(--color-accent);
+      }
+      .clear-search-btn {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 12px;
+        color: var(--slate-400);
+        cursor: pointer;
+        display: none;
+      }
+
+      /* Active Filters Summary Bar */
+      .active-filters-bar {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 7px 12px;
+        background: #f1f5f9;
+        border-radius: 6px;
+        margin-top: 8px;
+        border: 1px solid var(--slate-200);
+      }
+      .active-tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+      .active-filter-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 2px 8px;
+        background: #ffffff;
+        border: 1px solid var(--slate-300);
+        border-radius: 4px;
+        color: var(--slate-800);
+      }
+      .active-filter-tag .tag-close {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--slate-400);
+        padding: 0;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .active-filter-tag .tag-close:hover {
+        color: var(--color-danger);
+      }
+      .active-filters-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+      }
+      .match-count-text {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--slate-600);
+      }
+      .btn-clear-all {
+        background: none;
+        border: none;
+        color: var(--color-danger);
+        font-size: 11.5px;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .btn-clear-all:hover {
+        text-decoration: underline;
+      }
+
+      /* Row Batch Pill */
+      .row-batch-pill {
+        font-size: 9.5px;
+        font-weight: 700;
+        color: var(--slate-600);
+        background: var(--slate-100);
+        border: 1px solid var(--slate-200);
+        border-radius: 3px;
+        padding: 1px 5px;
+        margin-top: 3px;
+        white-space: nowrap;
+        display: inline-block;
+        max-width: 68px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        box-sizing: border-box;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .row-batch-pill:hover {
+        background: var(--color-accent-light);
+        color: var(--color-accent-text);
+        border-color: var(--color-accent-border);
       }
 
       @media (max-width: 768px) {
@@ -1248,7 +1861,16 @@
       }
       .dist-seg {
         height: 100%;
-        transition: width 0.3s ease;
+        transition: width 0.3s ease, filter 0.15s ease, opacity 0.15s ease;
+        cursor: pointer;
+      }
+      .dist-seg:hover {
+        filter: brightness(1.12);
+        opacity: 0.9;
+      }
+      .dist-seg:focus-visible {
+        outline: 2px solid var(--slate-900);
+        outline-offset: 1px;
       }
       .dist-seg-pass { background: var(--color-success); }
       .dist-seg-needs { background: var(--color-warning); }
@@ -1256,7 +1878,7 @@
       .dist-bar-legend {
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
         margin-top: 8px;
         font-size: 11.5px;
         color: var(--slate-600);
@@ -1265,6 +1887,19 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
+        cursor: pointer;
+        padding: 3px 8px;
+        border-radius: 6px;
+        transition: all 0.15s ease;
+        user-select: none;
+      }
+      .dist-legend-item:hover {
+        background: var(--slate-100);
+        color: var(--color-accent);
+      }
+      .dist-legend-item:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 1px;
       }
       .dist-dot {
         width: 8px;
@@ -1285,6 +1920,25 @@
         border-radius: 8px;
         padding: 12px 14px;
         box-shadow: var(--card-shadow);
+        cursor: pointer;
+        transition: all 0.18s ease-in-out;
+        position: relative;
+        text-align: left;
+      }
+      .dim-meter-card:hover {
+        border-color: var(--color-accent);
+        box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.14);
+        transform: translateY(-1px);
+      }
+      .dim-meter-card:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+      }
+      .dim-meter-card.active-dim-meter {
+        border-color: var(--color-accent);
+        background: #eff6ff;
+        box-shadow: 0 0 0 2px var(--color-accent);
       }
       .dim-meter-header {
         display: flex;
@@ -1301,11 +1955,20 @@
         border-radius: 3px;
         font-weight: 600;
       }
+      .dim-drilldown-hint {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: 10.5px;
+        font-weight: 600;
+        color: var(--color-accent);
+        margin-top: 6px;
+      }
 
       /* Table Container */
       .table-container {
         border: 1px solid var(--slate-200);
-        border-radius: 8px;
+        border-radius: 10px;
         background: #ffffff;
         overflow: hidden;
         box-shadow: var(--card-shadow);
@@ -1817,27 +2480,326 @@
         border: 1px solid var(--color-accent-border);
         color: #1e40af;
       }
+
+      /* -------------------------------------------------------------
+         Milestone 4: Cross-Batch Evaluation Trends Styling
+         ------------------------------------------------------------- */
+      .trends-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--slate-200);
+      }
+      .trends-toolbar-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .trends-toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+      .stats-grid-5 {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        margin: 20px 0 16px;
+      }
+      @media (max-width: 1024px) {
+        .stats-grid-5 {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+        }
+      }
+      @media (max-width: 640px) {
+        .stats-grid-5 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+      }
+      .trajectory-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .trajectory-badge.improving {
+        background: var(--color-success-light);
+        color: var(--color-success-text);
+        border: 1px solid var(--color-success-border);
+      }
+      .trajectory-badge.degrading {
+        background: var(--color-danger-light);
+        color: var(--color-danger-text);
+        border: 1px solid var(--color-danger-border);
+      }
+      .trajectory-badge.stable {
+        background: var(--color-neutral-light);
+        color: var(--color-neutral-text);
+        border: 1px solid var(--color-neutral-border);
+      }
+      .trajectory-badge.insufficient_data {
+        background: var(--slate-100);
+        color: var(--slate-600);
+        border: 1px solid var(--slate-300);
+      }
+
+      .trends-charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 8px;
+      }
+      @media (max-width: 1080px) {
+        .trends-charts-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .trend-chart-card {
+        background: #ffffff;
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 18px 20px;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        flex-direction: column;
+      }
+      .chart-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--slate-100);
+      }
+      .chart-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--slate-900);
+        margin: 0;
+      }
+      .chart-subtitle {
+        font-size: 12px;
+        color: var(--slate-500);
+        margin-top: 2px;
+      }
+      .metric-toggles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .metric-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 1px solid var(--slate-300);
+        background: var(--slate-50);
+        color: var(--slate-600);
+        transition: all 0.15s ease;
+      }
+      .metric-chip:hover {
+        background: var(--slate-100);
+      }
+      .metric-chip.active {
+        background: #ffffff;
+        border-color: currentColor;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+      .metric-chip:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+      .metric-indicator-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .chart-svg-wrap {
+        position: relative;
+        width: 100%;
+        min-height: 270px;
+        flex: 1;
+      }
+      .chart-svg-wrap svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .chart-tooltip {
+        position: absolute;
+        display: none;
+        background: #0f172a !important;
+        color: #f8fafc !important;
+        border: 1px solid #334155;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 11.5px;
+        line-height: 1.5;
+        pointer-events: none;
+        z-index: 1000;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+        min-width: 200px;
+        transform: translate(-50%, -105%);
+      }
+      .chart-tooltip.show {
+        display: block !important;
+      }
+      .chart-tooltip-title {
+        font-weight: 700;
+        color: #93c5fd;
+        margin-bottom: 6px;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+        padding-bottom: 5px;
+      }
+      .chart-tooltip-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin: 3px 0;
+      }
+
+      /* PDF Export Loading State & Toast Banner */
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .icon-spin {
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .btn-loading {
+        opacity: 0.85;
+        cursor: wait !important;
+        pointer-events: none;
+      }
+      .pdf-feedback-banner {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 10000;
+        max-width: 460px;
+        min-width: 320px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 13px;
+        line-height: 1.45;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+        animation: slideUpFade 0.25s ease forwards;
+      }
+      @keyframes slideUpFade {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .pdf-feedback-banner.generating {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+      }
+      .pdf-feedback-banner.success {
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+      }
+      .pdf-feedback-banner.error {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+      }
+      .pdf-feedback-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        flex: 1;
+      }
+      .pdf-feedback-icon {
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .pdf-feedback-text {
+        flex: 1;
+        word-break: break-word;
+      }
+      .pdf-feedback-close {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 16px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 2px 4px;
+        opacity: 0.7;
+        transition: opacity 0.15s ease;
+      }
+      .pdf-feedback-close:hover {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <!-- Enterprise Status Bar -->
-      <div class="top-status-bar">
-        <div class="system-status-indicator">
-          <span class="status-dot"></span>
-          <span>Evaluation Engine Active</span>
-          <span style="color:var(--slate-400);">•</span>
-          <span style="color:var(--slate-500);">Concurrency Limit: 5</span>
+    <!-- Top Enterprise Application Navigation Bar -->
+    <nav class="app-topbar" aria-label="Global application navigation">
+      <div class="app-topbar-inner">
+        <div class="brand-wrapper">
+          <div class="brand-logo-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <span class="brand-title">LLM Response Evaluation <span class="brand-accent">Platform</span></span>
+            <span class="brand-subtext">Multi-Agent AI Evaluation Framework</span>
+          </div>
         </div>
-        <div class="agent-badges-list" id="top-agent-badges">
-          <span class="agent-tag status-pending" id="badge-agent-relevance"><span class="agent-status-dot">○</span><span>Relevance</span></span>
-          <span class="agent-tag status-pending" id="badge-agent-accuracy"><span class="agent-status-dot">○</span><span>Factual Accuracy</span></span>
-          <span class="agent-tag status-pending" id="badge-agent-hallucination"><span class="agent-status-dot">○</span><span>Hallucination Grounding</span></span>
-          <span class="agent-tag status-pending" id="badge-agent-completeness"><span class="agent-status-dot">○</span><span>Completeness</span></span>
-          <span class="agent-tag status-pending" id="badge-agent-verdict"><span class="agent-status-dot">○</span><span>Verdict Synthesis</span></span>
+
+        <div class="top-status-bar">
+          <div class="system-status-indicator">
+            <span class="status-dot"></span>
+            <span>Evaluation Engine Active</span>
+            <span style="color:var(--slate-400);">•</span>
+            <span style="color:var(--slate-500);">Concurrency Limit: 5</span>
+          </div>
+          <div class="agent-badges-list" id="top-agent-badges">
+            <span class="agent-tag status-pending" id="badge-agent-relevance"><span class="agent-status-dot">○</span><span>Relevance</span></span>
+            <span class="agent-tag status-pending" id="badge-agent-accuracy"><span class="agent-status-dot">○</span><span>Factual Accuracy</span></span>
+            <span class="agent-tag status-pending" id="badge-agent-hallucination"><span class="agent-status-dot">○</span><span>Hallucination Grounding</span></span>
+            <span class="agent-tag status-pending" id="badge-agent-completeness"><span class="agent-status-dot">○</span><span>Completeness</span></span>
+            <span class="agent-tag status-pending" id="badge-agent-verdict"><span class="agent-status-dot">○</span><span>Verdict Synthesis</span></span>
+          </div>
         </div>
       </div>
+    </nav>
 
+    <div class="wrap">
       <!-- Header -->
       <header>
         <div class="eyebrow">
@@ -1851,13 +2813,17 @@
       </header>
 
       <!-- Navigation Tabs -->
-      <div class="nav-tabs">
-        <button class="tab-btn active" id="tab-nav-single" onclick="switchTab('single')">
+      <div class="nav-tabs" role="tablist" aria-label="Evaluation modes">
+        <button class="tab-btn active" id="tab-nav-single" onclick="switchTab('single')" role="tab" aria-selected="true" aria-controls="tab-single">
           <span>Single Response Evaluation</span>
         </button>
-        <button class="tab-btn" id="tab-nav-batch" onclick="switchTab('batch')">
+        <button class="tab-btn" id="tab-nav-batch" onclick="switchTab('batch')" role="tab" aria-selected="false" aria-controls="tab-batch">
           <span>Batch Evaluation (100+ CSV Upload)</span>
           <span class="tab-counter" id="batch-tab-badge">Bulk</span>
+        </button>
+        <button class="tab-btn" id="tab-nav-trends" onclick="switchTab('trends')" role="tab" aria-selected="false" aria-controls="tab-trends">
+          <span>Evaluation Trends</span>
+          <span class="tab-counter" id="trends-tab-badge">History</span>
         </button>
       </div>
 
@@ -2045,6 +3011,35 @@
         <!-- Batch Results Dashboard Section (3 Visually Distinct Zones) -->
         <div id="batch-results-section" style="display: none;" class="batch-dashboard-zones">
 
+          <!-- Scope Toggle Banner: "This batch" vs "All batches combined" -->
+          <div class="batch-scope-banner" id="batch-scope-banner">
+            <div class="scope-toggle-wrapper">
+              <span class="scope-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px;" aria-hidden="true">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                Summary Scope:
+              </span>
+              <div class="scope-switch" role="radiogroup" aria-label="Evaluation summary statistics scope">
+                <button type="button" class="scope-switch-btn active" id="scope-btn-single" onclick="setEvaluationScope('single')" role="radio" aria-checked="true" aria-label="Scope: This batch">
+                  <span class="scope-dot"></span>
+                  <span id="scope-single-title">This Batch</span>
+                  <span class="scope-pill" id="scope-single-count">0</span>
+                </button>
+                <button type="button" class="scope-switch-btn" id="scope-btn-combined" onclick="setEvaluationScope('combined')" role="radio" aria-checked="false" aria-label="Scope: All batches combined across historical runs">
+                  <span class="scope-dot"></span>
+                  <span>All Batches Combined</span>
+                  <span class="scope-pill" id="scope-combined-count">0</span>
+                </button>
+              </div>
+            </div>
+            <div class="scope-details" id="scope-details-info">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
           <!-- ZONE 1: OVERVIEW -->
           <section class="zone-card zone-overview" id="zone-overview">
             <div class="zone-header">
@@ -2063,20 +3058,20 @@
                 <span id="dist-bar-summary-text" style="color:var(--slate-500); font-weight:500;"></span>
               </div>
               <div class="dist-segmented-bar" id="dist-segmented-bar">
-                <div id="seg-pass" class="dist-seg dist-seg-pass" style="width: 0%;" title="Pass"></div>
-                <div id="seg-needs" class="dist-seg dist-seg-needs" style="width: 0%;" title="Needs Improvement"></div>
-                <div id="seg-fail" class="dist-seg dist-seg-fail" style="width: 0%;" title="Fail"></div>
+                <div id="seg-pass" class="dist-seg dist-seg-pass" style="width: 0%;" title="Pass — Click to filter Pass records" tabindex="0" role="button" aria-label="Filter Pass records" onclick="drillDownVerdict('Pass')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Pass');}"></div>
+                <div id="seg-needs" class="dist-seg dist-seg-needs" style="width: 0%;" title="Needs Improvement — Click to filter Needs Improvement records" tabindex="0" role="button" aria-label="Filter Needs Improvement records" onclick="drillDownVerdict('Needs Improvement')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Needs Improvement');}"></div>
+                <div id="seg-fail" class="dist-seg dist-seg-fail" style="width: 0%;" title="Fail — Click to filter Fail records" tabindex="0" role="button" aria-label="Filter Fail records" onclick="drillDownVerdict('Fail')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Fail');}"></div>
               </div>
               <div class="dist-bar-legend">
-                <div class="dist-legend-item">
+                <div class="dist-legend-item" tabindex="0" role="button" aria-label="Filter Pass records" onclick="drillDownVerdict('Pass')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Pass');}" title="Click to filter Pass records">
                   <span class="dist-dot" style="background:var(--color-success);"></span>
                   <span id="legend-pass">Pass: 0%</span>
                 </div>
-                <div class="dist-legend-item">
+                <div class="dist-legend-item" tabindex="0" role="button" aria-label="Filter Needs Improvement records" onclick="drillDownVerdict('Needs Improvement')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Needs Improvement');}" title="Click to filter Needs Improvement records">
                   <span class="dist-dot" style="background:var(--color-warning);"></span>
                   <span id="legend-needs">Needs Improvement: 0%</span>
                 </div>
-                <div class="dist-legend-item">
+                <div class="dist-legend-item" tabindex="0" role="button" aria-label="Filter Fail records" onclick="drillDownVerdict('Fail')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Fail');}" title="Click to filter Fail records">
                   <span class="dist-dot" style="background:var(--color-danger);"></span>
                   <span id="legend-fail">Fail: 0%</span>
                 </div>
@@ -2097,6 +3092,20 @@
 
             <div class="insight-content-box" id="batch-insights-box">
               <div id="batch-summary-text"></div>
+            </div>
+
+            <!-- Top Issues Diagnostic Ranking Panel -->
+            <div class="top-issues-panel" id="batch-top-issues-panel">
+              <div class="top-issues-header">
+                <div class="top-issues-title-wrap">
+                  <span class="top-issues-badge">Top Issues</span>
+                  <h4 class="top-issues-title">Most Frequently Occurring Evaluation Problems</h4>
+                </div>
+                <span class="top-issues-subtitle">Ranked by frequency across active evaluation scope • Click any issue to drill down into matching table records</span>
+              </div>
+              <div class="top-issues-grid" id="batch-top-issues-grid">
+                <!-- Dynamically populated in renderBatchResults -->
+              </div>
             </div>
           </section>
 
@@ -2155,11 +3164,6 @@
                   <option value="all">Show All Rows</option>
                 </select>
 
-                <div style="position: relative;">
-                  <input type="text" id="table-search" placeholder="Search rows..." style="width: 170px; font-size: 12px; padding: 6px 28px 6px 10px;" oninput="searchBatch(this.value)" aria-label="Search rows by question or AI response text" />
-                  <button type="button" onclick="clearSearch()" id="clear-search-btn" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 12px; color: var(--slate-400); cursor: pointer; display: none;" aria-label="Clear search input">✕</button>
-                </div>
-
                 <!-- Export Full CSV -->
                 <button type="button" id="export-csv-btn" class="btn btn-secondary btn-sm" onclick="exportBatchCsv()" title="Download complete batch evaluation as CSV" aria-label="Download complete batch evaluation as CSV">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2169,6 +3173,19 @@
                   </svg>
                   <span>Export Full CSV</span>
                 </button>
+
+                <!-- Export PDF Report -->
+                <button type="button" id="export-pdf-btn" class="btn btn-secondary btn-sm" onclick="exportBatchPdf()" title="Download complete professional PDF evaluation report" aria-label="Download complete professional PDF evaluation report">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                  <span>Export PDF Report</span>
+                </button>
+
 
                 <!-- Export Filtered Rows -->
                 <button type="button" class="btn btn-secondary btn-sm" onclick="exportFilteredCsv()" title="Export only the currently filtered rows" aria-label="Export currently filtered batch records as CSV">
@@ -2182,6 +3199,78 @@
                   <span>Upload New Batch</span>
                 </button>
               </div>
+
+              <!-- Multi-Facet Filter Controls (Batch, Score Range, Presets, Search) -->
+              <div class="batch-filter-facets-bar" id="batch-filter-facets-bar" role="search" aria-label="Advanced multi-facet filters">
+                <!-- Facet 1: Specific Batch Filter -->
+                <div class="facet-control">
+                  <label for="filter-batch-select" class="facet-label">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;" aria-hidden="true">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Batch:
+                  </label>
+                  <select id="filter-batch-select" onchange="onBatchFilterChange(this.value)" class="facet-select" aria-label="Filter records by specific batch">
+                    <option value="ALL">All Batches</option>
+                  </select>
+                </div>
+
+                <!-- Facet 2: Score Range Filter (Dimension + Operator + Threshold) -->
+                <div class="facet-control">
+                  <label class="facet-label">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;" aria-hidden="true">
+                      <line x1="18" y1="20" x2="18" y2="10"></line>
+                      <line x1="12" y1="20" x2="12" y2="4"></line>
+                      <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    Score Filter:
+                  </label>
+                  <div class="score-filter-inputs">
+                    <select id="filter-score-dim" onchange="onScoreFilterChange()" class="facet-select" aria-label="Select score dimension">
+                      <option value="none">Any Dimension / None</option>
+                      <option value="accuracy">Accuracy</option>
+                      <option value="completeness">Completeness</option>
+                      <option value="relevance">Relevance</option>
+                      <option value="groundedness">Groundedness</option>
+                      <option value="weighted_score">Composite Score</option>
+                    </select>
+                    <select id="filter-score-op" onchange="onScoreFilterChange()" class="facet-select" aria-label="Score comparison operator">
+                      <option value="<">&lt; (less than)</option>
+                      <option value="<=">&le; (less or equal)</option>
+                      <option value=">=">&ge; (greater or equal)</option>
+                      <option value=">">&gt; (greater than)</option>
+                    </select>
+                    <div class="score-input-wrap">
+                      <input type="number" id="filter-score-val" placeholder="e.g. 60" min="0" max="100" oninput="onScoreFilterChange()" class="facet-input" aria-label="Threshold score percentage" />
+                      <span class="unit">%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Facet 3: Quick Score Presets -->
+                <div class="facet-presets" role="group" aria-label="Quick score range presets">
+                  <span class="facet-presets-label">Presets:</span>
+                  <button type="button" class="preset-pill" onclick="applyScorePreset('accuracy', '<', 60)" title="Filter for Factual Accuracy below 60%">Accuracy &lt; 60%</button>
+                  <button type="button" class="preset-pill" onclick="applyScorePreset('completeness', '<', 60)" title="Filter for Completeness below 60%">Completeness &lt; 60%</button>
+                  <button type="button" class="preset-pill" onclick="applyScorePreset('weighted_score', '<', 50)" title="Filter for Composite Score below 50%">Composite &lt; 50%</button>
+                  <button type="button" class="preset-pill" onclick="applyScorePreset('weighted_score', '>=', 80)" title="Filter for Composite Score 80% or higher">Composite &ge; 80%</button>
+                </div>
+
+                <!-- Facet 4: Text Search Input -->
+                <div class="facet-search">
+                  <input type="text" id="table-search" placeholder="Search rows..." oninput="searchBatch(this.value)" aria-label="Search rows by question or AI response text" />
+                  <button type="button" onclick="clearSearch()" id="clear-search-btn" class="clear-search-btn" aria-label="Clear search input">✕</button>
+                </div>
+              </div>
+
+              <!-- Active Filters Bar (Dismissible Tags + Match Counter + Clear All) -->
+              <div class="active-filters-bar" id="active-filters-bar" style="display: none;" role="region" aria-label="Active filters status">
+                <div class="active-tags-list" id="active-tags-list"></div>
+                <div class="active-filters-meta">
+                  <span id="active-filter-match-count" class="match-count-text"></span>
+                  <button type="button" class="btn-clear-all" onclick="clearAllFilters()" aria-label="Clear all active filters">Clear all filters</button>
+                </div>
+              </div>
             </div>
 
             <!-- Results Table -->
@@ -2190,19 +3279,19 @@
                 <table id="batch-main-table" class="density-comfortable" aria-label="Benchmark records table">
                   <thead>
                     <tr>
-                      <th style="width: 50px; text-align: center;" class="sortable" id="th-sort-index" onclick="sortTable('index')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('index');}" tabindex="0" role="button" aria-label="Sort by index" aria-sort="ascending" title="Sort by index">
+                      <th style="width: 78px; min-width: 78px; text-align: center;" class="sortable" id="th-sort-index" onclick="sortTable('index')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('index');}" tabindex="0" role="button" aria-label="Sort by index" aria-sort="ascending" title="Sort by index">
                         <div class="th-content" style="justify-content:center;">
                           <span>#</span>
                           <span id="sort-icon-index" class="sort-icon sort-active" aria-hidden="true">↑</span>
                         </div>
                       </th>
-                      <th style="width: calc(50% - 125px); text-align: left;" class="sortable" id="th-sort-question" onclick="sortTable('question')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('question');}" tabindex="0" role="button" aria-label="Sort by question text" aria-sort="none" title="Sort by question text">
+                      <th style="width: calc(50% - 139px); text-align: left;" class="sortable" id="th-sort-question" onclick="sortTable('question')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('question');}" tabindex="0" role="button" aria-label="Sort by question text" aria-sort="none" title="Sort by question text">
                         <div class="th-content">
                           <span>Question</span>
                           <span id="sort-icon-question" class="sort-icon sort-neutral" aria-hidden="true">↕</span>
                         </div>
                       </th>
-                      <th style="width: calc(50% - 125px); text-align: left;" class="sortable" id="th-sort-response" onclick="sortTable('response')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('response');}" tabindex="0" role="button" aria-label="Sort by AI response text" aria-sort="none" title="Sort by AI response text">
+                      <th style="width: calc(50% - 139px); text-align: left;" class="sortable" id="th-sort-response" onclick="sortTable('response')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTable('response');}" tabindex="0" role="button" aria-label="Sort by AI response text" aria-sort="none" title="Sort by AI response text">
                         <div class="th-content">
                           <span>AI Response</span>
                           <span id="sort-icon-response" class="sort-icon sort-neutral" aria-hidden="true">↕</span>
@@ -2232,6 +3321,227 @@
           </section>
         </div>
       </div>
+
+      <!-- TAB 3: CROSS-BATCH EVALUATION TRENDS -->
+      <div id="tab-trends" class="tab-content" role="tabpanel" aria-labelledby="tab-nav-trends">
+        <!-- Top Toolbar -->
+        <div class="trends-toolbar">
+          <div class="trends-toolbar-title">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--slate-900);">Evaluation Trends Across Submissions</h2>
+            <span class="badge accent" id="trends-batch-count-badge">0 Submissions</span>
+          </div>
+          <div class="trends-toolbar-actions">
+            <button type="button" class="btn btn-secondary btn-sm" id="refresh-trends-btn" onclick="loadTrends()" title="Refresh trends from repository history" aria-label="Refresh historical evaluation trends">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span>Refresh Trends</span>
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="switchTab('batch')" aria-label="Go to Batch Evaluation tab to upload or explore">
+              <span>Go to Batch Upload</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty State Container (shown when 0 batches exist) -->
+        <div id="trends-empty-state" class="panel-card" style="display: none; text-align: center; padding: 48px 20px;">
+          <div style="width: 52px; height: 52px; border-radius: 12px; background: var(--color-accent-light); color: var(--color-accent); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--slate-900); margin: 0 0 6px;">No Historical Batch Submissions Found</h3>
+          <p style="font-size: 13px; color: var(--slate-500); max-width: 480px; margin: 0 auto 16px; line-height: 1.5;">
+            Longitudinal trends require multiple evaluated batch submissions. Upload a CSV benchmark file to initiate your evaluation history.
+          </p>
+          <button type="button" class="btn btn-primary btn-sm" onclick="switchTab('batch')">Upload Benchmark CSV</button>
+        </div>
+
+        <!-- Main Trends Content Container (shown when >= 1 batches exist) -->
+        <div id="trends-content-box" style="display: none;">
+          <!-- ZONE 1: TRENDS OVERVIEW KPIS -->
+          <section class="zone-card zone-overview" id="zone-trends-overview">
+            <div class="zone-header">
+              <span class="zone-badge">Zone 1</span>
+              <h3 class="zone-title">Overview</h3>
+              <span class="zone-subtitle">Longitudinal metrics, submission counts, and overall quality trajectory</span>
+            </div>
+
+            <div class="stats-grid-5" id="trends-kpi-grid">
+              <!-- Total Submissions Card -->
+              <div class="stat-card stat-neutral">
+                <div class="num" id="trend-kpi-total-batches">0</div>
+                <div class="label">Total Batches</div>
+                <div class="subtext">Chronological submissions</div>
+              </div>
+
+              <!-- Latest Score Card -->
+              <div class="stat-card stat-accent">
+                <div class="num" id="trend-kpi-latest-score">0%</div>
+                <div class="label">Latest Score</div>
+                <div class="subtext" id="trend-kpi-latest-batch-id">—</div>
+              </div>
+
+              <!-- Quality Trajectory Card -->
+              <div class="stat-card" id="trend-card-trajectory">
+                <div class="num" id="trend-kpi-net-change">+0.0%</div>
+                <div class="label">Quality Trajectory</div>
+                <div class="subtext" id="trend-kpi-trajectory-label">Evaluating...</div>
+              </div>
+
+              <!-- Hallucination Trajectory Card -->
+              <div class="stat-card stat-warning" id="trend-card-hal">
+                <div class="num" id="trend-kpi-latest-hal">0%</div>
+                <div class="label">Hallucination Rate</div>
+                <div class="subtext" id="trend-kpi-hal-delta">—</div>
+              </div>
+
+              <!-- Total Records Card -->
+              <div class="stat-card stat-neutral">
+                <div class="num" id="trend-kpi-total-records">0</div>
+                <div class="label">Total Records</div>
+                <div class="subtext">Evaluated across history</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ZONE 2: LONGITUDINAL INSIGHTS -->
+          <section class="zone-card zone-insights" id="zone-trends-insights">
+            <div class="zone-header">
+              <span class="zone-badge accent">Zone 2</span>
+              <h3 class="zone-title">Insights</h3>
+              <span class="zone-subtitle">AI-synthesized longitudinal evaluation and multi-submission progression diagnosis</span>
+            </div>
+
+            <div class="insight-content-box">
+              <div class="insight-card-inner">
+                <div class="insight-pill-row">
+                  <span id="trends-trajectory-badge" class="trajectory-badge stable">Stable Performance</span>
+                  <span class="insight-tagline">Historical Quality Trajectory</span>
+                </div>
+                <h4 class="insight-headline" id="trends-insight-headline">Analyzing evaluation trend progression…</h4>
+                <p class="insight-explanation" id="trends-insight-explanation">Evaluating dimension shifts across stored historical runs.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ZONE 3: MULTI-SUBMISSION CHARTS -->
+          <section class="zone-card" id="zone-trends-charts">
+            <div class="zone-header">
+              <span class="zone-badge">Zone 3</span>
+              <h3 class="zone-title">Visualizations</h3>
+              <span class="zone-subtitle">Interactive chronological dimension progression and verdict distribution breakdown</span>
+            </div>
+
+            <div class="trends-charts-grid">
+              <!-- Chart 1: Average Dimension Scores Trend -->
+              <div class="trend-chart-card">
+                <div class="chart-header">
+                  <div>
+                    <h4 class="chart-title">Dimension Scores Over Time</h4>
+                    <div class="chart-subtitle">Chronological progression of evaluation dimension averages (0% – 100%)</div>
+                  </div>
+                </div>
+
+                <!-- Metric Toggles -->
+                <div class="metric-toggles" id="trend-metric-toggles" role="group" aria-label="Toggle visible dimension trend lines">
+                  <button type="button" class="metric-chip active" id="toggle-metric-relevance" onclick="toggleTrendMetric('relevance')" aria-pressed="true">
+                    <span class="metric-indicator-dot" style="background: var(--color-accent);"></span>
+                    <span>Relevance</span>
+                  </button>
+                  <button type="button" class="metric-chip active" id="toggle-metric-accuracy" onclick="toggleTrendMetric('accuracy')" aria-pressed="true">
+                    <span class="metric-indicator-dot" style="background: var(--color-success);"></span>
+                    <span>Accuracy</span>
+                  </button>
+                  <button type="button" class="metric-chip active" id="toggle-metric-completeness" onclick="toggleTrendMetric('completeness')" aria-pressed="true">
+                    <span class="metric-indicator-dot" style="background: #7c3aed;"></span>
+                    <span>Completeness</span>
+                  </button>
+                  <button type="button" class="metric-chip active" id="toggle-metric-hallucination" onclick="toggleTrendMetric('hallucination')" aria-pressed="true">
+                    <span class="metric-indicator-dot" style="background: var(--color-danger);"></span>
+                    <span>Hallucination Rate</span>
+                  </button>
+                  <button type="button" class="metric-chip active" id="toggle-metric-composite" onclick="toggleTrendMetric('composite')" aria-pressed="true">
+                    <span class="metric-indicator-dot" style="background: var(--slate-800);"></span>
+                    <span>Composite Score</span>
+                  </button>
+                </div>
+
+                <!-- SVG Chart Wrap -->
+                <div class="chart-svg-wrap" id="chart-dimensions-wrap">
+                  <div id="dimensions-chart-svg"></div>
+                  <div id="dimensions-chart-tooltip" class="chart-tooltip"></div>
+                </div>
+              </div>
+
+              <!-- Chart 2: Verdict Distribution Progression -->
+              <div class="trend-chart-card">
+                <div class="chart-header">
+                  <div>
+                    <h4 class="chart-title">Verdict Distribution Breakdown</h4>
+                    <div class="chart-subtitle">Pass %, Needs Improvement %, and Fail % share per submission</div>
+                  </div>
+                </div>
+
+                <!-- Legend -->
+                <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; font-size: 11.5px; font-weight: 600;">
+                  <div style="display: flex; align-items: center; gap: 5px;">
+                    <span class="dist-dot" style="background: var(--color-success);"></span>
+                    <span style="color: var(--slate-700);">Pass (%)</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 5px;">
+                    <span class="dist-dot" style="background: var(--color-warning);"></span>
+                    <span style="color: var(--slate-700);">Needs Improvement (%)</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 5px;">
+                    <span class="dist-dot" style="background: var(--color-danger);"></span>
+                    <span style="color: var(--slate-700);">Fail (%)</span>
+                  </div>
+                </div>
+
+                <!-- SVG Chart Wrap -->
+                <div class="chart-svg-wrap" id="chart-verdicts-wrap">
+                  <div id="verdicts-chart-svg"></div>
+                  <div id="verdicts-chart-tooltip" class="chart-tooltip"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ZONE 4: HISTORICAL SUBMISSIONS TABLE -->
+          <section class="zone-card zone-data" id="zone-trends-history">
+            <div class="zone-header">
+              <span class="zone-badge">Zone 4</span>
+              <h3 class="zone-title">Submission History</h3>
+              <span class="zone-subtitle">Complete chronological registry of evaluated benchmark batches</span>
+            </div>
+
+            <div class="table-container">
+              <div class="table-wrap">
+                <table class="density-comfortable" aria-label="Historical batch evaluations table">
+                  <thead>
+                    <tr>
+                      <th style="width: 45px; text-align: center;">#</th>
+                      <th style="width: 160px; text-align: left;">Evaluated Date & Time</th>
+                      <th style="width: calc(35% - 50px); text-align: left;">Batch ID & Filename</th>
+                      <th style="width: 85px; text-align: center;">Records</th>
+                      <th style="width: 115px; text-align: center;">Quality Score</th>
+                      <th style="width: 165px; text-align: center;">Verdict Breakdown</th>
+                      <th style="width: 165px; text-align: center;">Dimension Averages</th>
+                      <th style="width: 195px; min-width: 195px; text-align: center;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="trends-history-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
     </div>
 
     <!-- Slide-over Drawer for Inspecting Detailed Record Results -->
@@ -2251,23 +3561,697 @@
       <div id="drawer-content" class="drawer-scroll-body"></div>
     </aside>
 
+    <!-- Global PDF Export Notification Banner -->
+    <div id="pdf-feedback-banner" class="pdf-feedback-banner" style="display: none;" role="alert" aria-live="assertive">
+      <div class="pdf-feedback-content">
+        <span id="pdf-feedback-icon" class="pdf-feedback-icon"></span>
+        <div id="pdf-feedback-text" class="pdf-feedback-text"></div>
+      </div>
+      <button type="button" class="pdf-feedback-close" onclick="dismissPdfFeedbackBanner()" aria-label="Dismiss notification">✕</button>
+    </div>
+
     <script>
       // -------------------------------------------------------------
       // Tab Navigation
       // -------------------------------------------------------------
       function switchTab(tab) {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-btn").forEach(b => {
+          b.classList.remove("active");
+          b.setAttribute("aria-selected", "false");
+        });
         document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
         if (tab === "single") {
-          document.getElementById("tab-nav-single").classList.add("active");
-          document.getElementById("tab-single").classList.add("active");
+          const btn = document.getElementById("tab-nav-single");
+          if (btn) { btn.classList.add("active"); btn.setAttribute("aria-selected", "true"); }
+          const content = document.getElementById("tab-single");
+          if (content) content.classList.add("active");
           try { localStorage.setItem("active_eval_tab", "single"); } catch (e) {}
+        } else if (tab === "trends") {
+          const btn = document.getElementById("tab-nav-trends");
+          if (btn) { btn.classList.add("active"); btn.setAttribute("aria-selected", "true"); }
+          const content = document.getElementById("tab-trends");
+          if (content) content.classList.add("active");
+          try { localStorage.setItem("active_eval_tab", "trends"); } catch (e) {}
+          loadTrends();
         } else {
-          document.getElementById("tab-nav-batch").classList.add("active");
-          document.getElementById("tab-batch").classList.add("active");
+          const btn = document.getElementById("tab-nav-batch");
+          if (btn) { btn.classList.add("active"); btn.setAttribute("aria-selected", "true"); }
+          const content = document.getElementById("tab-batch");
+          if (content) content.classList.add("active");
           try { localStorage.setItem("active_eval_tab", "batch"); } catch (e) {}
         }
+      }
+
+      // -------------------------------------------------------------
+      // Milestone 4: Longitudinal Cross-Batch Evaluation Trends Logic
+      // -------------------------------------------------------------
+      let historicalTrendsData = null;
+      let trendActiveMetrics = {
+        relevance: true,
+        accuracy: true,
+        completeness: true,
+        hallucination: true,
+        composite: true,
+      };
+
+      function formatShortDate(isoStr) {
+        try {
+          const d = new Date(isoStr);
+          if (isNaN(d.getTime())) return String(isoStr || "");
+          const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          const month = months[d.getMonth()];
+          const day = d.getDate();
+          const hours = String(d.getHours()).padStart(2, "0");
+          const mins = String(d.getMinutes()).padStart(2, "0");
+          return `${month} ${day} ${hours}:${mins}`;
+        } catch (e) {
+          return String(isoStr || "");
+        }
+      }
+
+      function timeAgo(isoStr) {
+        try {
+          const diff = (Date.now() - new Date(isoStr).getTime()) / 1000;
+          if (isNaN(diff) || diff < 0) return "";
+          if (diff < 60) return "just now";
+          if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+          if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+          return `${Math.floor(diff / 86400)}d ago`;
+        } catch (e) {
+          return "";
+        }
+      }
+
+      async function loadTrends() {
+        const refreshBtn = document.getElementById("refresh-trends-btn");
+        if (refreshBtn) refreshBtn.disabled = true;
+
+        try {
+          const res = await fetch("/api/v1/batches/trends");
+          if (!res.ok) throw new Error("Could not fetch historical evaluation trends");
+          const data = await res.json();
+          historicalTrendsData = data;
+          renderTrendsView(data);
+        } catch (err) {
+          console.error("Error loading trends:", err);
+        } finally {
+          if (refreshBtn) refreshBtn.disabled = false;
+        }
+      }
+
+      function toggleTrendMetric(metric) {
+        trendActiveMetrics[metric] = !trendActiveMetrics[metric];
+        const btn = document.getElementById(`toggle-metric-${metric}`);
+        if (btn) {
+          btn.classList.toggle("active", trendActiveMetrics[metric]);
+          btn.setAttribute("aria-pressed", String(trendActiveMetrics[metric]));
+        }
+        if (historicalTrendsData && historicalTrendsData.batches) {
+          renderDimensionTrendChart(historicalTrendsData.batches);
+        }
+      }
+
+      async function loadHistoricalBatch(batchId) {
+        try {
+          const res = await fetch(`/api/v1/batch/${batchId}`);
+          if (!res.ok) throw new Error(`Could not load batch ${batchId}`);
+          const data = await res.json();
+          activeBatchSummary = data;
+          renderBatchResults(data);
+          switchTab("batch");
+          const zoneOverview = document.getElementById("zone-overview");
+          if (zoneOverview) zoneOverview.scrollIntoView({ behavior: "smooth" });
+        } catch (err) {
+          alert("Error loading historical batch: " + (err.message || "Server error"));
+        }
+      }
+
+      function renderTrendsView(data) {
+        if (!data || !data.batches || data.batches.length === 0) {
+          document.getElementById("trends-empty-state").style.display = "block";
+          document.getElementById("trends-content-box").style.display = "none";
+          document.getElementById("trends-batch-count-badge").textContent = "0 Submissions";
+          return;
+        }
+
+        document.getElementById("trends-empty-state").style.display = "none";
+        document.getElementById("trends-content-box").style.display = "block";
+
+        const batches = data.batches;
+        const total = batches.length;
+        const latest = batches[total - 1];
+        const first = batches[0];
+
+        // 1. Header count badge
+        const totalRecordsAll = batches.reduce((sum, b) => sum + (b.total_records || 0), 0);
+        document.getElementById("trends-batch-count-badge").textContent = `${total} Submissions (${totalRecordsAll} Rows)`;
+
+        // 2. Overview KPI Stat Cards
+        document.getElementById("trend-kpi-total-batches").textContent = String(total);
+        document.getElementById("trend-kpi-latest-score").textContent = `${(latest.average_weighted_score * 100).toFixed(1)}%`;
+        document.getElementById("trend-kpi-latest-batch-id").textContent = latest.filename ? `${latest.filename.slice(0, 22)}` : latest.batch_id;
+
+        const trajectoryNumEl = document.getElementById("trend-kpi-net-change");
+        const trajectoryLabelEl = document.getElementById("trend-kpi-trajectory-label");
+        const trajectoryCardEl = document.getElementById("trend-card-trajectory");
+
+        const delta = data.score_change_percent;
+        const sign = delta > 0 ? "+" : "";
+        trajectoryNumEl.textContent = `${sign}${delta.toFixed(1)}%`;
+
+        trajectoryCardEl.classList.remove("stat-neutral", "stat-success", "stat-warning", "stat-danger");
+        if (data.overall_quality_trend === "improving") {
+          trajectoryCardEl.classList.add("stat-success");
+          trajectoryLabelEl.textContent = "Quality Improving Across Runs";
+        } else if (data.overall_quality_trend === "degrading") {
+          trajectoryCardEl.classList.add("stat-danger");
+          trajectoryLabelEl.textContent = "Quality Degrading Across Runs";
+        } else if (data.overall_quality_trend === "stable") {
+          trajectoryCardEl.classList.add("stat-neutral");
+          trajectoryLabelEl.textContent = "Stable Benchmark Performance";
+        } else {
+          trajectoryCardEl.classList.add("stat-neutral");
+          trajectoryLabelEl.textContent = "Baseline Submission Recorded";
+        }
+
+        // Hallucination KPI
+        const latestHal = latest.hallucination_rate_percent;
+        document.getElementById("trend-kpi-latest-hal").textContent = `${latestHal.toFixed(1)}%`;
+        const halCard = document.getElementById("trend-card-hal");
+        halCard.classList.remove("stat-neutral", "stat-success", "stat-warning", "stat-danger");
+        if (total > 1) {
+          const halDelta = latestHal - first.hallucination_rate_percent;
+          const halSign = halDelta > 0 ? "+" : "";
+          document.getElementById("trend-kpi-hal-delta").textContent = `${halSign}${halDelta.toFixed(1)}% vs baseline`;
+          if (halDelta < -2) halCard.classList.add("stat-success");
+          else if (halDelta > 2) halCard.classList.add("stat-danger");
+          else halCard.classList.add("stat-warning");
+        } else {
+          document.getElementById("trend-kpi-hal-delta").textContent = "Initial baseline run";
+          halCard.classList.add("stat-warning");
+        }
+
+        // Total Records KPI
+        document.getElementById("trend-kpi-total-records").textContent = totalRecordsAll.toLocaleString();
+
+        // 3. Zone 2: Insights Box
+        const trajBadge = document.getElementById("trends-trajectory-badge");
+        trajBadge.className = `trajectory-badge ${data.overall_quality_trend}`;
+        if (data.overall_quality_trend === "improving") trajBadge.textContent = "Improving Quality Trajectory";
+        else if (data.overall_quality_trend === "degrading") trajBadge.textContent = "Degrading Quality Trajectory";
+        else if (data.overall_quality_trend === "stable") trajBadge.textContent = "Stable Performance";
+        else trajBadge.textContent = "Initial Baseline";
+
+        document.getElementById("trends-insight-headline").textContent = 
+          total > 1 
+            ? `LLM Response Quality Shifted ${sign}${delta.toFixed(1)}% Across ${total} Submissions` 
+            : `Baseline Run Established (${(latest.average_weighted_score * 100).toFixed(1)}% Quality)`;
+
+        document.getElementById("trends-insight-explanation").textContent = data.summary_insight;
+
+        // 4. Zone 3: Charts
+        renderDimensionTrendChart(batches);
+        renderVerdictTrendChart(batches);
+
+        // 5. Zone 4: History Table
+        renderHistoricalBatchesTable(batches);
+      }
+
+      function renderDimensionTrendChart(batches) {
+        const container = document.getElementById("dimensions-chart-svg");
+        if (!container) return;
+
+        const N = batches.length;
+        const width = 640;
+        const height = 270;
+        const padLeft = 45;
+        const padRight = 30;
+        const padTop = 25;
+        const padBottom = 45;
+
+        const plotW = width - padLeft - padRight;
+        const plotH = height - padTop - padBottom;
+
+        function getY(pct) {
+          const clamped = Math.max(0, Math.min(100, pct));
+          return padTop + plotH - (clamped / 100) * plotH;
+        }
+
+        function getX(i) {
+          if (N === 1) return padLeft + plotW / 2;
+          const inset = Math.min(35, plotW / (N * 2));
+          return padLeft + inset + (i / (N - 1)) * (plotW - inset * 2);
+        }
+
+        // Gridlines
+        let gridHtml = `
+          <line x1="${padLeft}" y1="${getY(80)}" x2="${width - padRight}" y2="${getY(80)}" stroke="var(--color-success-border)" stroke-dasharray="4,4" stroke-width="1.2"></line>
+          <text x="${width - padRight - 4}" y="${getY(80) - 4}" text-anchor="end" font-size="9.5" font-weight="600" fill="var(--color-success)">80% (Pass)</text>
+          
+          <line x1="${padLeft}" y1="${getY(50)}" x2="${width - padRight}" y2="${getY(50)}" stroke="var(--color-warning-border)" stroke-dasharray="4,4" stroke-width="1"></line>
+          <text x="${width - padRight - 4}" y="${getY(50) - 4}" text-anchor="end" font-size="9" font-weight="500" fill="var(--color-warning)">50% (Needs Imp)</text>
+        `;
+
+        [100, 75, 50, 25, 0].forEach(val => {
+          const y = getY(val);
+          gridHtml += `
+            <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="var(--slate-200)" stroke-width="${val === 0 ? '1.5' : '1'}"></line>
+            <text x="${padLeft - 8}" y="${y + 3.5}" text-anchor="end" font-size="10" font-weight="500" fill="var(--slate-400)">${val}%</text>
+          `;
+        });
+
+        // Series definitions
+        const series = [
+          {
+            key: "relevance",
+            label: "Relevance",
+            color: "#1d4ed8",
+            strokeWidth: 2.5,
+            dash: "none",
+            values: batches.map(b => b.average_relevance_score * 100),
+          },
+          {
+            key: "accuracy",
+            label: "Accuracy",
+            color: "#047857",
+            strokeWidth: 2.5,
+            dash: "none",
+            values: batches.map(b => b.average_accuracy_score * 100),
+          },
+          {
+            key: "completeness",
+            label: "Completeness",
+            color: "#7c3aed",
+            strokeWidth: 2.5,
+            dash: "none",
+            values: batches.map(b => b.average_completeness_score * 100),
+          },
+          {
+            key: "hallucination",
+            label: "Hallucination Rate",
+            color: "#b91c1c",
+            strokeWidth: 2.2,
+            dash: "5,3",
+            values: batches.map(b => b.hallucination_rate_percent),
+          },
+          {
+            key: "composite",
+            label: "Composite Score",
+            color: "#1e293b",
+            strokeWidth: 3.2,
+            dash: "none",
+            values: batches.map(b => b.average_weighted_score * 100),
+          },
+        ];
+
+        let pathsHtml = "";
+        let pointsHtml = "";
+
+        series.forEach(s => {
+          if (!trendActiveMetrics[s.key]) return;
+
+          if (N === 1) {
+            const cx = getX(0);
+            const cy = getY(s.values[0]);
+            pointsHtml += `
+              <circle cx="${cx}" cy="${cy}" r="6" fill="#ffffff" stroke="${s.color}" stroke-width="${s.strokeWidth}" class="chart-point"></circle>
+            `;
+            return;
+          }
+
+          let d = "";
+          s.values.forEach((v, i) => {
+            const x = getX(i);
+            const y = getY(v);
+            d += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
+            pointsHtml += `
+              <circle cx="${x}" cy="${y}" r="4.5" fill="#ffffff" stroke="${s.color}" stroke-width="${s.strokeWidth}" class="chart-point"></circle>
+            `;
+          });
+
+          pathsHtml += `
+            <path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.strokeWidth}" stroke-dasharray="${s.dash}" stroke-linecap="round" stroke-linejoin="round"></path>
+          `;
+        });
+
+        // X-axis batch labels & vertical interactive hover slices
+        let xLabelsHtml = "";
+        let hoverSlicesHtml = "";
+
+        batches.forEach((b, i) => {
+          const x = getX(i);
+          const dateStr = formatShortDate(b.created_at);
+          const dateParts = dateStr.split(" ");
+          const dayPart = dateParts.slice(0, 2).join(" ");
+          const timePart = dateParts[2] || "";
+
+          xLabelsHtml += `
+            <line x1="${x}" y1="${getY(0)}" x2="${x}" y2="${getY(0) + 4}" stroke="var(--slate-400)" stroke-width="1.5"></line>
+            <text x="${x}" y="${getY(0) + 16}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--slate-700)">#${i + 1}</text>
+            <text x="${x}" y="${getY(0) + 28}" text-anchor="middle" font-size="9" fill="var(--slate-400)">${dayPart} ${timePart}</text>
+          `;
+
+          const sliceW = N > 1 ? plotW / N : plotW;
+          const sliceX = N > 1 ? x - sliceW / 2 : padLeft;
+
+          hoverSlicesHtml += `
+            <rect x="${sliceX}" y="${padTop}" width="${sliceW}" height="${plotH}" fill="transparent" style="cursor:pointer;"
+              onmouseenter="showDimensionTooltip(event, ${i})"
+              onmousemove="moveDimensionTooltip(event)"
+              onmouseleave="hideDimensionTooltip()">
+            </rect>
+          `;
+        });
+
+        container.innerHTML = `
+          <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Dimension Scores Trend Line Chart">
+            ${gridHtml}
+            ${pathsHtml}
+            ${pointsHtml}
+            ${xLabelsHtml}
+            ${hoverSlicesHtml}
+          </svg>
+        `;
+      }
+
+      function showDimensionTooltip(event, index) {
+        if (!historicalTrendsData || !historicalTrendsData.batches) return;
+        const b = historicalTrendsData.batches[index];
+        if (!b) return;
+
+        const tooltip = document.getElementById("dimensions-chart-tooltip");
+        const svgWrap = document.getElementById("chart-dimensions-wrap");
+        if (!tooltip || !svgWrap) return;
+
+        const wrapRect = svgWrap.getBoundingClientRect();
+        const mouseX = event.clientX - wrapRect.left;
+        const mouseY = event.clientY - wrapRect.top;
+
+        tooltip.style.background = "#0f172a";
+        tooltip.style.color = "#f8fafc";
+        tooltip.style.border = "1px solid #334155";
+
+        tooltip.innerHTML = `
+          <div class="chart-tooltip-title">Batch #${index + 1} • ${formatShortDate(b.created_at)}</div>
+          <div style="font-size:10.5px; color:#cbd5e1; margin-bottom:6px;">${escapeHtml(b.filename || b.batch_id)} (${b.total_records} rows)</div>
+          <div class="chart-tooltip-row">
+            <span style="color:#93c5fd;">● Relevance:</span>
+            <strong style="color:#f8fafc;">${(b.average_relevance_score * 100).toFixed(1)}%</strong>
+          </div>
+          <div class="chart-tooltip-row">
+            <span style="color:#6ee7b7;">● Accuracy:</span>
+            <strong style="color:#f8fafc;">${(b.average_accuracy_score * 100).toFixed(1)}%</strong>
+          </div>
+          <div class="chart-tooltip-row">
+            <span style="color:#c084fc;">● Completeness:</span>
+            <strong style="color:#f8fafc;">${(b.average_completeness_score * 100).toFixed(1)}%</strong>
+          </div>
+          <div class="chart-tooltip-row">
+            <span style="color:#fca5a5;">● Hallucinations:</span>
+            <strong style="color:#f8fafc;">${b.hallucination_rate_percent.toFixed(1)}%</strong>
+          </div>
+          <div class="chart-tooltip-row" style="border-top:1px solid #334155; padding-top:5px; margin-top:5px;">
+            <span style="font-weight:700; color:#e2e8f0;">● Composite Score:</span>
+            <strong style="color:#38bdf8; font-size:12px;">${(b.average_weighted_score * 100).toFixed(1)}%</strong>
+          </div>
+        `;
+
+        tooltip.style.left = `${Math.max(90, Math.min(wrapRect.width - 90, mouseX))}px`;
+        tooltip.style.top = `${Math.max(10, mouseY - 15)}px`;
+        tooltip.classList.add("show");
+      }
+
+      function moveDimensionTooltip(event) {
+        const tooltip = document.getElementById("dimensions-chart-tooltip");
+        const svgWrap = document.getElementById("chart-dimensions-wrap");
+        if (!tooltip || !svgWrap) return;
+        const wrapRect = svgWrap.getBoundingClientRect();
+        const mouseX = event.clientX - wrapRect.left;
+        const mouseY = event.clientY - wrapRect.top;
+        tooltip.style.left = `${Math.max(90, Math.min(wrapRect.width - 90, mouseX))}px`;
+        tooltip.style.top = `${Math.max(10, mouseY - 15)}px`;
+      }
+
+      function hideDimensionTooltip() {
+        const tooltip = document.getElementById("dimensions-chart-tooltip");
+        if (tooltip) tooltip.classList.remove("show");
+      }
+
+      function renderVerdictTrendChart(batches) {
+        const container = document.getElementById("verdicts-chart-svg");
+        if (!container) return;
+
+        const N = batches.length;
+        const width = 640;
+        const height = 270;
+        const padLeft = 45;
+        const padRight = 30;
+        const padTop = 25;
+        const padBottom = 45;
+
+        const plotW = width - padLeft - padRight;
+        const plotH = height - padTop - padBottom;
+
+        function getY(pct) {
+          const clamped = Math.max(0, Math.min(100, pct));
+          return padTop + plotH - (clamped / 100) * plotH;
+        }
+
+        // Y-axis gridlines (0%, 25%, 50%, 75%, 100%)
+        let gridHtml = "";
+        [100, 75, 50, 25, 0].forEach(val => {
+          const y = getY(val);
+          gridHtml += `
+            <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="var(--slate-200)" stroke-width="${val === 0 ? '1.5' : '1'}"></line>
+            <text x="${padLeft - 8}" y="${y + 3.5}" text-anchor="end" font-size="10" font-weight="500" fill="var(--slate-400)">${val}%</text>
+          `;
+        });
+
+        const barSlotW = plotW / N;
+        const bw = Math.min(52, Math.max(22, Math.floor(barSlotW * 0.58)));
+
+        let barsHtml = "";
+        let xLabelsHtml = "";
+
+        batches.forEach((b, i) => {
+          const cx = padLeft + (i + 0.5) * barSlotW;
+          const x = cx - bw / 2;
+
+          const pPass = b.pass_percent;
+          const pNeeds = b.needs_improvement_percent;
+          const pFail = b.fail_percent;
+
+          const hPass = (pPass / 100) * plotH;
+          const hNeeds = (pNeeds / 100) * plotH;
+          const hFail = (pFail / 100) * plotH;
+
+          const yPass = getY(0) - hPass;
+          const yNeeds = yPass - hNeeds;
+          const yFail = yNeeds - hFail;
+
+          barsHtml += `
+            <g class="verdict-bar-group" style="cursor:pointer;"
+              onmouseenter="showVerdictTooltip(event, ${i})"
+              onmousemove="moveVerdictTooltip(event)"
+              onmouseleave="hideVerdictTooltip()">
+              <!-- Background guide bar -->
+              <rect x="${x}" y="${padTop}" width="${bw}" height="${plotH}" fill="var(--slate-100)" rx="4" ry="4"></rect>
+          `;
+
+          // Pass segment (bottom)
+          if (hPass > 0.5) {
+            barsHtml += `
+              <rect x="${x}" y="${yPass}" width="${bw}" height="${hPass}" fill="var(--color-success)" ${hNeeds === 0 && hFail === 0 ? 'rx="4" ry="4"' : ''}></rect>
+            `;
+            if (hPass >= 16) {
+              barsHtml += `
+                <text x="${cx}" y="${yPass + hPass / 2 + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">${pPass.toFixed(0)}%</text>
+              `;
+            }
+          }
+
+          // Needs Improvement segment (middle)
+          if (hNeeds > 0.5) {
+            barsHtml += `
+              <rect x="${x}" y="${yNeeds}" width="${bw}" height="${hNeeds}" fill="var(--color-warning)"></rect>
+            `;
+            if (hNeeds >= 16) {
+              barsHtml += `
+                <text x="${cx}" y="${yNeeds + hNeeds / 2 + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">${pNeeds.toFixed(0)}%</text>
+              `;
+            }
+          }
+
+          // Fail segment (top)
+          if (hFail > 0.5) {
+            barsHtml += `
+              <rect x="${x}" y="${yFail}" width="${bw}" height="${hFail}" fill="var(--color-danger)" ${hPass === 0 && hNeeds === 0 ? 'rx="4" ry="4"' : ''}></rect>
+            `;
+            if (hFail >= 16) {
+              barsHtml += `
+                <text x="${cx}" y="${yFail + hFail / 2 + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">${pFail.toFixed(0)}%</text>
+              `;
+            }
+          }
+
+          barsHtml += `</g>`;
+
+          // X-axis label
+          const dateStr = formatShortDate(b.created_at);
+          const dateParts = dateStr.split(" ");
+          const dayPart = dateParts.slice(0, 2).join(" ");
+          const timePart = dateParts[2] || "";
+
+          xLabelsHtml += `
+            <line x1="${cx}" y1="${getY(0)}" x2="${cx}" y2="${getY(0) + 4}" stroke="var(--slate-400)" stroke-width="1.5"></line>
+            <text x="${cx}" y="${getY(0) + 16}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--slate-700)">#${i + 1}</text>
+            <text x="${cx}" y="${getY(0) + 28}" text-anchor="middle" font-size="9" fill="var(--slate-400)">${dayPart} ${timePart}</text>
+          `;
+        });
+
+        container.innerHTML = `
+          <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Verdict Distribution Trend Stacked Bar Chart">
+            ${gridHtml}
+            ${barsHtml}
+            ${xLabelsHtml}
+          </svg>
+        `;
+      }
+
+      function showVerdictTooltip(event, index) {
+        if (!historicalTrendsData || !historicalTrendsData.batches) return;
+        const b = historicalTrendsData.batches[index];
+        if (!b) return;
+
+        const tooltip = document.getElementById("verdicts-chart-tooltip");
+        const svgWrap = document.getElementById("chart-verdicts-wrap");
+        if (!tooltip || !svgWrap) return;
+
+        const wrapRect = svgWrap.getBoundingClientRect();
+        const mouseX = event.clientX - wrapRect.left;
+        const mouseY = event.clientY - wrapRect.top;
+
+        tooltip.style.background = "#0f172a";
+        tooltip.style.color = "#f8fafc";
+        tooltip.style.border = "1px solid #334155";
+
+        tooltip.innerHTML = `
+          <div class="chart-tooltip-title">Batch #${index + 1} • ${formatShortDate(b.created_at)}</div>
+          <div style="font-size:10.5px; color:#cbd5e1; margin-bottom:6px;">${escapeHtml(b.filename || b.batch_id)} (${b.total_records} rows)</div>
+          <div class="chart-tooltip-row">
+            <span style="color:#6ee7b7;">● Pass:</span>
+            <strong style="color:#f8fafc;">${b.pass_count} (${b.pass_percent.toFixed(1)}%)</strong>
+          </div>
+          <div class="chart-tooltip-row">
+            <span style="color:#fde68a;">● Needs Improvement:</span>
+            <strong style="color:#f8fafc;">${b.needs_improvement_count} (${b.needs_improvement_percent.toFixed(1)}%)</strong>
+          </div>
+          <div class="chart-tooltip-row">
+            <span style="color:#fca5a5;">● Fail:</span>
+            <strong style="color:#f8fafc;">${b.fail_count} (${b.fail_percent.toFixed(1)}%)</strong>
+          </div>
+          <div class="chart-tooltip-row" style="border-top:1px solid #334155; padding-top:5px; margin-top:5px;">
+            <span style="font-weight:700; color:#e2e8f0;">● Composite Quality:</span>
+            <strong style="color:#38bdf8; font-size:12px;">${(b.average_weighted_score * 100).toFixed(1)}%</strong>
+          </div>
+        `;
+
+        tooltip.style.left = `${Math.max(90, Math.min(wrapRect.width - 90, mouseX))}px`;
+        tooltip.style.top = `${Math.max(10, mouseY - 15)}px`;
+        tooltip.classList.add("show");
+      }
+
+      function moveVerdictTooltip(event) {
+        const tooltip = document.getElementById("verdicts-chart-tooltip");
+        const svgWrap = document.getElementById("chart-verdicts-wrap");
+        if (!tooltip || !svgWrap) return;
+        const wrapRect = svgWrap.getBoundingClientRect();
+        const mouseX = event.clientX - wrapRect.left;
+        const mouseY = event.clientY - wrapRect.top;
+        tooltip.style.left = `${Math.max(90, Math.min(wrapRect.width - 90, mouseX))}px`;
+        tooltip.style.top = `${Math.max(10, mouseY - 15)}px`;
+      }
+
+      function hideVerdictTooltip() {
+        const tooltip = document.getElementById("verdicts-chart-tooltip");
+        if (tooltip) tooltip.classList.remove("show");
+      }
+
+      function renderHistoricalBatchesTable(batches) {
+        const tbody = document.getElementById("trends-history-table-body");
+        if (!tbody) return;
+
+        // Display newest at the top, while keeping sequence number
+        const indexed = batches.map((b, i) => ({ batch: b, seq: i + 1 })).reverse();
+
+        let html = "";
+        indexed.forEach(({ batch: b, seq }) => {
+          const scorePct = (b.average_weighted_score * 100).toFixed(1);
+          const scoreClass = b.average_weighted_score >= 0.8 ? "success" : b.average_weighted_score >= 0.5 ? "warning" : "danger";
+          const relPct = (b.average_relevance_score * 100).toFixed(0);
+          const accPct = (b.average_accuracy_score * 100).toFixed(0);
+          const compPct = (b.average_completeness_score * 100).toFixed(0);
+          const halPct = b.hallucination_rate_percent.toFixed(0);
+
+          html += `
+            <tr class="main-row" tabindex="0" role="button" onclick="loadHistoricalBatch('${b.batch_id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadHistoricalBatch('${b.batch_id}');}" aria-label="Batch #${seq}: ${scorePct}% composite score. Press Enter to inspect." title="Click or press Enter to inspect this batch in Batch Explorer">
+              <td style="text-align:center;">
+                <span class="badge neutral" style="font-weight:700;">#${seq}</span>
+              </td>
+              <td>
+                <div style="font-weight:600; font-size:12.5px; color:var(--slate-800);">${formatShortDate(b.created_at)}</div>
+                <div style="font-size:11px; color:var(--slate-400);">${timeAgo(b.created_at)}</div>
+              </td>
+              <td>
+                <div style="font-weight:700; color:var(--slate-900); font-size:12.5px;">${escapeHtml(b.filename || b.batch_id)}</div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--slate-400);">${b.batch_id}</div>
+              </td>
+              <td style="text-align:center;">
+                <span style="font-weight:700; color:var(--slate-800);">${b.total_records}</span>
+                <span style="font-size:11px; color:var(--slate-400); display:block;">rows</span>
+              </td>
+              <td style="text-align:center;">
+                <span class="badge ${scoreClass}" style="font-size:12px; font-weight:700; padding:3px 9px;">${scorePct}%</span>
+              </td>
+              <td>
+                <div style="display:flex; flex-direction:column; gap:3px;">
+                  <div class="dist-segmented-bar" style="height:7px; width:100%; border-radius:3px;" title="Pass: ${b.pass_percent}%, Needs: ${b.needs_improvement_percent}%, Fail: ${b.fail_percent}%">
+                    <div style="width:${b.pass_percent}%; background:var(--color-success);"></div>
+                    <div style="width:${b.needs_improvement_percent}%; background:var(--color-warning);"></div>
+                    <div style="width:${b.fail_percent}%; background:var(--color-danger);"></div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--slate-500); font-weight:600;">
+                    <span>${b.pass_count}P (${b.pass_percent.toFixed(0)}%)</span>
+                    <span>${b.needs_improvement_count}N</span>
+                    <span>${b.fail_count}F (${b.fail_percent.toFixed(0)}%)</span>
+                  </div>
+                </div>
+              </td>
+              <td style="text-align:center;">
+                <div style="font-size:11px; line-height:1.45; color:var(--slate-600); text-align:left; display:inline-block;">
+                  <div>Rel: <strong>${relPct}%</strong> • Acc: <strong>${accPct}%</strong></div>
+                  <div>Hal: <strong>${halPct}%</strong> • Comp: <strong>${compPct}%</strong></div>
+                </div>
+              </td>
+              <td style="text-align:center; padding: 11px 8px;" onclick="event.stopPropagation()">
+                <div style="display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:nowrap; white-space:nowrap;">
+                  <button type="button" class="btn btn-secondary btn-sm" style="flex-shrink:0; padding:4px 8px; font-size:11.5px; white-space:nowrap;" onclick="loadHistoricalBatch('${b.batch_id}')" title="Inspect this batch in Batch Explorer" aria-label="Inspect batch ${b.batch_id}">
+                    <span>Inspect</span>
+                  </button>
+                  <a href="/api/v1/batch/${b.batch_id}/export" class="btn btn-secondary btn-sm" style="flex-shrink:0; padding:4px 8px; font-size:11.5px; white-space:nowrap;" title="Export batch CSV" aria-label="Export batch ${b.batch_id} as CSV" download>
+                    <span>CSV</span>
+                  </a>
+                  <button type="button" class="btn btn-secondary btn-sm" style="flex-shrink:0; padding:4px 8px; font-size:11.5px; white-space:nowrap;" onclick="exportBatchPdf('${b.batch_id}', this)" title="Download batch PDF Report" aria-label="Download batch ${b.batch_id} as PDF">
+                    <span>PDF</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        tbody.innerHTML = html;
       }
 
       // -------------------------------------------------------------
@@ -2740,7 +4724,17 @@
       // -------------------------------------------------------------
       let selectedBatchFile = null;
       let activeBatchSummary = null;
+      let singleBatchSummary = null;
+      let combinedBatchesSummary = null;
+      let batchScope = "single"; // "single" | "combined"
+      let historicalBatchesList = [];
       let currentFilter = "ALL";
+      let filterBatchId = "ALL";
+      let scoreFilter = {
+        dimension: "none",
+        operator: "<",
+        val: null,
+      };
       let batchPage = 1;
       let batchPageSize = 25;
       let sortColumn = "index";
@@ -3005,11 +4999,16 @@
             setAgentStatus("completeness", "done");
             setAgentStatus("verdict", "done");
 
+            singleBatchSummary = data;
             activeBatchSummary = data;
+            batchScope = "single";
+            combinedBatchesSummary = null;
             document.getElementById("batch-progress-bar").style.width = "100%";
             document.getElementById("batch-progress-pct").textContent = "100%";
             document.getElementById("batch-progress-status").textContent = `Batch evaluation completed (${data.statistics.total_records} records)!`;
-            renderBatchResults(data);
+            renderBatchResults(data, true);
+            loadTrends();
+            refreshHistoricalBatchesList();
           } else {
             progressBox.style.display = "none";
             const detail = data.detail || (data.error ? JSON.stringify(data) : "CSV Validation or Evaluation Error");
@@ -3031,9 +5030,21 @@
         }
       }
 
-      function renderBatchResults(summary) {
+      function renderBatchResults(summary, isNewSingle = false) {
+        if (!summary) return;
         document.getElementById("batch-results-section").style.display = "block";
         const stats = summary.statistics;
+
+        if (summary.batch_id === "all-batches-combined") {
+          combinedBatchesSummary = summary;
+          batchScope = "combined";
+        } else {
+          singleBatchSummary = summary;
+          if (isNewSingle) {
+            batchScope = "single";
+          }
+        }
+        activeBatchSummary = summary;
 
         try {
           sessionStorage.setItem("saved_batch_summary", JSON.stringify(summary));
@@ -3041,6 +5052,38 @@
         } catch (e) {
           console.warn("Could not save batch to sessionStorage:", e);
         }
+
+        // Sync Scope Switch UI buttons and counts
+        const btnSingle = document.getElementById("scope-btn-single");
+        const btnCombined = document.getElementById("scope-btn-combined");
+        if (btnSingle && btnCombined) {
+          if (batchScope === "single") {
+            btnSingle.classList.add("active");
+            btnSingle.setAttribute("aria-checked", "true");
+            btnCombined.classList.remove("active");
+            btnCombined.setAttribute("aria-checked", "false");
+          } else {
+            btnCombined.classList.add("active");
+            btnCombined.setAttribute("aria-checked", "true");
+            btnSingle.classList.remove("active");
+            btnSingle.setAttribute("aria-checked", "false");
+          }
+        }
+
+        if (singleBatchSummary) {
+          const singleCountEl = document.getElementById("scope-single-count");
+          const singleTitleEl = document.getElementById("scope-single-title");
+          if (singleCountEl) singleCountEl.textContent = singleBatchSummary.items.length;
+          if (singleTitleEl && singleBatchSummary.filename) {
+            singleTitleEl.textContent = singleBatchSummary.filename.replace(/\.csv$/i, '').slice(0, 16);
+          }
+        }
+        if (combinedBatchesSummary) {
+          const combCountEl = document.getElementById("scope-combined-count");
+          if (combCountEl) combCountEl.textContent = combinedBatchesSummary.items.length;
+        }
+
+        updateScopeMeta();
 
         // Calculate average dimension scores and counts across valid evaluated items
         let sumRel = 0, sumAcc = 0, sumComp = 0, sumGround = 0, validCount = 0;
@@ -3069,42 +5112,42 @@
 
         // 1. Interactive Statistics Cards Grid (1-click quick filters)
         document.getElementById("batch-stats-grid").innerHTML = `
-          <div class="stat-card stat-neutral ${currentFilter === 'ALL' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: All rows (${stats.total_records})" aria-pressed="${currentFilter === 'ALL' ? 'true' : 'false'}" onclick="filterBatch('ALL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('ALL');}" title="Click to filter: All Rows">
+          <div class="stat-card stat-neutral ${currentFilter === 'ALL' && scoreFilter.dimension === 'none' ? 'active-filter' : ''}" data-filter="ALL" tabindex="0" role="button" aria-label="Filter: All rows (${stats.total_records})" aria-pressed="${currentFilter === 'ALL' ? 'true' : 'false'}" onclick="drillDownFilter('ALL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownFilter('ALL');}" title="Click to filter: All Rows">
             <div class="num">${stats.total_records}</div>
             <div class="label">Total Rows</div>
             <div class="subtext">Uploaded</div>
           </div>
-          <div class="stat-card stat-neutral" tabindex="0" role="button" aria-label="Filter: All successfully evaluated rows (${stats.successful_records})" aria-pressed="${currentFilter === 'ALL' ? 'true' : 'false'}" onclick="filterBatch('ALL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('ALL');}" title="Click to view all successfully evaluated rows">
+          <div class="stat-card stat-neutral" tabindex="0" role="button" aria-label="Filter: All successfully evaluated rows (${stats.successful_records})" aria-pressed="${currentFilter === 'ALL' ? 'true' : 'false'}" onclick="drillDownFilter('ALL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownFilter('ALL');}" title="Click to view all successfully evaluated rows">
             <div class="num">${stats.successful_records}</div>
             <div class="label">Evaluated</div>
             <div class="subtext">Completed</div>
           </div>
-          <div class="stat-card stat-success ${currentFilter === 'Pass' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Pass rows (${stats.pass_count})" aria-pressed="${currentFilter === 'Pass' ? 'true' : 'false'}" onclick="filterBatch('Pass')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('Pass');}" title="Click to filter: Pass rows">
+          <div class="stat-card stat-success ${currentFilter === 'Pass' ? 'active-filter' : ''}" data-filter="Pass" tabindex="0" role="button" aria-label="Filter: Pass rows (${stats.pass_count})" aria-pressed="${currentFilter === 'Pass' ? 'true' : 'false'}" onclick="drillDownVerdict('Pass')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Pass');}" title="Click to filter: Pass rows">
             <div class="num" style="color:var(--color-success);">${stats.pass_count}</div>
             <div class="label">Pass</div>
             <div class="subtext">${stats.pass_rate_percent}% rate</div>
           </div>
-          <div class="stat-card stat-warning ${currentFilter === 'Needs Improvement' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Needs Improvement rows (${stats.needs_improvement_count})" aria-pressed="${currentFilter === 'Needs Improvement' ? 'true' : 'false'}" onclick="filterBatch('Needs Improvement')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('Needs Improvement');}" title="Click to filter: Needs Improvement rows">
+          <div class="stat-card stat-warning ${currentFilter === 'Needs Improvement' ? 'active-filter' : ''}" data-filter="Needs Improvement" tabindex="0" role="button" aria-label="Filter: Needs Improvement rows (${stats.needs_improvement_count})" aria-pressed="${currentFilter === 'Needs Improvement' ? 'true' : 'false'}" onclick="drillDownVerdict('Needs Improvement')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Needs Improvement');}" title="Click to filter: Needs Improvement rows">
             <div class="num" style="color:var(--color-warning);">${stats.needs_improvement_count}</div>
             <div class="label">Needs Improvement</div>
             <div class="subtext">${((stats.needs_improvement_count / (stats.successful_records || 1)) * 100).toFixed(0)}% rate</div>
           </div>
-          <div class="stat-card stat-danger ${currentFilter === 'Fail' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Fail rows (${stats.fail_count})" aria-pressed="${currentFilter === 'Fail' ? 'true' : 'false'}" onclick="filterBatch('Fail')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('Fail');}" title="Click to filter: Fail rows">
+          <div class="stat-card stat-danger ${currentFilter === 'Fail' ? 'active-filter' : ''}" data-filter="Fail" tabindex="0" role="button" aria-label="Filter: Fail rows (${stats.fail_count})" aria-pressed="${currentFilter === 'Fail' ? 'true' : 'false'}" onclick="drillDownVerdict('Fail')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownVerdict('Fail');}" title="Click to filter: Fail rows">
             <div class="num" style="color:var(--color-danger);">${stats.fail_count}</div>
             <div class="label">Fail</div>
             <div class="subtext">${((stats.fail_count / (stats.successful_records || 1)) * 100).toFixed(0)}% rate</div>
           </div>
-          <div class="stat-card stat-neutral ${currentFilter === 'SKIPPED' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Skipped and failed rows (${stats.failed_records})" aria-pressed="${currentFilter === 'SKIPPED' ? 'true' : 'false'}" onclick="filterBatch('SKIPPED')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('SKIPPED');}" title="Click to filter: Skipped / Failed rows">
+          <div class="stat-card stat-neutral ${currentFilter === 'SKIPPED' ? 'active-filter' : ''}" data-filter="SKIPPED" tabindex="0" role="button" aria-label="Filter: Skipped and failed rows (${stats.failed_records})" aria-pressed="${currentFilter === 'SKIPPED' ? 'true' : 'false'}" onclick="drillDownIssue('skipped')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownIssue('skipped');}" title="Click to filter: Skipped / Failed rows">
             <div class="num" style="${stats.failed_records > 0 ? 'color:var(--color-danger);' : ''}">${stats.failed_records}</div>
             <div class="label">Skipped</div>
             <div class="subtext">Errors / un-evaluable</div>
           </div>
-          <div class="stat-card stat-accent" style="cursor:default;" role="region" aria-label="Average Quality Composite Score: ${(stats.average_weighted_score * 100).toFixed(0)}%" title="Average composite score across all evaluated rows">
+          <div class="stat-card stat-accent ${scoreFilter.dimension === 'weighted_score' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Average Quality Composite Score: ${(stats.average_weighted_score * 100).toFixed(0)}%. Click to drill down into composite score < 70%." title="Click to filter responses with composite score < 70%" onclick="drillDownScore('weighted_score', '<', 70)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownScore('weighted_score', '<', 70);}">
             <div class="num" style="color:var(--color-accent);">${(stats.average_weighted_score * 100).toFixed(0)}%</div>
             <div class="label">Avg Quality</div>
-            <div class="subtext">Composite Score</div>
+            <div class="subtext">Drill down (&lt; 70%) &rarr;</div>
           </div>
-          <div class="stat-card stat-danger ${currentFilter === 'HAL' ? 'active-filter' : ''}" tabindex="0" role="button" aria-label="Filter: Flagged hallucinations (${stats.hallucination_rate_percent}%)" aria-pressed="${currentFilter === 'HAL' ? 'true' : 'false'}" onclick="filterBatch('HAL')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterBatch('HAL');}" title="Click to filter: Flagged Hallucinations">
+          <div class="stat-card stat-danger ${currentFilter === 'HAL' ? 'active-filter' : ''}" data-filter="HAL" tabindex="0" role="button" aria-label="Filter: Flagged hallucinations (${stats.hallucination_rate_percent}%)" aria-pressed="${currentFilter === 'HAL' ? 'true' : 'false'}" onclick="drillDownIssue('hallucination')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownIssue('hallucination');}" title="Click to filter: Flagged Hallucinations">
             <div class="num" style="${stats.hallucination_rate_percent > 30 ? 'color:var(--color-danger);' : ''}">${stats.hallucination_rate_percent}%</div>
             <div class="label">Hallucinations %</div>
             <div class="subtext">${halCount} flagged</div>
@@ -3126,9 +5169,9 @@
         document.getElementById("legend-needs").textContent = `Needs Improvement: ${stats.needs_improvement_count} (${needsPct}%)`;
         document.getElementById("legend-fail").textContent = `Fail: ${stats.fail_count} (${failPct}%)`;
 
-        // 3. Dimension Quality Meters
+        // 3. Dimension Quality Meters (Clickable Drill-Down)
         document.getElementById("batch-dim-meters").innerHTML = `
-          <div class="dim-meter-card">
+          <div class="dim-meter-card ${scoreFilter.dimension === 'relevance' ? 'active-dim-meter' : ''}" data-dim="relevance" tabindex="0" role="button" aria-label="Avg Relevance score: ${avgRel}%. Click to filter records with Relevance < 70%." onclick="drillDownDimension('relevance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownDimension('relevance');}" title="Click to drill down: Filter Relevance < 70%">
             <div class="dim-meter-header">
               <span>Avg Relevance</span>
               <span class="dim-bench-pill ${avgRel >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgRel}%</span>
@@ -3136,8 +5179,9 @@
             <div class="progress-bg">
               <div class="progress-fill ${avgRel >= 80 ? 'success' : avgRel >= 50 ? 'warning' : 'danger'}" style="width: ${avgRel}%;"></div>
             </div>
+            <div class="dim-drilldown-hint">Filter &lt; 70% &rarr;</div>
           </div>
-          <div class="dim-meter-card">
+          <div class="dim-meter-card ${scoreFilter.dimension === 'accuracy' ? 'active-dim-meter' : ''}" data-dim="accuracy" tabindex="0" role="button" aria-label="Avg Factual Accuracy score: ${avgAcc}%. Click to filter records with Accuracy < 70%." onclick="drillDownDimension('accuracy')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownDimension('accuracy');}" title="Click to drill down: Filter Accuracy < 70%">
             <div class="dim-meter-header">
               <span>Avg Factual Accuracy</span>
               <span class="dim-bench-pill ${avgAcc >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgAcc}%</span>
@@ -3145,8 +5189,9 @@
             <div class="progress-bg">
               <div class="progress-fill ${avgAcc >= 80 ? 'success' : avgAcc >= 50 ? 'warning' : 'danger'}" style="width: ${avgAcc}%;"></div>
             </div>
+            <div class="dim-drilldown-hint">Filter &lt; 70% &rarr;</div>
           </div>
-          <div class="dim-meter-card">
+          <div class="dim-meter-card ${scoreFilter.dimension === 'groundedness' ? 'active-dim-meter' : ''}" data-dim="groundedness" tabindex="0" role="button" aria-label="Avg Groundedness score: ${avgGround}%. Click to filter records with Groundedness < 70%." onclick="drillDownDimension('groundedness')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownDimension('groundedness');}" title="Click to drill down: Filter Groundedness < 70%">
             <div class="dim-meter-header">
               <span>Avg Groundedness</span>
               <span class="dim-bench-pill ${avgGround >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgGround}%</span>
@@ -3154,8 +5199,9 @@
             <div class="progress-bg">
               <div class="progress-fill ${avgGround >= 80 ? 'success' : avgGround >= 50 ? 'warning' : 'danger'}" style="width: ${avgGround}%;"></div>
             </div>
+            <div class="dim-drilldown-hint">Filter &lt; 70% &rarr;</div>
           </div>
-          <div class="dim-meter-card">
+          <div class="dim-meter-card ${scoreFilter.dimension === 'completeness' ? 'active-dim-meter' : ''}" data-dim="completeness" tabindex="0" role="button" aria-label="Avg Completeness score: ${avgComp}%. Click to filter records with Completeness < 70%." onclick="drillDownDimension('completeness')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();drillDownDimension('completeness');}" title="Click to drill down: Filter Completeness < 70%">
             <div class="dim-meter-header">
               <span>Avg Completeness</span>
               <span class="dim-bench-pill ${avgComp >= 80 ? 'col-valid' : ''}" style="font-weight:700;">${avgComp}%</span>
@@ -3163,6 +5209,7 @@
             <div class="progress-bg">
               <div class="progress-fill ${avgComp >= 80 ? 'success' : avgComp >= 50 ? 'warning' : 'danger'}" style="width: ${avgComp}%;"></div>
             </div>
+            <div class="dim-drilldown-hint">Filter &lt; 70% &rarr;</div>
           </div>
         `;
 
@@ -3244,9 +5291,283 @@
         document.getElementById("count-filter-HAL").textContent = halCount;
         document.getElementById("count-filter-EMPTY").textContent = emptyQCount;
 
+        renderTopIssues(summary);
         updateFilterButtons();
         updateSortIcons();
+        updateActiveFilterTags();
         renderBatchTableRows();
+      }
+
+      function setEvaluationScope(scope) {
+        if (batchScope === scope && activeBatchSummary) return;
+        batchScope = scope;
+
+        const btnSingle = document.getElementById("scope-btn-single");
+        const btnCombined = document.getElementById("scope-btn-combined");
+
+        if (scope === "single") {
+          if (btnSingle) {
+            btnSingle.classList.add("active");
+            btnSingle.setAttribute("aria-checked", "true");
+          }
+          if (btnCombined) {
+            btnCombined.classList.remove("active");
+            btnCombined.setAttribute("aria-checked", "false");
+          }
+          if (singleBatchSummary) {
+            activeBatchSummary = singleBatchSummary;
+            renderBatchResults(activeBatchSummary, false);
+          } else {
+            loadLatestSingleBatch();
+          }
+        } else {
+          if (btnCombined) {
+            btnCombined.classList.add("active");
+            btnCombined.setAttribute("aria-checked", "true");
+          }
+          if (btnSingle) {
+            btnSingle.classList.remove("active");
+            btnSingle.setAttribute("aria-checked", "false");
+          }
+          if (combinedBatchesSummary) {
+            activeBatchSummary = combinedBatchesSummary;
+            renderBatchResults(activeBatchSummary, false);
+          } else {
+            loadCombinedBatches();
+          }
+        }
+      }
+
+      async function loadCombinedBatches() {
+        try {
+          const res = await fetch("/api/v1/batches/combined");
+          if (!res.ok) throw new Error("Could not load combined batches");
+          const data = await res.json();
+          combinedBatchesSummary = data;
+          const combCountEl = document.getElementById("scope-combined-count");
+          if (combCountEl) combCountEl.textContent = data.items.length;
+          if (batchScope === "combined") {
+            activeBatchSummary = data;
+            renderBatchResults(data, false);
+          }
+        } catch (err) {
+          console.error("Error loading combined batches:", err);
+        }
+      }
+
+      async function loadLatestSingleBatch() {
+        try {
+          const res = await fetch("/api/v1/batch/latest");
+          if (!res.ok) throw new Error("Could not load latest batch");
+          const data = await res.json();
+          if (data && data.items) {
+            singleBatchSummary = data;
+            activeBatchSummary = data;
+            renderBatchResults(data, false);
+          }
+        } catch (err) {
+          console.error("Error loading single batch:", err);
+        }
+      }
+
+      function updateScopeMeta() {
+        const metaEl = document.getElementById("scope-details-info");
+        if (!metaEl || !activeBatchSummary) return;
+
+        if (batchScope === "single") {
+          const name = activeBatchSummary.filename || activeBatchSummary.batch_id || "Single Batch";
+          metaEl.innerHTML = `Showing active batch: <strong>${escapeHtml(name)}</strong> (${activeBatchSummary.items.length} records)`;
+        } else {
+          const totalBatches = historicalBatchesList.length || 1;
+          metaEl.innerHTML = `Showing aggregate summary across all <strong>${activeBatchSummary.items.length} records</strong> (${totalBatches} historical submissions)`;
+        }
+      }
+
+      async function refreshHistoricalBatchesList() {
+        try {
+          const res = await fetch("/api/v1/batches");
+          if (!res.ok) return;
+          const list = await res.json();
+          historicalBatchesList = list;
+
+          // Populate batch dropdown
+          const sel = document.getElementById("filter-batch-select");
+          if (sel) {
+            const cur = filterBatchId;
+            let opts = `<option value="ALL">All Batches</option>`;
+            list.forEach((b, i) => {
+              const name = b.filename || b.batch_id;
+              opts += `<option value="${escapeHtml(b.batch_id)}" ${b.batch_id === cur ? 'selected' : ''}>Batch #${i + 1} • ${escapeHtml(name)} (${b.total_records} rows)</option>`;
+            });
+            sel.innerHTML = opts;
+          }
+
+          // Update combined count badge
+          const totalCombinedRows = list.reduce((sum, b) => sum + (b.total_records || 0), 0);
+          const combinedBadge = document.getElementById("scope-combined-count");
+          if (combinedBadge) combinedBadge.textContent = totalCombinedRows;
+        } catch (err) {
+          console.warn("Could not fetch historical batches list:", err);
+        }
+      }
+
+      function onBatchFilterChange(val) {
+        filterBatchId = val;
+        batchPage = 1;
+        const sel = document.getElementById("filter-batch-select");
+        if (sel && sel.value !== val) sel.value = val;
+        updateActiveFilterTags();
+        renderBatchTableRows();
+      }
+
+      function onScoreFilterChange() {
+        const dimSel = document.getElementById("filter-score-dim");
+        const opSel = document.getElementById("filter-score-op");
+        const valInp = document.getElementById("filter-score-val");
+
+        const dim = dimSel ? dimSel.value : "none";
+        const op = opSel ? opSel.value : "<";
+        const rawVal = valInp ? valInp.value.trim() : "";
+        const numVal = rawVal !== "" ? parseFloat(rawVal) : null;
+
+        scoreFilter = {
+          dimension: dim,
+          operator: op,
+          val: numVal,
+        };
+
+        batchPage = 1;
+        updateFilterButtons();
+        updateActiveFilterTags();
+        renderBatchTableRows();
+      }
+
+      function applyScorePreset(dim, op, val) {
+        const dimSel = document.getElementById("filter-score-dim");
+        const opSel = document.getElementById("filter-score-op");
+        const valInp = document.getElementById("filter-score-val");
+
+        if (dimSel) dimSel.value = dim;
+        if (opSel) opSel.value = op;
+        if (valInp) valInp.value = val;
+
+        scoreFilter = {
+          dimension: dim,
+          operator: op,
+          val: val,
+        };
+
+        batchPage = 1;
+        updateFilterButtons();
+        updateActiveFilterTags();
+        renderBatchTableRows();
+      }
+
+      function clearScoreFilter() {
+        const dimSel = document.getElementById("filter-score-dim");
+        const valInp = document.getElementById("filter-score-val");
+        if (dimSel) dimSel.value = "none";
+        if (valInp) valInp.value = "";
+        scoreFilter = { dimension: "none", operator: "<", val: null };
+        batchPage = 1;
+        updateFilterButtons();
+        updateActiveFilterTags();
+        renderBatchTableRows();
+      }
+
+      function clearAllFilters() {
+        currentFilter = "ALL";
+        filterBatchId = "ALL";
+        const bSel = document.getElementById("filter-batch-select");
+        if (bSel) bSel.value = "ALL";
+
+        const dimSel = document.getElementById("filter-score-dim");
+        const opSel = document.getElementById("filter-score-op");
+        const valInp = document.getElementById("filter-score-val");
+        if (dimSel) dimSel.value = "none";
+        if (opSel) opSel.value = "<";
+        if (valInp) valInp.value = "";
+        scoreFilter = { dimension: "none", operator: "<", val: null };
+
+        const searchInp = document.getElementById("table-search");
+        if (searchInp) searchInp.value = "";
+        const clearBtn = document.getElementById("clear-search-btn");
+        if (clearBtn) clearBtn.style.display = "none";
+
+        batchPage = 1;
+        updateFilterButtons();
+        updateActiveFilterTags();
+        renderBatchTableRows();
+      }
+
+      function updateActiveFilterTags() {
+        const bar = document.getElementById("active-filters-bar");
+        const list = document.getElementById("active-tags-list");
+        const matchCount = document.getElementById("active-filter-match-count");
+        if (!bar || !list) return;
+
+        const tags = [];
+        const query = (document.getElementById("table-search")?.value || "").trim();
+
+        if (currentFilter !== "ALL") {
+          tags.push({
+            type: "verdict",
+            label: `Verdict: ${currentFilter}`,
+            onRemove: "filterBatch('ALL')",
+          });
+        }
+
+        if (filterBatchId !== "ALL") {
+          const bObj = historicalBatchesList.find(b => b.batch_id === filterBatchId);
+          const bName = bObj ? (bObj.filename || bObj.batch_id) : filterBatchId;
+          tags.push({
+            type: "batch",
+            label: `Batch: ${escapeHtml(bName.slice(0, 18))}`,
+            onRemove: "onBatchFilterChange('ALL')",
+          });
+        }
+
+        if (scoreFilter.dimension !== "none" && scoreFilter.val !== null && !isNaN(scoreFilter.val)) {
+          const dimNames = {
+            accuracy: "Accuracy",
+            completeness: "Completeness",
+            relevance: "Relevance",
+            groundedness: "Groundedness",
+            weighted_score: "Composite",
+          };
+          const opDisplay = { "<": "<", "<=": "≤", ">=": "≥", ">": ">" }[scoreFilter.operator] || scoreFilter.operator;
+          tags.push({
+            type: "score",
+            label: `${dimNames[scoreFilter.dimension] || scoreFilter.dimension} ${opDisplay} ${scoreFilter.val}%`,
+            onRemove: "clearScoreFilter()",
+          });
+        }
+
+        if (query) {
+          tags.push({
+            type: "search",
+            label: `Search: "${escapeHtml(query.slice(0, 15))}${query.length > 15 ? '...' : ''}"`,
+            onRemove: "clearSearch()",
+          });
+        }
+
+        const filtered = getFilteredItems();
+        const total = activeBatchSummary ? activeBatchSummary.items.length : 0;
+
+        if (tags.length === 0) {
+          bar.style.display = "none";
+        } else {
+          bar.style.display = "flex";
+          list.innerHTML = tags.map(t => `
+            <span class="active-filter-tag">
+              <span>${t.label}</span>
+              <button type="button" class="tag-close" onclick="${t.onRemove}" aria-label="Remove filter: ${escapeJs(t.label)}">✕</button>
+            </span>
+          `).join("");
+          if (matchCount) {
+            matchCount.textContent = `Showing ${filtered.length} of ${total} records`;
+          }
+        }
       }
 
       function updateFilterButtons() {
@@ -3268,17 +5589,298 @@
           c.classList.remove("active-filter");
           if (c.getAttribute("role") === "button") c.setAttribute("aria-pressed", "false");
         });
-        const matchingCard = document.querySelector(`.stat-card[onclick="filterBatch('${currentFilter}')"]`);
-        if (matchingCard) {
-          matchingCard.classList.add("active-filter");
-          if (matchingCard.getAttribute("role") === "button") matchingCard.setAttribute("aria-pressed", "true");
+        const matchingCards = document.querySelectorAll(`.stat-card[data-filter="${currentFilter}"]`);
+        matchingCards.forEach(c => {
+          c.classList.add("active-filter");
+          if (c.getAttribute("role") === "button") c.setAttribute("aria-pressed", "true");
+        });
+
+        // Sync distribution bar segments and legend
+        ["pass", "needs", "fail"].forEach(v => {
+          const seg = document.getElementById(`seg-${v}`);
+          const leg = document.getElementById(`legend-${v}`)?.parentElement;
+          const mapName = v === "pass" ? "Pass" : v === "needs" ? "Needs Improvement" : "Fail";
+          const isActive = (currentFilter === mapName);
+          if (seg) {
+            seg.style.outline = isActive ? "3px solid var(--slate-900)" : "none";
+            seg.style.outlineOffset = isActive ? "1px" : "0px";
+            seg.setAttribute("aria-pressed", isActive ? "true" : "false");
+          }
+          if (leg) {
+            leg.style.background = isActive ? "var(--slate-100)" : "transparent";
+            leg.style.fontWeight = isActive ? "700" : "500";
+            leg.setAttribute("aria-pressed", isActive ? "true" : "false");
+          }
+        });
+
+        // Sync dimension meters active state
+        document.querySelectorAll(".dim-meter-card").forEach(c => {
+          const dim = c.getAttribute("data-dim");
+          const isActive = (scoreFilter.dimension === dim);
+          if (isActive) {
+            c.classList.add("active-dim-meter");
+            c.setAttribute("aria-pressed", "true");
+          } else {
+            c.classList.remove("active-dim-meter");
+            c.setAttribute("aria-pressed", "false");
+          }
+        });
+
+        // Sync top issues cards active state
+        document.querySelectorAll(".issue-item-card").forEach(c => {
+          const key = c.getAttribute("data-issue-key");
+          const isActive = isIssueActive(key);
+          if (isActive) {
+            c.classList.add("active-issue-card");
+            c.setAttribute("aria-pressed", "true");
+          } else {
+            c.classList.remove("active-issue-card");
+            c.setAttribute("aria-pressed", "false");
+          }
+        });
+      }
+
+      function scrollToDataTable() {
+        const el = document.getElementById("zone-data");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
+      }
+
+      function clearScoreFilterWithoutRender() {
+        const dimSel = document.getElementById("filter-score-dim");
+        const valInp = document.getElementById("filter-score-val");
+        if (dimSel) dimSel.value = "none";
+        if (valInp) valInp.value = "";
+        scoreFilter = { dimension: "none", operator: "<", val: null };
+      }
+
+      function drillDownFilter(filterType) {
+        clearScoreFilterWithoutRender();
+        filterBatch(filterType);
+        scrollToDataTable();
+      }
+
+      function drillDownVerdict(verdict) {
+        clearScoreFilterWithoutRender();
+        filterBatch(verdict);
+        scrollToDataTable();
+      }
+
+      function drillDownDimension(dim) {
+        currentFilter = "ALL";
+        applyScorePreset(dim, "<", 70);
+        scrollToDataTable();
+      }
+
+      function drillDownScore(dim, op, val) {
+        currentFilter = "ALL";
+        applyScorePreset(dim, op, val);
+        scrollToDataTable();
+      }
+
+      function drillDownIssue(issueKey) {
+        if (issueKey === "hallucination") {
+          clearScoreFilterWithoutRender();
+          filterBatch("HAL");
+        } else if (issueKey === "accuracy") {
+          currentFilter = "ALL";
+          applyScorePreset("accuracy", "<", 70);
+        } else if (issueKey === "completeness") {
+          currentFilter = "ALL";
+          applyScorePreset("completeness", "<", 70);
+        } else if (issueKey === "relevance") {
+          currentFilter = "ALL";
+          applyScorePreset("relevance", "<", 70);
+        } else if (issueKey === "composite") {
+          currentFilter = "ALL";
+          applyScorePreset("weighted_score", "<", 50);
+        } else if (issueKey === "skipped") {
+          clearScoreFilterWithoutRender();
+          filterBatch("SKIPPED");
+        } else if (issueKey === "empty") {
+          clearScoreFilterWithoutRender();
+          filterBatch("EMPTY");
+        }
+        scrollToDataTable();
+      }
+
+      function isIssueActive(key) {
+        if (key === "hallucination") return currentFilter === "HAL";
+        if (key === "accuracy") return scoreFilter.dimension === "accuracy" && scoreFilter.operator === "<" && scoreFilter.val === 70;
+        if (key === "completeness") return scoreFilter.dimension === "completeness" && scoreFilter.operator === "<" && scoreFilter.val === 70;
+        if (key === "relevance") return scoreFilter.dimension === "relevance" && scoreFilter.operator === "<" && scoreFilter.val === 70;
+        if (key === "composite") return scoreFilter.dimension === "weighted_score" && scoreFilter.operator === "<" && scoreFilter.val === 50;
+        if (key === "skipped") return currentFilter === "SKIPPED";
+        if (key === "empty") return currentFilter === "EMPTY";
+        return false;
+      }
+
+      function renderTopIssues(summary) {
+        const grid = document.getElementById("batch-top-issues-grid");
+        if (!grid || !summary || !summary.items) return;
+
+        const totalItems = summary.items.length || 1;
+        const validItems = summary.items.filter(it => it.status === "success" && it.result);
+        const validCount = Math.max(1, validItems.length);
+
+        let halCount = 0;
+        let accCount = 0;
+        let compCount = 0;
+        let relCount = 0;
+        let compDeficitCount = 0;
+        let skippedCount = 0;
+        let emptyQCount = 0;
+
+        summary.items.forEach(item => {
+          const isQEmpty = !item.question || item.question === "[No Question Provided]" || item.question === "Empty" || item.question === "—";
+          if (isQEmpty) emptyQCount++;
+
+          if (item.status !== "success" || !item.result) {
+            skippedCount++;
+            return;
+          }
+
+          const r = item.result;
+          if (r.hallucination && r.hallucination.is_hallucinated) halCount++;
+          if (r.accuracy && (r.accuracy.score < 0.7 || r.accuracy.classification === "contradictory")) accCount++;
+          if (r.completeness && (r.completeness.score < 0.7 || (r.completeness.missing_aspects && r.completeness.missing_aspects.length > 0))) compCount++;
+          if (r.relevance && r.relevance.score < 0.7) relCount++;
+          if (r.verdict && r.verdict.weighted_score < 0.5) compDeficitCount++;
+        });
+
+        const issues = [
+          {
+            key: "hallucination",
+            title: "Hallucinated claims",
+            desc: "Ungrounded or contradicted statements flagged in response",
+            icon: "⚡",
+            count: halCount,
+            percent: ((halCount / validCount) * 100).toFixed(1),
+            badgeClass: halCount > 20 ? "danger" : "warning",
+            action: "drillDownIssue('hallucination')",
+            ariaLabel: `Filter ${halCount} responses with Hallucinated claims`,
+          },
+          {
+            key: "accuracy",
+            title: "Low accuracy (< 70%)",
+            desc: "Factual inaccuracies or contradictory statements vs reference",
+            icon: "🎯",
+            count: accCount,
+            percent: ((accCount / validCount) * 100).toFixed(1),
+            badgeClass: accCount > 20 ? "danger" : "warning",
+            action: "drillDownIssue('accuracy')",
+            ariaLabel: `Filter ${accCount} responses with Low accuracy`,
+          },
+          {
+            key: "completeness",
+            title: "Missing completeness aspects",
+            desc: "Omission of required sub-questions or critical criteria",
+            icon: "📋",
+            count: compCount,
+            percent: ((compCount / validCount) * 100).toFixed(1),
+            badgeClass: compCount > 20 ? "danger" : "warning",
+            action: "drillDownIssue('completeness')",
+            ariaLabel: `Filter ${compCount} responses with Missing completeness aspects`,
+          },
+          {
+            key: "relevance",
+            title: "Instruction drift / Low relevance (< 70%)",
+            desc: "Response drifts off-topic or fails to resolve core prompt",
+            icon: "🧭",
+            count: relCount,
+            percent: ((relCount / validCount) * 100).toFixed(1),
+            badgeClass: "warning",
+            action: "drillDownIssue('relevance')",
+            ariaLabel: `Filter ${relCount} responses with Low relevance`,
+          },
+          {
+            key: "composite",
+            title: "Critical quality deficit (Composite < 50%)",
+            desc: "Severe multi-dimensional penalty across evaluation axes",
+            icon: "⚠️",
+            count: compDeficitCount,
+            percent: ((compDeficitCount / validCount) * 100).toFixed(1),
+            badgeClass: "danger",
+            action: "drillDownIssue('composite')",
+            ariaLabel: `Filter ${compDeficitCount} responses with Critical quality deficit`,
+          },
+          {
+            key: "skipped",
+            title: "Evaluation pipeline errors",
+            desc: "Execution failure or un-evaluable row error",
+            icon: "❌",
+            count: skippedCount,
+            percent: ((skippedCount / totalItems) * 100).toFixed(1),
+            badgeClass: "danger",
+            action: "drillDownIssue('skipped')",
+            ariaLabel: `Filter ${skippedCount} failed or skipped rows`,
+          },
+          {
+            key: "empty",
+            title: "Empty prompt questions",
+            desc: "Submitted row lacked question text in CSV",
+            icon: "❓",
+            count: emptyQCount,
+            percent: ((emptyQCount / totalItems) * 100).toFixed(1),
+            badgeClass: "warning",
+            action: "drillDownIssue('empty')",
+            ariaLabel: `Filter ${emptyQCount} responses with Empty questions`,
+          }
+        ];
+
+        const activeIssues = issues.filter(iss => iss.count > 0).sort((a, b) => b.count - a.count);
+
+        if (activeIssues.length === 0) {
+          grid.innerHTML = `
+            <div class="zero-issues-card">
+              <div style="font-size:22px; margin-bottom:6px;">✨</div>
+              <div style="font-weight:700; color:var(--color-success); font-size:14px; margin-bottom:4px;">No Quality Issues Detected</div>
+              <div style="font-size:12.5px; color:var(--slate-600);">All evaluated responses met benchmark criteria with solid multi-dimensional alignment!</div>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = activeIssues.map((issue, index) => {
+          const rank = `#${index + 1}`;
+          const isSelected = isIssueActive(issue.key);
+          return `
+            <div class="issue-item-card ${isSelected ? 'active-issue-card' : ''}" 
+                 data-issue-key="${issue.key}"
+                 tabindex="0" 
+                 role="button" 
+                 aria-pressed="${isSelected ? 'true' : 'false'}"
+                 aria-label="${escapeHtml(issue.ariaLabel)}"
+                 onclick="${issue.action}" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${issue.action};}"
+                 title="Click to drill down: Filter ${issue.count} records in table">
+              <div class="issue-card-top">
+                <span class="issue-rank-badge">${rank} Most Frequent</span>
+                <span class="issue-count-pill ${issue.badgeClass}">
+                  <span>${issue.icon}</span>
+                  <strong>${issue.count}</strong> responses
+                </span>
+              </div>
+              <div class="issue-title-text">${escapeHtml(issue.title)} — ${issue.count} responses</div>
+              <div class="issue-desc-text">${escapeHtml(issue.desc)}</div>
+              <div class="issue-bar-wrap">
+                <div class="issue-bar-fill ${issue.badgeClass}" style="width: ${Math.min(100, Math.max(6, issue.percent))}%;"></div>
+              </div>
+              <div class="issue-drilldown-row">
+                <span class="issue-meta-text">${issue.percent}% of benchmark</span>
+                <span>Filter & Inspect &rarr;</span>
+              </div>
+            </div>
+          `;
+        }).join("");
       }
 
       function filterBatch(filterType) {
         currentFilter = filterType;
         batchPage = 1;
         updateFilterButtons();
+        updateActiveFilterTags();
         renderBatchTableRows();
       }
 
@@ -3290,6 +5892,7 @@
           clearBtn.style.display = "none";
         }
         batchPage = 1;
+        updateActiveFilterTags();
         renderBatchTableRows();
       }
 
@@ -3297,6 +5900,7 @@
         document.getElementById("table-search").value = "";
         document.getElementById("clear-search-btn").style.display = "none";
         batchPage = 1;
+        updateActiveFilterTags();
         renderBatchTableRows();
       }
 
@@ -3376,12 +5980,13 @@
 
       function getFilteredItems() {
         if (!activeBatchSummary) return [];
-        const query = (document.getElementById("table-search").value || "").trim().toLowerCase();
+        const query = (document.getElementById("table-search")?.value || "").trim().toLowerCase();
 
         return activeBatchSummary.items.filter(item => {
           const res = item.result;
           const isQEmpty = !item.question || item.question === "[No Question Provided]" || item.question === "Empty" || item.question === "—";
 
+          // 1. Verdict Filter
           if (currentFilter === "SKIPPED") {
             if (item.status === "success" && res) return false;
           } else if (currentFilter === "HAL") {
@@ -3392,13 +5997,48 @@
             if (!res || res.verdict.verdict !== currentFilter) return false;
           }
 
+          // 2. Specific Batch Filter
+          if (filterBatchId !== "ALL") {
+            if (item.batch_id !== filterBatchId) return false;
+          }
+
+          // 3. Score Range Filter
+          if (scoreFilter.dimension !== "none" && scoreFilter.val !== null && !isNaN(scoreFilter.val)) {
+            if (!res) {
+              if (scoreFilter.operator === ">" || scoreFilter.operator === ">=") return false;
+            } else {
+              let scorePct = 0;
+              if (scoreFilter.dimension === "accuracy") {
+                scorePct = (res.accuracy?.score || 0) * 100;
+              } else if (scoreFilter.dimension === "completeness") {
+                scorePct = (res.completeness?.score || 0) * 100;
+              } else if (scoreFilter.dimension === "relevance") {
+                scorePct = (res.relevance?.score || 0) * 100;
+              } else if (scoreFilter.dimension === "groundedness") {
+                const g = res.verdict?.dimension_scores?.groundedness ?? (res.hallucination ? (1 - res.hallucination.hallucination_score) : 1);
+                scorePct = g * 100;
+              } else if (scoreFilter.dimension === "weighted_score") {
+                scorePct = (res.verdict?.weighted_score || 0) * 100;
+              }
+
+              const threshold = scoreFilter.val;
+              if (scoreFilter.operator === "<" && !(scorePct < threshold)) return false;
+              if (scoreFilter.operator === "<=" && !(scorePct <= threshold)) return false;
+              if (scoreFilter.operator === ">=" && !(scorePct >= threshold)) return false;
+              if (scoreFilter.operator === ">" && !(scorePct > threshold)) return false;
+            }
+          }
+
+          // 4. Text Search Query
           if (query) {
             const q = (item.question || "").toLowerCase();
             const a = (item.ai_response || "").toLowerCase();
             const err = (item.error_message || "").toLowerCase();
             const v = res ? res.verdict.verdict.toLowerCase() : "failed";
+            const bfn = (item.batch_filename || "").toLowerCase();
+            const bid = (item.batch_id || "").toLowerCase();
             const rowIdx = String(item.index);
-            if (!q.includes(query) && !a.includes(query) && !err.includes(query) && !v.includes(query) && !rowIdx.includes(query)) {
+            if (!q.includes(query) && !a.includes(query) && !err.includes(query) && !v.includes(query) && !bfn.includes(query) && !bid.includes(query) && !rowIdx.includes(query)) {
               return false;
             }
           }
@@ -3409,7 +6049,7 @@
       function renderBatchTableRows() {
         if (!activeBatchSummary) return;
         const tbody = document.getElementById("batch-table-body");
-        const query = (document.getElementById("table-search").value || "").trim().toLowerCase();
+        const query = (document.getElementById("table-search")?.value || "").trim().toLowerCase();
 
         // 1. Filter
         let filtered = getFilteredItems();
@@ -3451,9 +6091,32 @@
         const pagedItems = filtered.slice(startIdx, endIdx);
 
         if (pagedItems.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 36px 20px; color: var(--slate-400);">No matching benchmark rows found.</td></tr>`;
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align:center; padding: 40px 20px; color: var(--slate-500);">
+                <div style="font-size:14.5px; font-weight:700; margin-bottom:6px; color:var(--slate-800);">No evaluations match your active filters</div>
+                <div style="font-size:12.5px; color:var(--slate-500); margin-bottom:14px;">Try clearing filters or changing your score threshold / selected batch.</div>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="clearAllFilters()" aria-label="Reset all active filters">Reset All Filters</button>
+              </td>
+            </tr>
+          `;
         } else {
           let rowsHtml = "";
+
+          // Create lookup map for sequential Batch #no badges
+          const batchNumberMap = new Map();
+          if (Array.isArray(historicalBatchesList) && historicalBatchesList.length > 0) {
+            historicalBatchesList.forEach((b, idx) => {
+              if (b.batch_id) batchNumberMap.set(b.batch_id, idx + 1);
+            });
+          }
+          if (activeBatchSummary && Array.isArray(activeBatchSummary.items)) {
+            activeBatchSummary.items.forEach(it => {
+              if (it.batch_id && !batchNumberMap.has(it.batch_id)) {
+                batchNumberMap.set(it.batch_id, batchNumberMap.size + 1);
+              }
+            });
+          }
 
           pagedItems.forEach(item => {
             const res = item.result;
@@ -3464,12 +6127,21 @@
               ? `<span style="color:var(--slate-400); font-style:italic;" title="No question provided in CSV">— (Empty)</span>` 
               : `<div class="cell-truncate" title="${escapeHtml(item.question)}">${qHighlighted}</div>`;
 
+            const batchNum = batchNumberMap.get(item.batch_id) || 1;
+            const batchLabel = `Batch #${batchNum}`;
+            const batchBadgeHtml = (batchScope === "combined" || filterBatchId !== "ALL") && (item.batch_filename || item.batch_id)
+              ? `<div class="row-batch-pill" onclick="event.stopPropagation(); onBatchFilterChange('${escapeJs(item.batch_id || '')}')" title="${batchLabel}: ${escapeHtml(item.batch_filename || item.batch_id || '')} • Click to filter this batch">${batchLabel}</div>`
+              : '';
+
             // Failed / Skipped row rendering
             if (item.status !== "success" || !res) {
               const errDesc = item.error_message || "Evaluation error";
               rowsHtml += `
                 <tr class="main-row row-failed ${isSelected ? 'active-row' : ''}" tabindex="0" role="button" aria-label="Row ${item.index}: Evaluation failed. ${escapeHtml(errDesc)}. Press Enter to view details." onclick="openRecordDrawer(${item.index})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecordDrawer(${item.index});}" title="Click or press Enter to view failure details">
-                  <td style="text-align:center; font-weight:700; color:var(--slate-500);">${item.index}</td>
+                  <td style="text-align:center;">
+                    <div style="font-weight:700; color:var(--slate-500); font-size:12px;">${item.index}</div>
+                    ${batchBadgeHtml}
+                  </td>
                   <td>${qDisplay}</td>
                   <td>
                     <div class="cell-truncate" style="color:var(--color-danger); font-size:12px; font-weight:600;" title="${escapeHtml(errDesc)}">
@@ -3490,7 +6162,6 @@
             const accScore = res.accuracy.score;
             const halScore = res.hallucination.hallucination_score;
             const compScore = res.completeness.score;
-            // Low hallucination renders as a "good"/green fill (invert value)
             const groundedScore = 1.0 - halScore;
 
             const relPct = (relScore * 100).toFixed(0);
@@ -3506,7 +6177,10 @@
 
             rowsHtml += `
               <tr class="main-row ${isSelected ? 'active-row' : ''}" tabindex="0" role="button" aria-label="Row ${item.index}: ${escapeHtml(item.question ? item.question.slice(0, 70) : 'No question')}. Verdict: ${escapeHtml(verd.verdict)}, ${(verd.weighted_score * 100).toFixed(0)}% composite score. Press Enter to view breakdown." onclick="openRecordDrawer(${item.index})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecordDrawer(${item.index});}" title="Click or press Enter to open record details drawer">
-                <td style="text-align:center; font-weight:700; color:var(--slate-500);">${item.index}</td>
+                <td style="text-align:center;">
+                  <div style="font-weight:700; color:var(--slate-500); font-size:12px;">${item.index}</div>
+                  ${batchBadgeHtml}
+                </td>
                 <td>${qDisplay}</td>
                 <td>${aDisplay}</td>
                 <td style="text-align:center;">
@@ -3775,8 +6449,194 @@
 
       function exportBatchCsv() {
         if (!activeBatchSummary) return;
-        window.location.href = `/api/v1/batch/${activeBatchSummary.batch_id}/export`;
+        if (batchScope === "combined" || activeBatchSummary.batch_id === "all-batches-combined") {
+          window.location.href = `/api/v1/batches/combined/export`;
+        } else {
+          window.location.href = `/api/v1/batch/${activeBatchSummary.batch_id}/export`;
+        }
       }
+
+      let pdfFeedbackTimeout = null;
+
+      function showPdfFeedbackBanner(type, message) {
+        const banner = document.getElementById("pdf-feedback-banner");
+        const icon = document.getElementById("pdf-feedback-icon");
+        const text = document.getElementById("pdf-feedback-text");
+        if (!banner || !icon || !text) return;
+
+        if (pdfFeedbackTimeout) {
+          clearTimeout(pdfFeedbackTimeout);
+          pdfFeedbackTimeout = null;
+        }
+
+        banner.className = `pdf-feedback-banner ${type}`;
+        text.innerHTML = message;
+
+        if (type === "generating") {
+          icon.innerHTML = `
+            <svg class="icon-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="2" x2="12" y2="6"></line>
+              <line x1="12" y1="18" x2="12" y2="22"></line>
+              <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+              <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+              <line x1="2" y1="12" x2="6" y2="12"></line>
+              <line x1="18" y1="12" x2="22" y2="12"></line>
+              <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+              <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+            </svg>
+          `;
+        } else if (type === "success") {
+          icon.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+          pdfFeedbackTimeout = setTimeout(() => {
+            dismissPdfFeedbackBanner();
+          }, 4500);
+        } else { // error
+          icon.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          `;
+          pdfFeedbackTimeout = setTimeout(() => {
+            dismissPdfFeedbackBanner();
+          }, 10000);
+        }
+
+        banner.style.display = "flex";
+      }
+
+      function dismissPdfFeedbackBanner() {
+        const banner = document.getElementById("pdf-feedback-banner");
+        if (banner) {
+          banner.style.display = "none";
+        }
+        if (pdfFeedbackTimeout) {
+          clearTimeout(pdfFeedbackTimeout);
+          pdfFeedbackTimeout = null;
+        }
+      }
+
+      async function exportBatchPdf(targetBatchId = null, triggerBtn = null) {
+        let batchId = targetBatchId;
+        if (!batchId) {
+          if (!activeBatchSummary) {
+            showPdfFeedbackBanner("error", "<strong>No Batch Selected:</strong> Please upload or select an evaluation batch to export.");
+            return;
+          }
+          batchId = (batchScope === "combined" || activeBatchSummary.batch_id === "all-batches-combined")
+            ? "all-batches-combined"
+            : activeBatchSummary.batch_id;
+        }
+
+        // Identify button element to show loading state
+        const btn = triggerBtn || document.getElementById("export-pdf-btn");
+        const originalContent = btn ? btn.innerHTML : null;
+
+        if (btn) {
+          btn.disabled = true;
+          btn.classList.add("btn-loading");
+          btn.innerHTML = `
+            <svg class="icon-spin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="2" x2="12" y2="6"></line>
+              <line x1="12" y1="18" x2="12" y2="22"></line>
+              <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+              <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+              <line x1="2" y1="12" x2="6" y2="12"></line>
+              <line x1="18" y1="12" x2="22" y2="12"></line>
+              <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+              <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+            </svg>
+            <span>Generating PDF...</span>
+          `;
+        }
+
+        showPdfFeedbackBanner(
+          "generating",
+          `<strong>Generating PDF Report:</strong> Aggregating evaluation records and compiling executive PDF report for batch <code>${escapeHtml(batchId)}</code>...`
+        );
+
+        try {
+          const endpoint = (batchId === "all-batches-combined" || batchId === "combined")
+            ? `/api/v1/batches/combined/export/pdf`
+            : `/api/v1/batch/${encodeURIComponent(batchId)}/export/pdf`;
+
+          const response = await fetch(endpoint, {
+            method: "GET",
+            headers: {
+              "Accept": "application/pdf, application/json",
+            },
+          });
+
+          if (!response.ok) {
+            let errorDetail = `HTTP ${response.status} (${response.statusText})`;
+            try {
+              const errJson = await response.json();
+              if (errJson && errJson.detail) {
+                errorDetail = typeof errJson.detail === "string" ? errJson.detail : JSON.stringify(errJson.detail);
+              }
+            } catch (_) {
+              try {
+                const textDetail = await response.text();
+                if (textDetail) errorDetail = textDetail;
+              } catch (_) {}
+            }
+            throw new Error(errorDetail);
+          }
+
+          const blob = await response.blob();
+          if (!blob || blob.size === 0) {
+            throw new Error("Server returned an empty PDF document.");
+          }
+
+          let downloadFilename = `${batchId}_evaluation_report.pdf`;
+          const disposition = response.headers.get("Content-Disposition");
+          if (disposition && disposition.includes("filename=")) {
+            const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+            if (match && match[1]) {
+              downloadFilename = match[1].replace(/['"]/g, "").trim();
+            }
+          }
+
+          // Trigger download
+          const blobUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.style.display = "none";
+          link.href = blobUrl;
+          link.setAttribute("download", downloadFilename);
+          document.body.appendChild(link);
+          link.click();
+
+          setTimeout(() => {
+            window.URL.revokeObjectURL(blobUrl);
+            link.remove();
+          }, 1000);
+
+          showPdfFeedbackBanner(
+            "success",
+            `<strong>PDF Downloaded:</strong> Successfully generated <code>${escapeHtml(downloadFilename)}</code>.`
+          );
+
+        } catch (err) {
+          console.error("PDF generation export error:", err);
+          showPdfFeedbackBanner(
+            "error",
+            `<strong>PDF Generation Failed:</strong> ${escapeHtml(err.message || "An unexpected error occurred during PDF generation.")}`
+          );
+        } finally {
+          if (btn && originalContent) {
+            btn.disabled = false;
+            btn.classList.remove("btn-loading");
+            btn.innerHTML = originalContent;
+          }
+        }
+      }
+
+
 
       function exportFilteredCsv() {
         const items = getFilteredItems();
@@ -3785,8 +6645,10 @@
           return;
         }
 
+        const hasBatchCols = items.some(it => it.batch_id || it.batch_filename);
         const headers = [
           "row_number",
+          ...(hasBatchCols ? ["batch_id", "batch_filename"] : []),
           "question",
           "ai_response",
           "status",
@@ -3808,8 +6670,10 @@
 
         items.forEach(item => {
           const res = item.result;
+          const batchCols = hasBatchCols ? [`"${(item.batch_id || '').replace(/"/g, '""')}"`, `"${(item.batch_filename || '').replace(/"/g, '""')}"`] : [];
           const rowData = [
             item.index,
+            ...batchCols,
             `"${(item.question || '').replace(/"/g, '""')}"`,
             `"${(item.ai_response || '').replace(/"/g, '""')}"`,
             item.status,
@@ -3833,7 +6697,8 @@
         const url = URL.createObjectURL(csvBlob);
         const link = document.createElement("a");
         link.setAttribute("href", url);
-        link.setAttribute("download", `filtered_batch_eval_${currentFilter.toLowerCase().replace(/\s+/g, '_')}.csv`);
+        const scopePrefix = batchScope === "combined" ? "all_batches" : "batch";
+        link.setAttribute("download", `filtered_${scopePrefix}_eval_${currentFilter.toLowerCase().replace(/\s+/g, '_')}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -3882,6 +6747,7 @@
         // 1. Restore active tab
         const savedTab = localStorage.getItem("active_eval_tab") || "batch";
         switchTab(savedTab);
+        loadTrends();
 
         // 2. Restore single evaluation if present
         const savedSingle = sessionStorage.getItem("last_single_eval");
@@ -3902,14 +6768,25 @@
           } catch (e) {}
         }
 
-        // 3. Restore batch evaluation if present (first check sessionStorage, then server cache)
+        // 3. Populate historical batches list & counts for multi-facet batch filtering
+        refreshHistoricalBatchesList();
+        loadCombinedBatches();
+
+        // 4. Restore batch evaluation if present (first check sessionStorage, then server cache)
         const savedBatchJson = sessionStorage.getItem("saved_batch_summary");
         if (savedBatchJson) {
           try {
             const parsed = JSON.parse(savedBatchJson);
             if (parsed && parsed.items && parsed.items.length) {
+              if (parsed.batch_id === "all-batches-combined") {
+                combinedBatchesSummary = parsed;
+                batchScope = "combined";
+              } else {
+                singleBatchSummary = parsed;
+                batchScope = "single";
+              }
               activeBatchSummary = parsed;
-              renderBatchResults(parsed);
+              renderBatchResults(parsed, false);
               resetAllAgents("done");
               return;
             }
@@ -3924,8 +6801,10 @@
           if (res.ok) {
             const data = await res.json();
             if (data && data.items && data.items.length) {
+              singleBatchSummary = data;
               activeBatchSummary = data;
-              renderBatchResults(data);
+              batchScope = "single";
+              renderBatchResults(data, false);
               resetAllAgents("done");
             }
           }

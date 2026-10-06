@@ -1,0 +1,741 @@
+{
+  "batch_id": "batch-small-eval-8",
+  "filename": "small_test_batch_8.csv",
+  "created_at": "2026-09-26T21:00:00Z",
+  "statistics": {
+    "total_records": 8,
+    "successful_records": 8,
+    "failed_records": 0,
+    "pass_count": 4,
+    "needs_improvement_count": 4,
+    "fail_count": 0,
+    "pass_rate_percent": 50.0,
+    "average_weighted_score": 0.844,
+    "average_relevance_score": 0.875,
+    "average_accuracy_score": 0.875,
+    "average_completeness_score": 0.75,
+    "average_groundedness_score": 0.875,
+    "hallucination_rate_percent": 25.0
+  },
+  "items": [
+    {
+      "index": 1,
+      "question": "What is the speed of light in a vacuum?",
+      "ai_response": "The speed of light in a vacuum is approximately 299,792,458 meters per second.",
+      "reference_answer": "The speed of light is approximately 299,792,458 m/s.",
+      "source_document": null,
+      "result": {
+        "submission_id": 1,
+        "question": "What is the speed of light in a vacuum?",
+        "ai_response": "The speed of light in a vacuum is approximately 299,792,458 meters per second.",
+        "context_used": "Direct Reference Answer:\nThe speed of light is approximately 299,792,458 m/s.",
+        "relevance": {
+          "score": 1.0,
+          "classification": "fully_relevant",
+          "reasoning": "The response directly and completely addresses the core question asked."
+        },
+        "accuracy": {
+          "score": 1.0,
+          "classification": "correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nThe speed of light is approximately 299,792,458 m/s."
+          ],
+          "reasoning": "All factual statements align with the provided reference context."
+        },
+        "hallucination": {
+          "is_hallucinated": false,
+          "hallucination_score": 0.0,
+          "total_claims": 1,
+          "unsupported_claims_count": 0,
+          "flagged_claims": [],
+          "all_claims": [
+            {
+              "claim": "The speed of light in a vacuum is approximately 299,792,458 meters per second.",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nThe speed of light is approximately 299,792,458 m/s.",
+              "explanation": "Consistent with available reference context."
+            }
+          ],
+          "reasoning": "All statements appear grounded in the reference context."
+        },
+        "completeness": {
+          "score": 1.0,
+          "classification": "fully_complete",
+          "identified_requirements": [
+            "Aspect: speed",
+            "Aspect: light",
+            "Aspect: vacuum"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'speed'",
+            "Coverage of 'light'",
+            "Coverage of 'vacuum'"
+          ],
+          "partially_addressed_aspects": [],
+          "missing_aspects": [],
+          "reasoning": "All core aspects and expected requirements are thoroughly addressed."
+        },
+        "verdict": {
+          "weighted_score": 1.0,
+          "verdict": "Pass",
+          "dimension_scores": {
+            "relevance": 1.0,
+            "accuracy": 1.0,
+            "completeness": 1.0,
+            "groundedness": 1.0
+          },
+          "major_issues": [],
+          "strengths": [
+            "High Relevance: Directly addresses the user's question and prompt parameters.",
+            "High Accuracy: Factual statements align tightly with ground truth evidence.",
+            "Grounded Content: Zero hallucinations or ungrounded assertions detected.",
+            "Comprehensive Coverage: Answers all sub-questions and key requirements."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: PASS (Weighted Score: 100.0%). The response meets quality standards across all evaluation dimensions.\n\nDimension Breakdown: Accuracy=100% (weight: 35%), Completeness=100% (weight: 25%), Relevance=100% (weight: 20%), Groundedness=100% (weight: 20%).\n\nKey Strengths: High Relevance: Directly addresses the user's question and prompt parameters.; High Accuracy: Factual statements align tightly with ground truth evidence.; Grounded Content: Zero hallucinations or ungrounded assertions detected.; Comprehensive Coverage: Answers all sub-questions and key requirements."
+        },
+        "evaluated_at": "2026-09-25T18:44:52.440408+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    },
+    {
+      "index": 2,
+      "question": "What is the chemical formula for water?",
+      "ai_response": "The chemical formula for water is H2O, consisting of two hydrogen atoms and one oxygen atom.",
+      "reference_answer": "Water is H2O.",
+      "source_document": null,
+      "result": {
+        "submission_id": 2,
+        "question": "What is the chemical formula for water?",
+        "ai_response": "The chemical formula for water is H2O, consisting of two hydrogen atoms and one oxygen atom.",
+        "context_used": "Direct Reference Answer:\nWater is H2O.",
+        "relevance": {
+          "score": 1.0,
+          "classification": "fully_relevant",
+          "reasoning": "The response directly and completely addresses the core question asked."
+        },
+        "accuracy": {
+          "score": 1.0,
+          "classification": "correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nWater is H2O."
+          ],
+          "reasoning": "All factual statements align with the provided reference context."
+        },
+        "hallucination": {
+          "is_hallucinated": false,
+          "hallucination_score": 0.0,
+          "total_claims": 1,
+          "unsupported_claims_count": 0,
+          "flagged_claims": [],
+          "all_claims": [
+            {
+              "claim": "The chemical formula for water is H2O, consisting of two hydrogen atoms and one oxygen atom.",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nWater is H2O.",
+              "explanation": "Consistent with available reference context."
+            }
+          ],
+          "reasoning": "All statements appear grounded in the reference context."
+        },
+        "completeness": {
+          "score": 1.0,
+          "classification": "fully_complete",
+          "identified_requirements": [
+            "Aspect: formula",
+            "Aspect: chemical",
+            "Aspect: water"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'formula'",
+            "Coverage of 'chemical'",
+            "Coverage of 'water'"
+          ],
+          "partially_addressed_aspects": [],
+          "missing_aspects": [],
+          "reasoning": "All core aspects and expected requirements are thoroughly addressed."
+        },
+        "verdict": {
+          "weighted_score": 1.0,
+          "verdict": "Pass",
+          "dimension_scores": {
+            "relevance": 1.0,
+            "accuracy": 1.0,
+            "completeness": 1.0,
+            "groundedness": 1.0
+          },
+          "major_issues": [],
+          "strengths": [
+            "High Relevance: Directly addresses the user's question and prompt parameters.",
+            "High Accuracy: Factual statements align tightly with ground truth evidence.",
+            "Grounded Content: Zero hallucinations or ungrounded assertions detected.",
+            "Comprehensive Coverage: Answers all sub-questions and key requirements."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: PASS (Weighted Score: 100.0%). The response meets quality standards across all evaluation dimensions.\n\nDimension Breakdown: Accuracy=100% (weight: 35%), Completeness=100% (weight: 25%), Relevance=100% (weight: 20%), Groundedness=100% (weight: 20%).\n\nKey Strengths: High Relevance: Directly addresses the user's question and prompt parameters.; High Accuracy: Factual statements align tightly with ground truth evidence.; Grounded Content: Zero hallucinations or ungrounded assertions detected.; Comprehensive Coverage: Answers all sub-questions and key requirements."
+        },
+        "evaluated_at": "2026-09-25T18:44:52.352394+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    },
+    {
+      "index": 3,
+      "question": "Explain the process of photosynthesis.",
+      "ai_response": "Photosynthesis is the biological process by which green plants convert sunlight, carbon dioxide, and water into glucose and oxygen.",
+      "reference_answer": "Plants convert light, CO2, and water into glucose and oxygen.",
+      "source_document": null,
+      "result": {
+        "submission_id": 3,
+        "question": "Explain the process of photosynthesis.",
+        "ai_response": "Photosynthesis is the biological process by which green plants convert sunlight, carbon dioxide, and water into glucose and oxygen.",
+        "context_used": "Direct Reference Answer:\nPlants convert light, CO2, and water into glucose and oxygen.",
+        "relevance": {
+          "score": 1.0,
+          "classification": "fully_relevant",
+          "reasoning": "The response directly and completely addresses the core question asked."
+        },
+        "accuracy": {
+          "score": 1.0,
+          "classification": "correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nPlants convert light, CO2, and water into glucose and oxygen."
+          ],
+          "reasoning": "All factual statements align with the provided reference context."
+        },
+        "hallucination": {
+          "is_hallucinated": false,
+          "hallucination_score": 0.0,
+          "total_claims": 1,
+          "unsupported_claims_count": 0,
+          "flagged_claims": [],
+          "all_claims": [
+            {
+              "claim": "Photosynthesis is the biological process by which green plants convert sunlight, carbon dioxide, and water into glucose ",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nPlants convert light, CO2, and water into glucose and oxygen.",
+              "explanation": "Consistent with available reference context."
+            }
+          ],
+          "reasoning": "All statements appear grounded in the reference context."
+        },
+        "completeness": {
+          "score": 1.0,
+          "classification": "fully_complete",
+          "identified_requirements": [
+            "Aspect: process",
+            "Aspect: photosynthesis"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'process'",
+            "Coverage of 'photosynthesis'"
+          ],
+          "partially_addressed_aspects": [],
+          "missing_aspects": [],
+          "reasoning": "All core aspects and expected requirements are thoroughly addressed."
+        },
+        "verdict": {
+          "weighted_score": 1.0,
+          "verdict": "Pass",
+          "dimension_scores": {
+            "relevance": 1.0,
+            "accuracy": 1.0,
+            "completeness": 1.0,
+            "groundedness": 1.0
+          },
+          "major_issues": [],
+          "strengths": [
+            "High Relevance: Directly addresses the user's question and prompt parameters.",
+            "High Accuracy: Factual statements align tightly with ground truth evidence.",
+            "Grounded Content: Zero hallucinations or ungrounded assertions detected.",
+            "Comprehensive Coverage: Answers all sub-questions and key requirements."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: PASS (Weighted Score: 100.0%). The response meets quality standards across all evaluation dimensions.\n\nDimension Breakdown: Accuracy=100% (weight: 35%), Completeness=100% (weight: 25%), Relevance=100% (weight: 20%), Groundedness=100% (weight: 20%).\n\nKey Strengths: High Relevance: Directly addresses the user's question and prompt parameters.; High Accuracy: Factual statements align tightly with ground truth evidence.; Grounded Content: Zero hallucinations or ungrounded assertions detected.; Comprehensive Coverage: Answers all sub-questions and key requirements."
+        },
+        "evaluated_at": "2026-09-25T18:44:52.347643+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    },
+    {
+      "index": 4,
+      "question": "What is Newton's first law of motion?",
+      "ai_response": "An object at rest stays at rest and an object in motion stays in motion unless acted upon by an external net force.",
+      "reference_answer": "Objects maintain constant velocity unless an external force acts on them.",
+      "source_document": null,
+      "result": {
+        "submission_id": 4,
+        "question": "What is Newton's first law of motion?",
+        "ai_response": "An object at rest stays at rest and an object in motion stays in motion unless acted upon by an external net force.",
+        "context_used": "Direct Reference Answer:\nObjects maintain constant velocity unless an external force acts on them.",
+        "relevance": {
+          "score": 0.5,
+          "classification": "partially_relevant",
+          "reasoning": "The response touches on the broad subject (motion) but completely misses the core question about (law, first)."
+        },
+        "accuracy": {
+          "score": 1.0,
+          "classification": "correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nObjects maintain constant velocity unless an external force acts on them."
+          ],
+          "reasoning": "All factual statements align with the provided reference context."
+        },
+        "hallucination": {
+          "is_hallucinated": false,
+          "hallucination_score": 0.0,
+          "total_claims": 1,
+          "unsupported_claims_count": 0,
+          "flagged_claims": [],
+          "all_claims": [
+            {
+              "claim": "An object at rest stays at rest and an object in motion stays in motion unless acted upon by an external net force.",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nObjects maintain constant velocity unless an external force acts on them.",
+              "explanation": "Consistent with available reference context."
+            }
+          ],
+          "reasoning": "All statements appear grounded in the reference context."
+        },
+        "completeness": {
+          "score": 0.5,
+          "classification": "partially_complete",
+          "identified_requirements": [
+            "Aspect: motion",
+            "Aspect: first",
+            "Aspect: newton"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'motion'"
+          ],
+          "partially_addressed_aspects": [
+            "Details regarding 'first'"
+          ],
+          "missing_aspects": [
+            "Details regarding 'newton'"
+          ],
+          "reasoning": "The response only partially answers the prompt; key sub-questions are omitted."
+        },
+        "verdict": {
+          "weighted_score": 0.775,
+          "verdict": "Needs Improvement",
+          "dimension_scores": {
+            "relevance": 0.5,
+            "accuracy": 1.0,
+            "completeness": 0.5,
+            "groundedness": 1.0
+          },
+          "major_issues": [
+            "Substantially Incomplete: Omitted critical aspects (Details regarding 'newton')."
+          ],
+          "strengths": [
+            "High Accuracy: Factual statements align tightly with ground truth evidence.",
+            "Grounded Content: Zero hallucinations or ungrounded assertions detected."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: NEEDS IMPROVEMENT (Weighted Score: 77.5%). The response is functional but requires revision to address highlighted quality or coverage issues.\n\nDimension Breakdown: Accuracy=100% (weight: 35%), Completeness=50% (weight: 25%), Relevance=50% (weight: 20%), Groundedness=100% (weight: 20%).\n\nKey Strengths: High Accuracy: Factual statements align tightly with ground truth evidence.; Grounded Content: Zero hallucinations or ungrounded assertions detected.\n\nIssues Identified: Substantially Incomplete: Omitted critical aspects (Details regarding 'newton')."
+        },
+        "evaluated_at": "2026-09-25T18:44:52.440408+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    },
+    {
+      "index": 5,
+      "question": "How does mRNA vaccination work?",
+      "ai_response": "mRNA vaccines provide cellular instructions to synthesize a harmless viral spike protein, prompting the immune system to produce antibodies.",
+      "reference_answer": "mRNA instructs cells to produce a spike protein that stimulates antibody production.",
+      "source_document": null,
+      "result": {
+        "submission_id": 5,
+        "question": "How does mRNA vaccination work?",
+        "ai_response": "mRNA vaccines provide cellular instructions to synthesize a harmless viral spike protein, prompting the immune system to produce antibodies.",
+        "context_used": "Direct Reference Answer:\nmRNA instructs cells to produce a spike protein that stimulates antibody production.",
+        "relevance": {
+          "score": 1.0,
+          "classification": "fully_relevant",
+          "reasoning": "The response directly and completely addresses the core question asked."
+        },
+        "accuracy": {
+          "score": 1.0,
+          "classification": "correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nmRNA instructs cells to produce a spike protein that stimulates antibody production."
+          ],
+          "reasoning": "All factual statements align with the provided reference context."
+        },
+        "hallucination": {
+          "is_hallucinated": false,
+          "hallucination_score": 0.0,
+          "total_claims": 1,
+          "unsupported_claims_count": 0,
+          "flagged_claims": [],
+          "all_claims": [
+            {
+              "claim": "mRNA vaccines provide cellular instructions to synthesize a harmless viral spike protein, prompting the immune system to",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nmRNA instructs cells to produce a spike protein that stimulates antibody production.",
+              "explanation": "Consistent with available reference context."
+            }
+          ],
+          "reasoning": "All statements appear grounded in the reference context."
+        },
+        "completeness": {
+          "score": 0.75,
+          "classification": "mostly_complete",
+          "identified_requirements": [
+            "Aspect: mrna",
+            "Aspect: vaccination",
+            "Aspect: work"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'mrna'",
+            "Coverage of 'vaccination'"
+          ],
+          "partially_addressed_aspects": [
+            "Details regarding 'work'"
+          ],
+          "missing_aspects": [
+            "Details regarding 'work'"
+          ],
+          "reasoning": "The primary aspects are addressed, but secondary details or depth are omitted."
+        },
+        "verdict": {
+          "weighted_score": 0.938,
+          "verdict": "Pass",
+          "dimension_scores": {
+            "relevance": 1.0,
+            "accuracy": 1.0,
+            "completeness": 0.75,
+            "groundedness": 1.0
+          },
+          "major_issues": [
+            "Omission: Left out 1 sub-aspect(s): Details regarding 'work'."
+          ],
+          "strengths": [
+            "High Relevance: Directly addresses the user's question and prompt parameters.",
+            "High Accuracy: Factual statements align tightly with ground truth evidence.",
+            "Grounded Content: Zero hallucinations or ungrounded assertions detected."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: PASS (Weighted Score: 93.8%). The response meets quality standards across all evaluation dimensions.\n\nDimension Breakdown: Accuracy=100% (weight: 35%), Completeness=75% (weight: 25%), Relevance=100% (weight: 20%), Groundedness=100% (weight: 20%).\n\nKey Strengths: High Relevance: Directly addresses the user's question and prompt parameters.; High Accuracy: Factual statements align tightly with ground truth evidence.; Grounded Content: Zero hallucinations or ungrounded assertions detected.\n\nIssues Identified: Omission: Left out 1 sub-aspect(s): Details regarding 'work'."
+        },
+        "evaluated_at": "2026-09-25T18:44:52.442994+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    },
+    {
+      "index": 6,
+      "question": "What was the Manhattan Project and when did it start?",
+      "ai_response": "The Manhattan Project was the American research initiative during World War II that developed the first nuclear weapons.",
+      "reference_answer": "The Manhattan Project was a WWII research program started in 1942 to build atomic bombs.",
+      "source_document": null,
+      "result": {
+        "submission_id": 6,
+        "question": "What was the Manhattan Project and when did it start?",
+        "ai_response": "The Manhattan Project was the American research initiative during World War II that developed the first nuclear weapons.",
+        "context_used": "Direct Reference Answer:\nThe Manhattan Project was a WWII research program started in 1942 to build atomic bombs.",
+        "relevance": {
+          "score": 1.0,
+          "classification": "fully_relevant",
+          "reasoning": "The response directly and completely addresses the core question asked."
+        },
+        "accuracy": {
+          "score": 0.5,
+          "classification": "partially_correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nThe Manhattan Project was a WWII research program started in 1942 to build atomic bombs."
+          ],
+          "reasoning": "Partially correct; aligns with reference context on core topic but contains 1 unverified or ungrounded statement(s)."
+        },
+        "hallucination": {
+          "is_hallucinated": true,
+          "hallucination_score": 0.5,
+          "total_claims": 2,
+          "unsupported_claims_count": 1,
+          "flagged_claims": [
+            {
+              "claim": "The Manhattan Project was the American research initiative during World War II that develo... [fabricated entity: war, american, world]",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Introduces ungrounded assertion (war, american, world) not mentioned in the reference context."
+            }
+          ],
+          "all_claims": [
+            {
+              "claim": "The Manhattan Project was the American research initiative during World War II that develo... [fabricated entity: war, american, world]",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Introduces ungrounded assertion (war, american, world) not mentioned in the reference context."
+            },
+            {
+              "claim": "The Manhattan Project was the American research initiative during World War II that develo... [grounded core]",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nThe Manhattan Project was a WWII research program started in 1942 to build atomic bombs.",
+              "explanation": "Core factual proposition (manhattan, project, research) is grounded in reference context."
+            }
+          ],
+          "reasoning": "Identified 1 statement(s) unsupported or contradicted by the reference context."
+        },
+        "completeness": {
+          "score": 0.75,
+          "classification": "mostly_complete",
+          "identified_requirements": [
+            "Aspect: manhattan",
+            "Aspect: project",
+            "Aspect: start"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'manhattan'",
+            "Coverage of 'project'"
+          ],
+          "partially_addressed_aspects": [
+            "Details regarding 'start'"
+          ],
+          "missing_aspects": [
+            "Details regarding 'start'"
+          ],
+          "reasoning": "The primary aspects are addressed, but secondary details or depth are omitted."
+        },
+        "verdict": {
+          "weighted_score": 0.662,
+          "verdict": "Needs Improvement",
+          "dimension_scores": {
+            "relevance": 1.0,
+            "accuracy": 0.5,
+            "completeness": 0.75,
+            "groundedness": 0.5
+          },
+          "major_issues": [
+            "Hallucination Detected: Contains 1 claim(s) unsupported by the reference knowledge base.",
+            "Low Accuracy: Multiple factual assertions lack precision or support.",
+            "Omission: Left out 1 sub-aspect(s): Details regarding 'start'."
+          ],
+          "strengths": [
+            "High Relevance: Directly addresses the user's question and prompt parameters."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: NEEDS IMPROVEMENT (Weighted Score: 66.2%). The response is functional but requires revision to address highlighted quality or coverage issues.\n\nDimension Breakdown: Accuracy=50% (weight: 35%), Completeness=75% (weight: 25%), Relevance=100% (weight: 20%), Groundedness=50% (weight: 20%).\n\nKey Strengths: High Relevance: Directly addresses the user's question and prompt parameters.\n\nIssues Identified: Hallucination Detected: Contains 1 claim(s) unsupported by the reference knowledge base.; Low Accuracy: Multiple factual assertions lack precision or support.; Omission: Left out 1 sub-aspect(s): Details regarding 'start'."
+        },
+        "evaluated_at": "2026-09-25T18:44:52.863563+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    },
+    {
+      "index": 7,
+      "question": "Who were the primary leaders of the Allied powers in WWII?",
+      "ai_response": "The Allied leaders included Franklin D. Roosevelt and Winston Churchill.",
+      "reference_answer": "The Big Three Allied leaders were Roosevelt (US), Churchill (UK), and Joseph Stalin (USSR).",
+      "source_document": null,
+      "result": {
+        "submission_id": 7,
+        "question": "Who were the primary leaders of the Allied powers in WWII?",
+        "ai_response": "The Allied leaders included Franklin D. Roosevelt and Winston Churchill.",
+        "context_used": "Direct Reference Answer:\nThe Big Three Allied leaders were Roosevelt (US), Churchill (UK), and Joseph Stalin (USSR).",
+        "relevance": {
+          "score": 0.5,
+          "classification": "partially_relevant",
+          "reasoning": "The response touches on the broad subject (leaders, allied) but completely misses the core question about (powers, primary)."
+        },
+        "accuracy": {
+          "score": 0.5,
+          "classification": "partially_correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nThe Big Three Allied leaders were Roosevelt (US), Churchill (UK), and Joseph Stalin (USSR)."
+          ],
+          "reasoning": "Partially correct; aligns with reference context on core topic but contains 2 unverified or ungrounded statement(s)."
+        },
+        "hallucination": {
+          "is_hallucinated": true,
+          "hallucination_score": 0.5,
+          "total_claims": 4,
+          "unsupported_claims_count": 2,
+          "flagged_claims": [
+            {
+              "claim": "The Allied leaders included Franklin D... [fabricated entity: franklin]",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Introduces ungrounded assertion (franklin) not mentioned in the reference context."
+            },
+            {
+              "claim": "Roosevelt and Winston Churchill... [fabricated entity: winston]",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Introduces ungrounded assertion (winston) not mentioned in the reference context."
+            }
+          ],
+          "all_claims": [
+            {
+              "claim": "The Allied leaders included Franklin D... [fabricated entity: franklin]",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Introduces ungrounded assertion (franklin) not mentioned in the reference context."
+            },
+            {
+              "claim": "Roosevelt and Winston Churchill... [fabricated entity: winston]",
+              "status": "unsupported",
+              "evidence": null,
+              "explanation": "Introduces ungrounded assertion (winston) not mentioned in the reference context."
+            },
+            {
+              "claim": "The Allied leaders included Franklin D... [grounded core]",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nThe Big Three Allied leaders were Roosevelt (US), Churchill (UK), and Joseph Stalin (USSR).",
+              "explanation": "Core factual proposition (leaders, allied) is grounded in reference context."
+            },
+            {
+              "claim": "Roosevelt and Winston Churchill... [grounded core]",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nThe Big Three Allied leaders were Roosevelt (US), Churchill (UK), and Joseph Stalin (USSR).",
+              "explanation": "Core factual proposition (churchill, roosevelt) is grounded in reference context."
+            }
+          ],
+          "reasoning": "Identified 2 statement(s) unsupported or contradicted by the reference context."
+        },
+        "completeness": {
+          "score": 0.5,
+          "classification": "partially_complete",
+          "identified_requirements": [
+            "Aspect: leaders",
+            "Aspect: wwii",
+            "Aspect: allied",
+            "Aspect: powers",
+            "Aspect: primary"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'leaders'",
+            "Coverage of 'allied'"
+          ],
+          "partially_addressed_aspects": [
+            "Details regarding 'wwii'"
+          ],
+          "missing_aspects": [
+            "Details regarding 'powers'",
+            "Details regarding 'primary'"
+          ],
+          "reasoning": "The response only partially answers the prompt; key sub-questions are omitted."
+        },
+        "verdict": {
+          "weighted_score": 0.5,
+          "verdict": "Needs Improvement",
+          "dimension_scores": {
+            "relevance": 0.5,
+            "accuracy": 0.5,
+            "completeness": 0.5,
+            "groundedness": 0.5
+          },
+          "major_issues": [
+            "Hallucination Detected: Contains 2 claim(s) unsupported by the reference knowledge base.",
+            "Substantially Incomplete: Omitted critical aspects (Details regarding 'powers', Details regarding 'primary').",
+            "Low Accuracy: Multiple factual assertions lack precision or support."
+          ],
+          "strengths": [],
+          "consolidated_reasoning": "OVERALL VERDICT: NEEDS IMPROVEMENT (Weighted Score: 50.0%). The response is functional but requires revision to address highlighted quality or coverage issues.\n\nDimension Breakdown: Accuracy=50% (weight: 35%), Completeness=50% (weight: 25%), Relevance=50% (weight: 20%), Groundedness=50% (weight: 20%).\n\nIssues Identified: Hallucination Detected: Contains 2 claim(s) unsupported by the reference knowledge base.; Substantially Incomplete: Omitted critical aspects (Details regarding 'powers', Details regarding 'primary').; Low Accuracy: Multiple factual assertions lack precision or support."
+        },
+        "evaluated_at": "2026-09-25T18:44:53.037449+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    },
+    {
+      "index": 8,
+      "question": "What are the three branches of the US government and their functions?",
+      "ai_response": "The three branches of the US government are the Legislative, Executive, and Judicial branches.",
+      "reference_answer": "Legislative makes laws, Executive enforces laws, Judicial interprets laws.",
+      "source_document": null,
+      "result": {
+        "submission_id": 8,
+        "question": "What are the three branches of the US government and their functions?",
+        "ai_response": "The three branches of the US government are the Legislative, Executive, and Judicial branches.",
+        "context_used": "Direct Reference Answer:\nLegislative makes laws, Executive enforces laws, Judicial interprets laws.",
+        "relevance": {
+          "score": 1.0,
+          "classification": "fully_relevant",
+          "reasoning": "The response directly and completely addresses the core question asked."
+        },
+        "accuracy": {
+          "score": 1.0,
+          "classification": "correct",
+          "supporting_evidence": [
+            "Direct Reference Answer:\nLegislative makes laws, Executive enforces laws, Judicial interprets laws."
+          ],
+          "reasoning": "All factual statements align with the provided reference context."
+        },
+        "hallucination": {
+          "is_hallucinated": false,
+          "hallucination_score": 0.0,
+          "total_claims": 1,
+          "unsupported_claims_count": 0,
+          "flagged_claims": [],
+          "all_claims": [
+            {
+              "claim": "The three branches of the US government are the Legislative, Executive, and Judicial branches.",
+              "status": "supported",
+              "evidence": "Direct Reference Answer:\nLegislative makes laws, Executive enforces laws, Judicial interprets laws.",
+              "explanation": "Consistent with available reference context."
+            }
+          ],
+          "reasoning": "All statements appear grounded in the reference context."
+        },
+        "completeness": {
+          "score": 0.5,
+          "classification": "partially_complete",
+          "identified_requirements": [
+            "Aspect: functions",
+            "Aspect: branches",
+            "Aspect: government",
+            "Aspect: three"
+          ],
+          "addressed_aspects": [
+            "Coverage of 'branches'",
+            "Coverage of 'government'",
+            "Coverage of 'three'"
+          ],
+          "partially_addressed_aspects": [
+            "Details regarding 'functions'"
+          ],
+          "missing_aspects": [
+            "Details regarding 'functions'"
+          ],
+          "reasoning": "The response only partially answers the prompt; key sub-questions are omitted."
+        },
+        "verdict": {
+          "weighted_score": 0.875,
+          "verdict": "Needs Improvement",
+          "dimension_scores": {
+            "relevance": 1.0,
+            "accuracy": 1.0,
+            "completeness": 0.5,
+            "groundedness": 1.0
+          },
+          "major_issues": [
+            "Substantially Incomplete: Omitted critical aspects (Details regarding 'functions')."
+          ],
+          "strengths": [
+            "High Relevance: Directly addresses the user's question and prompt parameters.",
+            "High Accuracy: Factual statements align tightly with ground truth evidence.",
+            "Grounded Content: Zero hallucinations or ungrounded assertions detected."
+          ],
+          "consolidated_reasoning": "OVERALL VERDICT: NEEDS IMPROVEMENT (Weighted Score: 87.5%). The response is functional but requires revision to address highlighted quality or coverage issues.\n\nDimension Breakdown: Accuracy=100% (weight: 35%), Completeness=50% (weight: 25%), Relevance=100% (weight: 20%), Groundedness=100% (weight: 20%).\n\nKey Strengths: High Relevance: Directly addresses the user's question and prompt parameters.; High Accuracy: Factual statements align tightly with ground truth evidence.; Grounded Content: Zero hallucinations or ungrounded assertions detected.\n\nIssues Identified: Substantially Incomplete: Omitted critical aspects (Details regarding 'functions')."
+        },
+        "evaluated_at": "2026-09-25T18:44:53.037449+00:00"
+      },
+      "status": "success",
+      "error_message": null,
+      "batch_id": null,
+      "batch_filename": null
+    }
+  ]
+}

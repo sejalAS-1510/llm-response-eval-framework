@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  llm-eval-framework:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llm-response-eval-framework
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount the local data directory to persist vector database, batches, and SQLite DB
+      - ./data:/app/data
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

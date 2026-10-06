@@ -1,0 +1,204 @@
+[
+  {
+    "id": "CORR-01",
+    "category": "correct",
+    "domain": "Chemistry",
+    "description": "Direct, factually correct answer to chemistry query covering both symbol and atomic number.",
+    "question": "What is the chemical symbol for gold, and what is its atomic number?",
+    "reference_answer": "The chemical symbol for gold is Au, and its atomic number is 79.",
+    "source_document": "Gold is a chemical element with the symbol Au and atomic number 79.",
+    "ai_response": "The chemical symbol for gold is Au, and its atomic number is 79.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.8,
+      "relevance_classification": "fully_relevant",
+      "accuracy_min_score": 0.85,
+      "accuracy_classification": "correct",
+      "is_hallucinated": false,
+      "max_hallucination_score": 0.0,
+      "completeness_classification": "fully_complete",
+      "completeness_min_score": 0.85,
+      "expected_verdict": "Pass"
+    }
+  },
+  {
+    "id": "CORR-02",
+    "category": "correct",
+    "domain": "Physiology",
+    "description": "Fully grounded and complete response explaining red blood cell function.",
+    "question": "What is the primary function of red blood cells in the human body?",
+    "reference_answer": "The primary function of red blood cells is to transport oxygen from the lungs to body tissues using hemoglobin.",
+    "source_document": "Red blood cells transport oxygen throughout the human body using the iron-rich protein hemoglobin.",
+    "ai_response": "The primary function of red blood cells is to transport oxygen from the lungs to all tissues across the human body using hemoglobin.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.8,
+      "relevance_classification": "fully_relevant",
+      "accuracy_min_score": 0.85,
+      "accuracy_classification": "correct",
+      "is_hallucinated": false,
+      "max_hallucination_score": 0.0,
+      "completeness_classification": "fully_complete",
+      "completeness_min_score": 0.85,
+      "expected_verdict": "Pass"
+    }
+  },
+  {
+    "id": "INCORR-01",
+    "category": "factually_incorrect",
+    "domain": "Medicine",
+    "description": "On-topic response containing an explicit numerical contradiction (45 C instead of 37 C).",
+    "question": "What is the normal human body temperature in degrees Celsius?",
+    "reference_answer": "Normal human body temperature is approximately 37 degrees Celsius.",
+    "source_document": "Medical physiology states that standard human core body temperature is approximately 37 degrees Celsius (98.6 Fahrenheit).",
+    "ai_response": "Normal human body temperature is approximately 45 degrees Celsius.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.7,
+      "accuracy_max_score": 0.5,
+      "accuracy_classification_in": ["partially_correct", "incorrect", "contradictory"],
+      "is_hallucinated": true,
+      "min_hallucination_score": 0.3,
+      "expected_verdict_in": ["Needs Improvement", "Fail"]
+    }
+  },
+  {
+    "id": "INCORR-02",
+    "category": "factually_incorrect",
+    "domain": "Physics",
+    "description": "Direct factual and causal contradiction regarding acoustic velocity in water vs air.",
+    "question": "Is the speed of sound faster in air than in water?",
+    "reference_answer": "No, sound travels much faster in water than in air because water is denser and less compressible.",
+    "source_document": "Sound waves propagate significantly faster in water (approx 1,480 m/s) than in air (approx 343 m/s).",
+    "ai_response": "Yes, sound travels faster in air than in water because air is less dense.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.7,
+      "accuracy_max_score": 0.25,
+      "accuracy_classification": "contradictory",
+      "is_hallucinated": true,
+      "min_hallucination_score": 0.5,
+      "expected_verdict": "Fail"
+    }
+  },
+  {
+    "id": "IRREL-01",
+    "category": "irrelevant",
+    "domain": "Geology vs Culinary",
+    "description": "Completely off-topic recipe response to a geological fault mechanics question.",
+    "question": "What causes earthquakes along tectonic plate boundaries?",
+    "reference_answer": "Earthquakes are caused by sudden slippage and release of tectonic stress along faults in the Earth's crust.",
+    "source_document": "Tectonic plates grind past one another, accumulating stress that releases as seismic waves during earthquakes.",
+    "ai_response": "To make a classic French omelet, whisk two eggs with salt, melt butter in a non-stick pan over medium heat, and roll gently.",
+    "expected": {
+      "relevance_is_on_topic": false,
+      "relevance_max_score": 0.2,
+      "relevance_classification_in": ["unrelated", "off_topic"],
+      "accuracy_max_score": 0.2,
+      "completeness_max_score": 0.2,
+      "completeness_classification": "incomplete",
+      "expected_verdict": "Fail"
+    }
+  },
+  {
+    "id": "IRREL-02",
+    "category": "irrelevant",
+    "domain": "Renewable Energy vs Architecture",
+    "description": "Off-topic response discussing medieval architecture instead of solar panels.",
+    "question": "How do solar panels convert sunlight into electricity?",
+    "reference_answer": "Solar panels use photovoltaic cells to absorb photons from sunlight, freeing electrons to generate electrical current.",
+    "source_document": "Photovoltaic cells within solar panels convert light energy into direct electrical current through the photoelectric effect.",
+    "ai_response": "The history of medieval European architecture features romanesque castles and gothic cathedrals with ribbed vaults and flying buttresses.",
+    "expected": {
+      "relevance_is_on_topic": false,
+      "relevance_max_score": 0.2,
+      "relevance_classification_in": ["unrelated", "off_topic"],
+      "accuracy_max_score": 0.2,
+      "completeness_max_score": 0.2,
+      "completeness_classification": "incomplete",
+      "expected_verdict": "Fail"
+    }
+  },
+  {
+    "id": "INCOMP-PARTIAL",
+    "category": "incomplete",
+    "subtype": "partial",
+    "domain": "Geography",
+    "description": "Answers first question (capital) but completely omits population and currency requirements.",
+    "question": "What is the capital of Australia, what is its population, and what currency does it use?",
+    "reference_answer": "The capital of Australia is Canberra, with a population of approximately 450,000, and Australia uses the Australian dollar.",
+    "source_document": "Canberra is the federal capital of Australia, with approximately 450,000 residents. The currency is the Australian dollar.",
+    "ai_response": "The capital of Australia is Canberra.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.5,
+      "accuracy_min_score": 0.8,
+      "accuracy_classification": "correct",
+      "is_hallucinated": false,
+      "completeness_classification_in": ["partially_complete", "mostly_complete"],
+      "completeness_min_score": 0.4,
+      "completeness_max_score": 0.75,
+      "missing_aspects_required": true,
+      "expected_verdict": "Needs Improvement"
+    }
+  },
+  {
+    "id": "INCOMP-SUBSTANTIAL",
+    "category": "incomplete",
+    "subtype": "substantially_incomplete",
+    "domain": "Cell Biology",
+    "description": "Provides vague high-level sentence while omitting all 4 named stages and their mechanisms.",
+    "question": "Explain the four stages of mitosis: prophase, metaphase, anaphase, and telophase, including what happens in each stage.",
+    "reference_answer": "Mitosis consists of four stages: in prophase chromosomes condense, in metaphase chromosomes align, in anaphase chromatids separate, and in telophase nuclear envelopes reform.",
+    "source_document": "Mitosis has four sequential stages: prophase, metaphase, anaphase, and telophase.",
+    "ai_response": "Mitosis is a biological cell division process.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.4,
+      "completeness_classification": "incomplete",
+      "completeness_max_score": 0.35,
+      "missing_aspects_min_count": 3,
+      "expected_verdict": "Fail"
+    }
+  },
+  {
+    "id": "HAL-01",
+    "category": "hallucinated",
+    "domain": "Space History",
+    "description": "Factually true core mixed with fabricated mission specialist Dr. Harrison Vance from ESA.",
+    "question": "Who was the first person to walk on the Moon, and during which mission?",
+    "reference_answer": "Neil Armstrong was the first person to walk on the Moon during the Apollo 11 mission on July 20, 1969.",
+    "source_document": "Apollo 11 commander Neil Armstrong stepped onto the lunar surface on July 20, 1969, becoming the first human on the Moon.",
+    "ai_response": "Neil Armstrong walked on the Moon during Apollo 11, accompanied by flight specialist Dr. Harrison Vance who oversaw telemetry.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.5,
+      "is_hallucinated": true,
+      "min_hallucination_score": 0.25,
+      "flagged_claims_min_count": 1,
+      "flagged_claim_status_in": ["unsupported", "contradicted"],
+      "missing_support_link_required": true,
+      "expected_verdict_in": ["Needs Improvement", "Fail"]
+    }
+  },
+  {
+    "id": "HAL-02",
+    "category": "hallucinated",
+    "domain": "Biochemistry",
+    "description": "Fabricates non-existent compound 'Carotuximab' and ungrounded microbiological synthesis mechanism.",
+    "question": "What chemical pigment gives carrots their characteristic orange color?",
+    "reference_answer": "Beta-carotene is the carotenoid pigment responsible for the orange color of carrots.",
+    "source_document": "Carrots obtain their characteristic orange color from beta-carotene, an antioxidant organic compound.",
+    "ai_response": "Carrots derive their orange color from beta-carotene combined with the synthetic chromophore Carotuximab.",
+    "expected": {
+      "relevance_is_on_topic": true,
+      "relevance_min_score": 0.5,
+      "is_hallucinated": true,
+      "min_hallucination_score": 0.25,
+      "flagged_claims_min_count": 1,
+      "flagged_claim_status_in": ["unsupported", "contradicted"],
+      "missing_support_link_required": true,
+      "expected_verdict_in": ["Needs Improvement", "Fail"]
+    }
+  }
+]

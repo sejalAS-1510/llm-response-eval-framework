@@ -149,6 +149,8 @@ class BatchEvaluationItem(BaseModel):
     result: Optional[EvaluationResult] = None
     status: Literal["success", "failed", "skipped"] = "success"
     error_message: Optional[str] = None
+    batch_id: Optional[str] = Field(default=None, description="Identifier of the batch this record belongs to")
+    batch_filename: Optional[str] = Field(default=None, description="Original uploaded CSV filename")
 
 
 class BatchStatistics(BaseModel):
@@ -175,6 +177,37 @@ class BatchEvaluationSummary(BaseModel):
     items: List[BatchEvaluationItem]
 
 
+class BatchTrendPoint(BaseModel):
+    batch_id: str
+    filename: Optional[str] = None
+    created_at: str
+    total_records: int
+    successful_records: int
+    failed_records: int
+    pass_count: int
+    needs_improvement_count: int
+    fail_count: int
+    pass_percent: float
+    needs_improvement_percent: float
+    fail_percent: float
+    average_weighted_score: float
+    average_relevance_score: float
+    average_accuracy_score: float
+    average_completeness_score: float
+    average_groundedness_score: float
+    hallucination_rate_percent: float
+
+
+class TrendsSummaryResponse(BaseModel):
+    total_batches: int
+    batches: List[BatchTrendPoint]
+    overall_quality_trend: Literal["improving", "degrading", "stable", "insufficient_data"]
+    score_change_percent: float
+    latest_batch_id: Optional[str] = None
+    summary_insight: str
+
+
 # Rebuild EvaluationResult with full forward ref resolution
 EvaluationResult.model_rebuild()
+
 

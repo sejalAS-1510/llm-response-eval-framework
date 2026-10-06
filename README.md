@@ -1,85 +1,174 @@
-# LLM response evaluation framework
+# LLM Response Evaluation Platform
 
-A small system for automatically evaluating an LLM's response to a question along four dimensions - relevance, accuracy, hallucination, and completeness - using an LLM-as-a-judge approach grounded in a retrieval-augmented reference knowledge base.
+[![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
+[![ChromaDB](https://img.shields.io/badge/Vector%20Store-ChromaDB-orange.svg)](https://www.trychroma.com/)
+[![Tests](https://img.shields.io/badge/Tests-86%20Passed%20(100%25)-brightgreen.svg)]()
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker)](https://www.docker.com/)
 
-This repo covers **Milestone 1**, **Milestone 2**, and **Milestone 3**: research, system design, RAG knowledge base, multi-agent judge evaluation (Relevance, Accuracy, Hallucination, Completeness), weighted quality verdict synthesis, and high-volume batch evaluation (100+ records via CSV).
+An automated, multi-agent AI response evaluation framework designed to benchmark, audit, and score Large Language Model (LLM) responses against ground-truth references and retrieved domain knowledge across four orthogonal dimensions: **Relevance**, **Factual Accuracy**, **Hallucination Detection (via atomic claim decomposition)**, and **Completeness**.
 
-## Project Milestones
+---
 
-| Milestone | Scope | Status | Where |
-|---|---|---|---|
-| **Milestone 1** | Input module & ChromaDB RAG Knowledge Base | done | [`src/input_module/`](src/input_module), [`src/knowledge_base/`](src/knowledge_base) |
-| **Milestone 2** | Relevance, Accuracy, Hallucination Detection Agents | done | [`src/agents/`](src/agents), [`tests/test_milestone2.py`](tests/test_milestone2.py) |
-| **Milestone 3** | Completeness Agent, Verdict Agent, Results Display & Batch CSV Module | done | [`src/agents/completeness_agent.py`](src/agents/completeness_agent.py), [`src/agents/verdict_agent.py`](src/agents/verdict_agent.py), [`src/agents/batch_evaluator.py`](src/agents/batch_evaluator.py) |
+## 📌 Project Milestones & Implementation Status
 
-## Architecture
+| Milestone | Scope | Status | Component Locations |
+|:---:|---|:---:|---|
+| **Milestone 1** | Input Module & ChromaDB Local RAG Pipeline | **Done** | [`src/input_module/`](src/input_module), [`src/knowledge_base/`](src/knowledge_base) |
+| **Milestone 2** | Multi-Agent Judge Core (Relevance, Accuracy, Hallucination) | **Done** | [`src/agents/`](src/agents), [`tests/test_milestone2.py`](tests/test_milestone2.py) |
+| **Milestone 3** | Completeness Agent, Verdict Synthesis & 100+ CSV Batch Ingestion | **Done** | [`src/agents/completeness_agent.py`](src/agents/completeness_agent.py), [`src/agents/verdict_agent.py`](src/agents/verdict_agent.py), [`src/agents/batch_evaluator.py`](src/agents/batch_evaluator.py) |
+| **Milestone 4** | Interactive SaaS Dashboard, Longitudinal Trends, Dynamic Recommendations & Publication PDF Reports | **Done** | [`src/input_module/static/index.html`](src/input_module/static/index.html), [`src/reporting/`](src/reporting), [`tests/test_milestone4.py`](tests/test_milestone4.py) |
 
-![architecture](docs/architecture.png)
+---
 
-Full write-up of the reasoning behind this in [`docs/research-notes.md`](docs/research-notes.md) and the tech choices in [`docs/tech-stack.md`](docs/tech-stack.md).
-
-## Project layout
+## 🏛️ System Architecture
 
 ```
-src/
-  input_module/       # M1.3 / M3.3 / M3.4 - FastAPI endpoints + modern dashboard UI
-    main.py           # Single & batch evaluation endpoints
-    schemas.py        # Submission models
-    storage.py        # SQLite history persistence
-    static/index.html # Interactive UI (Single eval + 100+ CSV batch evaluation)
-  agents/             # M2 & M3 multi-agent evaluation system
-    relevance_agent.py      # M2.1 Relevance Judge
-    accuracy_agent.py       # M2.2 Accuracy Judge
-    hallucination_agent.py  # M2.3 Hallucination Detection Agent
-    completeness_agent.py   # M3.1 Completeness Judge Agent
-    verdict_agent.py        # M3.2 Verdict Agent (weighted scoring + safety overrides)
-    batch_evaluator.py      # M3.4 Batch Evaluation Module (CSV upload, stats, export)
-    orchestrator.py         # Multi-agent coordinator & RAG resolver
-    schemas.py              # Pydantic structured output models
-    base.py                 # Gemini structured output wrapper & offline simulation
-  knowledge_base/     # M1.4 - dataset ingestion -> chunking -> embedding -> vector store
-    ingest.py
-    chunking.py
-    embeddings.py
-    vector_store.py
-    build_index.py
-tests/
-  test_retrieval.py    # M1 sanity check on retrieval quality
-  test_milestone2.py   # M2 validation suite (Relevance, Accuracy, Hallucination)
-  test_milestone3.py   # M3 validation suite (Completeness, Verdict, 100+ Batch CSV)
-docs/
-  architecture.svg / .png
-  tech-stack.md
-  research-notes.md
-data/                  # sqlite db + chroma index get created here at runtime
+┌────────────────────────────────────────────────────────────────────────┐
+│               Interactive SaaS Web Dashboard (HTML5/CSS)               │
+└──────────────────────────────────┬─────────────────────────────────────┘
+                                   │ HTTP / JSON
+┌──────────────────────────────────▼─────────────────────────────────────┐
+│                 Input Module & REST Gateway (FastAPI)                  │
+└──────────────────┬──────────────────────────────────┬──────────────────┘
+                   │                                  │
+    [Single Request Routing]               [Batch CSV Ingestion]
+                   │                                  │
+                   │                        ┌─────────▼────────┐
+                   │                        │  BatchEvaluator  │
+                   │                        └─────────┬────────┘
+                   │                                  │
+┌──────────────────▼──────────────────────────────────▼──────────────────┐
+│                   Multi-Agent Evaluation Orchestrator                  │
+├────────────────────────────────────────────────────────────────────────┤
+│ Context Resolution: Direct Reference OR Local ChromaDB RAG Retrieval   │
+│                                                                        │
+│ Parallel Evaluation: (asyncio.gather)                                  │
+│ ┌─────────────────┐ ┌─────────────────┐ ┌────────────────────────────┐ │
+│ │ Relevance Agent │ │ Accuracy Agent  │ │    Completeness Agent      │ │
+│ └─────────────────┘ └─────────────────┘ └────────────────────────────┘ │
+│ ┌────────────────────────────────────────────────────────────────────┐ │
+│ │               Hallucination Agent (Claim Decomposition)            │ │
+│ └────────────────────────────────────────────────────────────────────┘ │
+│                                                                        │
+│ Deterministic Synthesis:                                               │
+│ ┌────────────────────────────────────────────────────────────────────┐ │
+│ │ Verdict Agent (Weighted Scoring + Critical Failure Overrides)      │ │
+│ └────────────────────────────────────────────────────────────────────┘ │
+└──────────────────┬──────────────────────────────────┬──────────────────┘
+                   │                                  │
+┌──────────────────▼──────────────────┐ ┌─────────────▼──────────────────┐
+│ SQLite Database & JSON Batch Storage│ │   Report Aggregator Service    │
+└─────────────────────────────────────┘ └─────────────┬──────────────────┘
+                                                      │
+                                        ┌─────────────▼──────────────────┐
+                                        │ Dynamic Recommendations Engine │
+                                        └─────────────┬──────────────────┘
+                                                      │
+                                        ┌─────────────▼──────────────────┐
+                                        │ ReportLab PDF Report Generator │
+                                        └────────────────────────────────┘
 ```
 
-## Running it
+---
+
+## 🚀 Quickstart Guide
+
+### Option 1: One-Click Runner (Windows / Linux / Mac)
+
+**Windows**:
+```cmd
+run.bat
+```
+
+**Linux / macOS**:
+```bash
+chmod +x run.sh
+./run.sh
+```
+
+---
+
+### Option 2: Local Python Virtual Environment
 
 ```bash
+# 1. Create and activate virtual environment
+python -m venv .venv
+# On Windows:
+.\.venv\Scripts\activate
+# On Linux/macOS:
+source .venv/bin/activate
+
+# 2. Install dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 
-# 1. Build the reference knowledge base (ingest + chunk + embed + index)
-python -m src.knowledge_base.build_index
-
-# 2. Sanity-check retrieval quality
-python -m tests.test_retrieval
-
-# 3. Configure Gemini API key (optional for offline testing; required for live Gemini calls)
+# 3. Configure environment variables (optional; offline heuristic engine runs out of the box)
 cp .env.example .env
-# Edit .env and set your GEMINI_API_KEY
 
-# 4. Run Milestone 2 validation suite
-python -m tests.test_milestone2
-
-# 5. Run Milestone 3 validation suite (Completeness, Verdict, 100+ Batch CSV)
-python -m tests.test_milestone3
-
-# 6. Run the API with evaluation dashboard
-uvicorn src.input_module.main:app --reload
+# 4. Start the FastAPI server and Dashboard
+uvicorn src.input_module.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Open your browser at `http://localhost:8000` to interact with the evaluation platform:
-- **Single Response Evaluation**: Inspect per-dimension scores, supporting evidence, hallucinated claims, missing aspects, and executive verdict.
-- **Batch Evaluation**: Upload CSVs with 100+ question-answer pairs, monitor progress, analyze aggregated batch statistics, inspect individual items in a modal, and export full reports to CSV.
+Open **`http://localhost:8000`** in your browser.
 
+---
+
+### Option 3: Docker & Docker Compose (Containerized Production)
+
+```bash
+# Build image and run container in background
+docker compose up --build -d
+
+# View container logs
+docker compose logs -f
+
+# Stop container
+docker compose down
+```
+
+The container automatically mounts `./data` to persist vector stores and evaluation records.
+
+---
+
+## 🧪 Test Suite & Verification
+
+The framework includes a comprehensive automated test suite with **86 tests** passing with zero failures:
+
+```bash
+# Run complete test suite
+pytest -v
+
+# Run with concise summary
+pytest -q
+```
+
+```
+============================== 86 passed in ~35s ==============================
+```
+
+Test coverage includes:
+- Multi-agent scoring and claim decomposition verification
+- Mathematical exactness between raw records, dashboard statistics, and PDF exports
+- 50, 200, and 500-record batch throughput and memory scaling benchmarks
+- Missing reference fallback (automatic RAG retrieval)
+- CSV parsing fault tolerance (malformed rows, unescaped quotes, missing columns)
+- ReportLab two-pass pagination and dynamic engineering recommendations
+
+---
+
+## 📚 Technical Documentation & Reports
+
+Detailed technical documentation is available in the [`docs/`](docs/) directory:
+
+- 📄 **[Final Project Report](docs/FINAL_PROJECT_REPORT.md)**: Executive narrative covering problem statement, system design, testing results, limitations, and future roadmap.
+- 📐 **[01. System Architecture](docs/01-system-architecture.md)**: End-to-end component diagrams and subsystem interactions.
+- 🤖 **[02. Agents Workflow](docs/02-agents-workflow.md)**: Agent responsibilities and atomic claim decomposition methodology.
+- ⚖️ **[03. Scoring & Verdict Methodology](docs/03-scoring-and-verdict.md)**: Mathematical formulas, weights, and critical failure overrides.
+- 🔍 **[04. RAG Pipeline](docs/04-rag-pipeline.md)**: ChromaDB vector store, chunking, and embedding retrieval.
+- 📦 **[05. Data Models](docs/05-data-models.md)**: Pydantic schemas and serialization models.
+- 🌐 **[06. API & Services](docs/06-api-and-services.md)**: REST endpoints and request/response specifications.
+- 📊 **[07. CSV Ingestion Format](docs/07-csv-upload-format.md)**: Format requirements, delimiter detection, and error isolation.
+- 📈 **[08. Dashboard Metrics](docs/08-dashboard-metrics.md)**: KPI computation and trend trajectory logic.
+- 📑 **[09. PDF Report Generation](docs/09-pdf-report-structure.md)**: ReportLab Platypus structure, styles, and pagination.
+- 🚢 **[10. Deployment Guide](docs/10-deployment-guide.md)**: Local, Docker, and cloud hosting (Render, Railway, Hugging Face Spaces).

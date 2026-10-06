@@ -15,6 +15,8 @@ from .schemas import (
     BatchEvaluationItem,
     BatchStatistics,
     BatchEvaluationSummary,
+    BatchTrendPoint,
+    TrendsSummaryResponse,
 )
 from .relevance_agent import RelevanceAgent
 from .accuracy_agent import AccuracyAgent
@@ -35,6 +37,8 @@ __all__ = [
     "BatchEvaluationItem",
     "BatchStatistics",
     "BatchEvaluationSummary",
+    "BatchTrendPoint",
+    "TrendsSummaryResponse",
     "RelevanceAgent",
     "AccuracyAgent",
     "HallucinationAgent",
