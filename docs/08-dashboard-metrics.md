@@ -63,7 +63,9 @@ Hallucination detection evaluates both response-level risk and claim-level preci
 ### Response-Level Hallucination Rate
 A response is flagged if at least one atomic claim is unsupported or contradicted:
 
-$$H_{\text{flagged}} = \sum_{i \in I_{\text{succ}}} \mathbf{1}(i.\text{result}.\text{hallucination}.\text{is\_hallucinated} = \text{True})$$
+$$H_{\text{flagged}} = \sum_{i \in I_{\text{succ}}} \mathbf{1}(h_i = 1)$$
+
+*(where indicator $h_i = 1$ if response $i$ has ungrounded claims (`is_hallucinated == True`), else $0$)*
 
 $$\text{Hallucination Rate \%} = \begin{cases} 
 \text{round}\left(\frac{H_{\text{flagged}}}{N_{\text{succ}}} \times 100, 1\right) & \text{if } N_{\text{succ}} > 0 \\ 
@@ -73,9 +75,11 @@ $$\text{Hallucination Rate \%} = \begin{cases}
 ### Claim-Level Granularity
 For deep auditing in reports:
 - **Total Claims Extracted**:
-  $$M_{\text{total}} = \sum_{i \in I_{\text{succ}}} i.\text{result}.\text{hallucination}.\text{total\_claims}$$
+  $$M_{\text{total}} = \sum_{i \in I_{\text{succ}}} M_{\text{claims}, i}$$
+  *(sum of `total_claims` across all valid responses)*
 - **Total Unsupported Claims**:
-  $$M_{\text{unsupported}} = \sum_{i \in I_{\text{succ}}} i.\text{result}.\text{hallucination}.\text{unsupported\_claims\_count}$$
+  $$M_{\text{unsupported}} = \sum_{i \in I_{\text{succ}}} M_{\text{unsupported}, i}$$
+  *(sum of `unsupported_claims_count` across all valid responses)*
 
 ---
 
@@ -84,22 +88,27 @@ For deep auditing in reports:
 All continuous dimensional scores are averaged across valid responses and rounded to 3 decimal places (displayed as 0–100% on UI charts):
 
 ### Average Relevance Score
-$$\overline{S}_{\text{rel}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} i.\text{result}.\text{relevance}.\text{score}$$
+$$\overline{S}_{\text{rel}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} S_{\text{rel}, i}$$
+*(where $S_{\text{rel}, i}$ is `result.relevance.score` for item $i$)*
 
 ### Average Accuracy Score
-$$\overline{S}_{\text{acc}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} i.\text{result}.\text{accuracy}.\text{score}$$
+$$\overline{S}_{\text{acc}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} S_{\text{acc}, i}$$
+*(where $S_{\text{acc}, i}$ is `result.accuracy.score` for item $i$)*
 
 ### Average Completeness Score
-$$\overline{S}_{\text{comp}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} i.\text{result}.\text{completeness}.\text{score}$$
+$$\overline{S}_{\text{comp}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} S_{\text{comp}, i}$$
+*(where $S_{\text{comp}, i}$ is `result.completeness.score` for item $i$)*
 
 ### Average Groundedness Score
-Groundedness is the arithmetic complement of the hallucination score:
-$$G_i = \max\left(0.0, 1.0 - i.\text{result}.\text{hallucination}.\text{hallucination\_score}\right)$$
+Groundedness is the arithmetic complement of the hallucination score ($S_{\text{hal}, i}$):
+$$G_i = \max\left(0.0, 1.0 - S_{\text{hal}, i}\right)$$
 
 $$\overline{S}_{\text{grd}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} G_i$$
+*(where $S_{\text{hal}, i}$ is `result.hallucination.hallucination_score` for item $i$)*
 
 ### Average Weighted Composite Score
-$$\overline{S}_{\text{weighted}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} i.\text{result}.\text{verdict}.\text{weighted\_score}$$
+$$\overline{S}_{\text{weighted}} = \frac{1}{N_{\text{succ}}} \sum_{i \in I_{\text{succ}}} S_{\text{weighted}, i}$$
+*(where $S_{\text{weighted}, i}$ is `result.verdict.weighted_score` for item $i$)*
 
 ---
 
@@ -116,5 +125,6 @@ $$\text{Trajectory} = \begin{cases}
 \text{"improving"} & \text{if } \Delta S_{\%} > +2.0\% \\ 
 \text{"degrading"} & \text{if } \Delta S_{\%} < -2.0\% \\ 
 \text{"stable"} & \text{if } -2.0\% \le \Delta S_{\%} \le +2.0\% \\ 
-\text{"insufficient\_data"} & \text{if } \text{Total Batches} < 2 
+\text{"insufficient data"} & \text{if } \text{Total Batches} < 2 
 \end{cases}$$
+*(returns `"insufficient_data"` in API response if fewer than 2 batches exist)*

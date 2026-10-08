@@ -118,9 +118,9 @@ flowchart TD
 
 ### 2. Reference Knowledge Base & RAG Pipeline ([`src/knowledge_base/`](file:///C:/Sejal/Infosys%20Springboard/llm-response-eval-framework/src/knowledge_base))
 - **Ingestion (`ingest.py`)**: Downloads and standardizes benchmark data from HuggingFace Datasets (TruthfulQA for concise factual QA, SQuAD for long-form contextual passages).
-- **Chunking (`chunking.py`)**: Splits passage context into overlapping text segments using LangChain's `RecursiveCharacterTextSplitter` ($chunk\_size=500$, $overlap=80$).
+- **Chunking (`chunking.py`)**: Splits passage context into overlapping text segments using LangChain's `RecursiveCharacterTextSplitter` (`chunk_size=500`, `overlap=80`).
 - **Dense Embeddings (`embeddings.py`)**: Generates 384-dimensional dense semantic vectors using `sentence-transformers/all-MiniLM-L6-v2` locally with zero external API dependencies.
-- **Vector Store & Retrieval (`vector_store.py`)**: Stores chunk vectors and document metadata inside an embedded ChromaDB collection (`reference_kb`), executing cosine similarity searches to retrieve the top-$k$ nearest context passages.
+- **Vector Store & Retrieval (`vector_store.py`)**: Stores chunk vectors and document metadata inside an embedded ChromaDB collection (`reference_kb`), executing cosine similarity searches to retrieve the top-k nearest context passages.
 
 ### 3. Orchestration & Multi-Agent Core ([`src/agents/`](file:///C:/Sejal/Infosys%20Springboard/llm-response-eval-framework/src/agents))
 - **Evaluation Orchestrator (`orchestrator.py`)**: Central coordinator that resolves ground-truth context (using provided references or falling back to ChromaDB RAG retrieval), launches the 4 dimensional judge agents concurrently via `asyncio.gather`, and passes results to the Verdict Agent.

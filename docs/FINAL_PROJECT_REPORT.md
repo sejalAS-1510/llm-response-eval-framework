@@ -111,7 +111,7 @@ The project was delivered across four structured development milestones:
 
 ### Milestone 1: Reference Knowledge Base & Local RAG Pipeline
 - Ingested and standardized HuggingFace benchmark datasets: **SQuAD** (long-context passage retrieval) and **TruthfulQA** (concise factual QA).
-- Implemented LangChain `RecursiveCharacterTextSplitter` ($chunk\_size=500, overlap=80$) with synthetic QA pair chunking for passage-less records.
+- Implemented LangChain `RecursiveCharacterTextSplitter` (`chunk_size=500`, `overlap=80`) with synthetic QA pair chunking for passage-less records.
 - Configured local dense embeddings via `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional vectors) with zero external API dependencies.
 - Established persistent vector indexing with **ChromaDB** (`data/chroma/reference_kb`) implementing cosine similarity retrieval.
 - *Detailed reference*: [RAG Pipeline Documentation](file:///C:/Sejal/Infosys%20Springboard/llm-response-eval-framework/docs/04-rag-pipeline.md).

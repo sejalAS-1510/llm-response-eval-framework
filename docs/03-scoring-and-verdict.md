@@ -17,7 +17,7 @@ $$S \in [0.0, 1.0]$$
 | **Accuracy** | Factual correctness against ground truth | `AccuracyAgent` | **0.35** (35%) | Direct factual verification |
 | **Completeness** | Depth of coverage across required sub-questions | `CompletenessAgent` | **0.25** (25%) | Aspect coverage fraction |
 | **Relevance** | Directness in answering the user prompt | `RelevanceAgent` | **0.20** (20%) | Semantic prompt alignment |
-| **Groundedness** | Absence of fabricated or unsupported claims | `HallucinationAgent` | **0.20** (20%) | $1.0 - \text{hallucination\_score}$ |
+| **Groundedness** | Absence of fabricated or unsupported claims | `HallucinationAgent` | **0.20** (20%) | `1.0 - hallucination_score` |
 
 ### Groundedness Derivation
 The `HallucinationAgent` outputs `hallucination_score` representing the fraction of factual assertions that are ungrounded or contradicted ($0.0 = \text{clean}, 1.0 = \text{entirely hallucinated}$). To align with other dimensions where higher is better, **Groundedness** is calculated as:
@@ -89,16 +89,24 @@ flowchart TD
 ### Critical Override Rules
 
 1. **Direct Contradiction**:
-   $$\text{accuracy.classification} = \text{"contradictory"} \implies \text{Verdict} = \mathbf{Fail}$$
+   ```
+   accuracy.classification == "contradictory"  ==>  Verdict = FAIL
+   ```
    *Rationale*: Asserting facts that directly refute the verified reference source poses significant compliance and trust risks.
 2. **Zero Accuracy**:
-   $$\text{accuracy.score} = 0.0 \implies \text{Verdict} = \mathbf{Fail}$$
+   ```
+   accuracy.score == 0.0  ==>  Verdict = FAIL
+   ```
    *Rationale*: Responses with no factual merit cannot pass.
 3. **Severe Hallucination**:
-   $$\text{is\_hallucinated} = \text{True} \quad \wedge \quad \text{hallucination\_score} > 0.50 \implies \text{Verdict} = \mathbf{Fail}$$
+   ```
+   is_hallucinated == True AND hallucination_score > 0.50  ==>  Verdict = FAIL
+   ```
    *Rationale*: When over 50% of the factual claims are ungrounded or fabricated, the generation is unreliable.
 4. **Critical Off-Topic / Unrelated**:
-   $$\text{relevance.score} < 0.30 \quad \vee \quad \text{relevance.classification} \in \{\text{"unrelated"}, \text{"off\_topic"}\} \implies \text{Verdict} = \mathbf{Fail}$$
+   ```
+   relevance.score < 0.30 OR relevance.classification IN {"unrelated", "off_topic"}  ==>  Verdict = FAIL
+   ```
    *Rationale*: A response that fails to address the user's inquiry provides zero utility.
 
 ---
@@ -111,12 +119,18 @@ $$\text{Maximum Allowed Verdict} = \mathbf{Needs\ Improvement}$$
 
 Conditions that trigger a Quality Ceiling:
 1. **Any Detected Hallucination**:
-   $$\text{is\_hallucinated} = \text{True} \implies \text{Verdict} \ne \text{"Pass"}$$
+   ```
+   is_hallucinated == True  ==>  Verdict != "Pass" (Max: Needs Improvement)
+   ```
    *Guarantees zero-tolerance for ungrounded claims in passed responses.*
 2. **Substantial Incompleteness**:
-   $$\text{completeness.score} \le 0.50 \quad \vee \quad \text{completeness.classification} \in \{\text{"partially\_complete"}, \text{"incomplete"}\} \implies \text{Verdict} \ne \text{"Pass"}$$
+   ```
+   completeness.score <= 0.50 OR completeness.classification IN {"partially_complete", "incomplete"}  ==>  Verdict != "Pass"
+   ```
 3. **Low Accuracy**:
-   $$\text{accuracy.score} < 0.60 \implies \text{Verdict} \ne \text{"Pass"}$$
+   ```
+   accuracy.score < 0.60  ==>  Verdict != "Pass"
+   ```
 
 ---
 
