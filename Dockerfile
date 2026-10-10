@@ -1,5 +1,6 @@
 # ==============================================================================
 # LLM Response Evaluation Framework - Production Dockerfile
+# Optimized for Ultra-Low Memory Cloud Environments (< 200 MB RAM, Render Free tier)
 # ==============================================================================
 FROM python:3.11-slim
 
@@ -17,13 +18,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install lightweight CPU-only PyTorch first to prevent downloading 2.5GB CUDA bloat
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-
 # Copy dependency specifications and install Python packages
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application source code, datasets, and documentation
 COPY src/ /app/src/
