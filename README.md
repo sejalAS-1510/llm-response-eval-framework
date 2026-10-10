@@ -243,6 +243,7 @@ Comprehensive architectural design documents and reports are located in [`docs/`
 - 📈 **[08. Dashboard Metrics](docs/08-dashboard-metrics.md)**: Key performance indicators and calculation formulas.
 - 📑 **[09. PDF Report Generation](docs/09-pdf-report-structure.md)**: ReportLab Platypus styles and flowables.
 - 🚢 **[10. Cloud Deployment Guide](docs/10-deployment-guide.md)**: Production deployment instructions for Render and Docker.
+- 📋 **[Agile & QA Documentation](agile_artifacts/)**: Sprint Backlogs, Daily Standups, Retrospectives, Defect Tracker, and Unit Test Plans.
 
 ---
 
