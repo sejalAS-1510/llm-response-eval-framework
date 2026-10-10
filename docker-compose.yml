@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   llm-eval-framework:
     build:
@@ -7,6 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: llm-response-eval-framework
     restart: unless-stopped
+    command: ["uvicorn", "src.input_module.main:app", "--host", "0.0.0.0", "--port", "8000"]
     ports:
       - "8000:8000"
     volumes:

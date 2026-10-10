@@ -12,4 +12,6 @@ reportlab>=4.0.0
 pypdf>=4.0.0
 pytest>=8.0.0
 httpx>=0.27.0
+pyarrow>=14.0.0,<18.0.0
+numpy>=1.24.0,<2.0.0
 
