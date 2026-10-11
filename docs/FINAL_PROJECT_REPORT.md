@@ -2,7 +2,7 @@
 
 **Project Title**: Automated Multi-Agent LLM Response Evaluation & Quality Assurance Framework  
 **Author / Engineer**: Sejal Anil Shinkar  
-**Date**: September 2026  
+**Date**: October 2026  
 **Repository**: `llm-response-eval-framework`  
 **Reference Technical Documentation**: [`docs/README.md`](file:///C:/Sejal/Infosys%20Springboard/llm-response-eval-framework/docs/README.md)
 
