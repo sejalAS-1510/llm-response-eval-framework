@@ -1,5 +1,5 @@
 """
-scratch/run_model_comparison.py
+scripts/run_model_comparison.py
 Creates two distinct AI response datasets (System A: Model Alpha vs System B: Model Beta)
 covering correct, incomplete, inaccurate, and unsupported responses.
 Evaluates both using BatchEvaluator, records all KPIs and dimensional distributions,
